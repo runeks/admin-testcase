@@ -1,0 +1,56 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:counting="http://java.sun.com/jsf/composite/counting"
+		xmlns:p="http://primefaces.org/ui"
+		contentType="text/html">
+
+	<ui:composition template="/templates/layout.xhtml">
+		<ui:param name="helpId" value="@help.count"/>
+		
+		<ui:define name="breadCrumb">
+			<p:menuitem value="#{msgs['@count.overview.title']}" ajax="false" action="#{startCountingController.endConversationAndGoTo('countingOverview.xhtml?faces-redirect=true')}" rendered="#{startCountingController.showBreadCrumb()}"/>
+		</ui:define>
+		
+		<ui:define name="content">
+			<div id="page-counting" class="page">
+
+				<counting:topInfo topInfoProvider="#{startCountingController.tabs[0].controller}"/>
+				
+				<div class="row">
+					<div class="col-md-12">
+						<h:form id="countingForm">
+
+							<p:messages errorClass="errors" layout="table" showDetail="false" globalOnly="true" id="messages" autoUpdate="true"/>
+
+							<p:tabView
+									id="tabView"
+									activeIndex="#{startCountingController.currentTab}"
+									dynamic="true"
+									cache="false">
+
+								<c:forEach var="currentTab" items="#{startCountingController.tabs}">
+									<p:tab title="#{msgs[currentTab.title]}">
+										<h:panelGroup id="#{currentTab.id}" layout="block" styleClass="tab-#{currentTab.id}">
+											
+											<ui:include src="#{currentTab.template}">
+												<ui:param name="tab" value="#{currentTab}"/>
+											</ui:include>
+										</h:panelGroup>
+									</p:tab>
+								</c:forEach>
+
+							</p:tabView>
+
+						</h:form>
+					</div>
+				</div>
+
+			</div>
+
+
+		</ui:define>
+	</ui:composition>
+</f:view>

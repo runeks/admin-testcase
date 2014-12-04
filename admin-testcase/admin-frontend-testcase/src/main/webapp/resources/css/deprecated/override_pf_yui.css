@@ -1,0 +1,233 @@
+﻿/* Class to override default PrimeFaces (PF) and Yahoo UI (YUI) stylesettings */
+
+.pf-panel,.pf-panel-hd,.pf-panel-bd,.pf-panel-ft,.yui-dt,.yui-dt table {
+	width: auto;
+	/* min-width: 750px; */
+	position: relative;
+	border-color: #cccccc;
+	border-style: solid;
+}
+
+.pf-panel { /* border-width: 1px 0; */
+	border-width: 0;
+	margin-top: 0.8em;
+	/* border-color: #cccccc; border-style: solid;*/
+}
+
+.pf-panel-hd,.pf-panel-bd,.pf-panel-ft { /* border-width: 0 1px; */
+	border-width: 0;
+	margin: 0 -1px;
+	background-color: transparent;
+	/*	border-color: #cccccc; border-style: solid;*/
+}
+
+.pf-panel-hd {
+	background: url("../../yui/assets/skins/sam/sprite.png") repeat-x scroll
+		0 -200px transparent;
+	color: #000000;
+	font-size: 1em;
+	font-weight: bold;
+	line-height: 2;
+	padding: 3px 10px 0px 10px;
+	vertical-align: middle;
+}
+
+.pf-panel-hd-controls
+{
+	height: 18px;
+	width: 18px;
+	margin: 0px 0px 0px 0px;
+	padding: 0px;
+	top: 4px;
+	vertical-align: middle;
+	/* border: solid 1px #ff0000; */
+	
+}
+
+.pf-panel-bd {
+	padding: 10px;
+}
+
+.pf-panel-bd table {
+	width: auto;
+	/* min-width: 750px;*/
+	border-collapse: collapse;
+	margin-top: 5px;
+}
+
+.pf-panel-bd table td {
+	padding: 0px 0px 5px 0px;
+}
+
+.pf-panel-bd table input {
+	/* width: 95%; */ /* SKAPER KAOS!*/
+}
+
+.pf-panel-bd table td:FIRST-CHILD {
+	/* width: 25%; */
+}
+
+.yui-skin-sam .yui-ac,.yui-skin-sam .yui-ac-container,.yui-skin-sam .yui-ac-input
+	{
+	position: relative;
+}
+
+.yui-skin-sam .yui-ac {
+	font-family: Transit, Arial, Geneva, Helvetica, Sans-Serif;
+	font-size: 1em;
+	width: 150px;
+	top: 0px;
+	/* top: -10px;*/
+}
+
+.yui-skin-sam .yui-ac-container { /* 
+	position: absolute;
+	top: 1.6em;
+	width: 100%;
+	*/
+	top: 1em;
+	width: auto;
+}
+
+.yui-skin-sam .yui-ac-input { 
+	/* 
+	position: absolute;
+	width: 100%; 
+	*/
+	width: auto;
+}
+
+/* Datatables */
+.yui-skin-sam .yui-dt table {
+	border-collapse: collapse;
+	font-size: 0.85em;
+	border: 1px solid #7F7F7F;
+	border-spacing: 0;
+	font-family: Transit, Arial, Geneva, Helvetica, Sans-Serif;
+	margin: 0;
+	padding: 0;
+}
+
+.yui-skin-sam .yui-dt td {
+	border-color: -moz-use-text-color #CBCBCB -moz-use-text-color
+		-moz-use-text-color;
+	border-style: none solid none none;
+	border-width: medium 1px medium medium;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+
+.yui-skin-sam .yui-dt td:FIRST-CHILD {
+	/*width: auto; */
+}
+
+.yui-skin-sam tr.yui-dt-even {
+	background-color: #FFFFFF;
+}
+
+.yui-skin-sam tr.yui-dt-odd {
+	background-color: #eeeeee;
+}
+
+.yui-skin-sam .yui-dt-selected {
+	background-color: #FFFFFF;
+	border: 1px solid #FFFFFF;
+}
+
+.yui-skin-sam tr.yui-dt-selected td,.yui-skin-sam tr.yui-dt-selected td.yui-dt-asc,.yui-skin-sam tr.yui-dt-selected td.yui-dt-desc
+	{
+	background-color: #A29061;
+}
+
+.yui-skin-sam tr.yui-dt-highlighted,.yui-skin-sam tr.yui-dt-highlighted td.yui-dt-asc,.yui-skin-sam tr.yui-dt-highlighted td.yui-dt-desc,.yui-skin-sam tr.yui-dt-even td.yui-dt-highlighted,.yui-skin-sam tr.yui-dt-odd td.yui-dt-highlighted
+	{
+	background-color: #F58237;
+	cursor: pointer;
+}
+
+div.yui-dt-liner table, div.yui-dt-liner table td, div.yui-dt-liner table input
+{
+height: auto;
+}
+
+/* ContextPicker table */
+.yui-skin-sam .contextPicker .yui-dt table {
+	border: 0;
+	float: left;
+}
+
+.yui-skin-sam .contextPicker .yui-dt td {
+	border: 1px solid #7F7F7F;
+	border-style: none none solid none;
+	width: 120px;
+}
+
+.yui-skin-sam .contextPicker .yui-dt-selected {
+	border: 0;
+}
+
+div.contextPicker-outer {
+	position: relative;
+	float: left;
+	border: 1px solid #7F7F7F;
+	height: 310px;
+	width: 100%;
+	overflow-y: auto;	
+}
+
+td.contextPicker-outer {
+	width:120px;
+	height: 310px;
+	padding: 0;
+	margin: 0;
+	border-width: 0 1px 0 0;
+	border-style: solid;
+	border-color: #7F7F7F;
+}
+
+/* Dialog */
+.yui-skin-sam .yui-panel .bd {
+	background: #FFFFFF;
+	border-color: #000000;
+	height: 350px;
+	width: 580px
+}
+
+/* Picklist */
+.pf-picklist-source,
+.pf-picklist-target { 
+   width: 150px;
+   height: 180px;
+}
+
+/* tree */
+td.ygtvcell {
+	padding: 0;
+}
+
+.pf-panel-bd table {
+	margin-top: 0;
+}
+
+.pf-panel-bd table td {
+	padding: 5px 0 0;
+}
+
+.ygtv-checkbox .ygtv-highlight0 .ygtvcontent {
+	padding-left: 16px;
+	padding-top: 4px;
+}
+
+.ygtvblankdepthcell {
+	padding: 0;
+}
+
+.ygtvspacer {
+	height: 17px;
+}
+
+
+
+
+

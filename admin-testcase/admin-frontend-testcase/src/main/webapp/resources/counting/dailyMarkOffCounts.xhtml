@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+	<composite:attribute name="model"
+						 type="no.valg.eva.admin.counting.presentation.view.DailyMarkOffCountsModel"
+						 required="true"/>
+	<composite:attribute name="disabled"
+						 type="boolean"
+						 default="false"
+						 required="false"/>
+</composite:interface>
+
+<composite:implementation>
+
+	<ui:fragment rendered="#{cc.attrs.model != null}">
+		<div class="row">
+			<div class="col-md-12">
+				<h4>#{msgs[cc.attrs.model.getPreviousTabTitle()]}</h4>
+				<p:dataTable value="#{cc.attrs.model}" var="row" id="dailyMarkOffCounts"
+							 tableStyleClass="table table-striped" style="width: 50%;">
+					<p:column headerText="#{msgs['@count.markOffs.daily']}">
+						<h:outputText value="#{msgs[row.title]}"/>
+						<f:facet name="footer">
+							<h:outputText
+									styleClass="bold"
+									value="#{msgs['@common.total']}"/>
+						</f:facet>
+					</p:column>
+					<p:column headerText="#{msgs['@common.numberOf']}">
+						<p:inputText
+								id="dailyMarkOffCountsCount"
+								value="#{row.count}"
+								rendered="#{row.countInput}"
+								styleClass="form-control"
+								size="4"
+								disabled="#{cc.attrs.disabled}">
+							<p:ajax event="keyup" delay="500"
+									update="@(.onMarkOffChange)"
+									process="@form"/>
+						</p:inputText>
+						<h:outputText value="#{row.count}"
+									  rendered="#{!row.countInput}"/>
+						<f:facet name="footer">
+							<h:outputText
+									id="dailyMarkOffTotal"
+									styleClass="bold onMarkOffChange"
+									value="#{cc.attrs.model.getSumMarkOffCount()}"/>
+						</f:facet>
+					</p:column>
+				</p:dataTable>
+			</div>
+		</div>
+	</ui:fragment>
+
+</composite:implementation>
+</html>

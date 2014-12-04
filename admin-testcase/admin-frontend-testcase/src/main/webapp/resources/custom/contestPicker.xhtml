@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:h="http://java.sun.com/jsf/html" xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:custom="http://java.sun.com/jsf/composite/custom/">
+
+<composite:interface>
+	<composite:attribute name="topLevelFilter" type="java.lang.Boolean" />
+	<composite:attribute name="afterComplete" type="java.lang.String" />	
+</composite:interface>
+
+<composite:implementation>
+	
+	<ui:fragment rendered="#{contestPickerController.contest == null or contestPickerController.error}">
+		<div class="row indent">
+			<p:messages errorClass="errors" layout="table" showDetail="false" globalOnly="true" id="messages"/>
+		</div>
+	</ui:fragment>
+	<ui:fragment rendered="#{contestPickerController.contest == null and !contestPickerController.error}">
+		<p:panel header="#{msgs['@count.start.choose']} #{msgs['@election_level[3].name']}">
+			<h:panelGrid columns="1" styleClass="formTable" columnClasses="inputs">
+				<h:panelGroup styleClass="text">
+					<h:selectOneMenu id="contests" value="#{contestPickerController.contestRelAreaPk}">
+						<f:selectItems value="#{contestPickerController.contestRelAreas}" var="con" itemLabel="#{con.electionName} #{con.contestName}"
+							itemValue="#{con.id.mvElectionPk}-#{con.id.mvAreaPk}" />
+					</h:selectOneMenu>
+				</h:panelGroup>
+			</h:panelGrid>
+			<div class="bottom-buttons">
+				<ul class="right">
+					<li>
+						<p:commandButton action="#{contestPickerController.contestSelected}" value="#{msgs['@count.start.choose']}" ajax="false" process="@this" styleClass="icon-button icon-next left-align" />
+					</li>
+				</ul>
+			</div>
+		</p:panel>
+	</ui:fragment>
+	
+</composite:implementation>
+
+</html>

@@ -1,0 +1,368 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:custom="http://java.sun.com/jsf/composite/custom/"
+        xmlns:evote="http://evote.no" contentType="text/html">
+
+<ui:composition template="/templates/layoutDeprecated.xhtml">
+	<ui:param name="helpId" value="@help.approveScannedRejectedCount" />
+		<ui:define name="topinfoheader">
+			<h:outputText value="#{msgs['@menu.counting.heading']}" />
+		</ui:define>
+
+		<ui:param name="menuType" value="normal" />
+		<ui:define name="pagemenu">
+			<evote:menu id="pagemenu">
+				<evote:menuitem>
+					<span><a href="approveScannedRejectedCount.xhtml"><h:outputText
+								value="#{msgs['@menu.counting.approve_rejected.scan']}" /> </a> </span>
+				</evote:menuitem>
+			</evote:menu>
+		</ui:define>
+
+		<ui:define name="content">
+
+			<h:form id="ballotApproveRejectedForm">
+				<div class="row indent">
+					<p:messages id="msg" />
+				</div>
+
+				<ui:fragment rendered="#{contestPickerController.contest == null and !contestPickerController.error and !approveRejectedCountController.fromOverview}">
+					<h:outputText value="#{contestPickerController.initContest()}" />
+					<custom:contestPicker topLevelFilter="true" />
+				</ui:fragment>
+
+				<p:panel rendered="#{contestPickerController.contest == null and contestPickerController.error and !approveRejectedCountController.fromOverview}">
+					<p:messages id="noContestRelAreasMsgs"	rendered="#{contestPickerController.contest == null}" />
+				</p:panel>
+
+				<p:panel
+					header="#{msgs['@common.choose']} #{msgs['@count.ballot.approve.rejected.category']}"
+					rendered="#{approveRejectedCountController.voteCountCategory == null and contestPickerController.contest != null and !approveRejectedCountController.fromOverview}">
+					<p:dataTable id="voteCountCatTable"
+						value="#{approveRejectedCountController.voteCountCategories}"
+						emptyMessage="" var="countCat" selectionMode="single"
+						selection="#{approveRejectedCountController.voteCountCategory}" rowKey="#{countCat.pk}">
+						<p:column>
+							<f:facet name="header">
+								<h:outputText
+									value="#{msgs['@count.ballot.approve.rejected.category']}" />
+							</f:facet>
+							<h:outputText value="#{msgs[countCat.name]}" />
+						</p:column>
+					</p:dataTable>
+					<div class="bottom-buttons">
+						<ul class="right">
+							<li><p:commandButton value="#{msgs['@common.choose']}"
+									id="chooseCatButton"
+									styleClass="icon-button icon-next left-align"
+									update="ballotApproveRejectedForm" /></li>
+						</ul>
+					</div>
+				</p:panel>
+
+				<ui:fragment
+					rendered="#{approveRejectedCountController.voteCountCategory != null and mvAreaPickerController.selectedMvArea == null and contestPickerController.contest != null and !contestPickerController.error and !approveRejectedCountController.fromOverview}">
+					<custom:contextPicker mvAreaSelectionLevel="3"
+						mvAreaFilters="#{[countingMvAreaFilter]}" />
+				</ui:fragment>
+
+				<ui:fragment
+					rendered="#{!approveRejectedCountController.error and (approveRejectedCountController.voteCountCategory != null and mvAreaPickerController.selectedMvArea != null and contestPickerController.contest != null) or approveRejectedCountController.fromOverview}">
+					<h:outputText
+						value="#{approveRejectedCountController.initRejectedCountScanned()}" />
+					<p:panel header="#{msgs['@menu.counting.approve_rejected.scan']}"
+						styleClass="table-merge-container" id="ballotApproveRejectedPanel">
+						<div class="row padded">
+							<ul class="tools">
+								<li><strong><h:outputText
+											value="#{msgs['@common.election']}: " /> </strong> <h:outputText
+										value="#{contestPickerController.contest.election.name}" /></li>
+								<li><strong><h:outputText
+											value="#{msgs['@election_level[3].name']}: " /> </strong> <h:outputText
+										value="#{contestPickerController.contest.name}" /></li>
+								<li><strong><h:outputText
+											value="#{msgs['@area_level[3].name']}: " /> </strong> <h:outputText
+										value="#{mvAreaPickerController.selectedMvArea.municipalityName}" />
+								</li>
+							</ul>
+						</div>
+						<div class="row padded">
+							<ul class="tools">
+								<li><strong><h:outputText
+											value="#{msgs['@report_count_category.voting_count_category.name']}: " />
+								</strong> <h:outputText
+										value="#{msgs[approveRejectedCountController.voteCountCategory.name]}" />
+								</li>
+								<li><strong><h:outputText
+											value="#{msgs['@statistic.column.countStatus']}: " /> </strong> <h:outputText
+										value="#{msgs[approveRejectedCountController.status]}" /></li>
+								<li><strong><h:outputText
+											value="#{msgs['@count.ballot.approve.rejected.total.proposed']}: " />
+								</strong> <h:outputText
+										value="#{approveRejectedCountController.rejecedCount}" /></li>
+							</ul>
+						</div>
+
+						<p:dialog
+							header="#{msgs['@count.ballot.approve.rejected.dialog.header']}"
+							widgetVar="rejectedWidget" fixedCenter="true" modal="true"
+							visible="false" resizable="false" width="600"
+							styleClass="compareCountTable">
+							<div id="dialog">
+								<h:panelGrid>
+									<h:commandButton
+										value="#{msgs['@count.ballot.approve.seeBallot']}"
+										action="#{approveRejectedCountController.downloadCastVoteBinaryData}" />
+									<p />
+								</h:panelGrid>
+								<strong>#{msgs['@count.ballot.approve.rejected.ballotShould']}:</strong>
+
+								<h:panelGrid columns="2" id="rejectedDialog">
+									<h:panelGrid columns="1">
+										<h:selectOneRadio layout="pageDirection"
+											value="#{approveRejectedCountController.rejected}"
+											valueChangeListener="#{approveRejectedCountController.rejectedStatusListener}">
+											<p:ajax event="click"
+                                                    update=":ballotApproveRejectedForm:rejectedDialog :ballotApproveRejectedForm:manualCastVote"/>
+                                            <f:selectItem id="rejected"
+												itemLabel="#{msgs['@count.ballot.approve.rejected']}: "
+												itemValue="true" />
+											<f:selectItem id="notRejected"
+												itemLabel="#{msgs['@count.ballot.approve.notRejected']}: "
+												itemValue="false" />
+										</h:selectOneRadio>
+									</h:panelGrid>
+
+									<h:panelGrid columns="1">
+										<h:panelGrid>
+											<h:selectOneMenu id="selectBallotRejection"
+												value="#{approveRejectedCountController.selectedBallotRejection}"
+												disabled="#{!approveRejectedCountController.rejected}">
+												<f:selectItems
+													value="#{approveRejectedCountController.ballotRejections}"
+													var="br" itemLabel="#{msgs[br.name]}" />
+												<f:converter converterId="entityConverter" />
+											</h:selectOneMenu>
+										</h:panelGrid>
+
+										<h:panelGrid>
+											<h:selectOneMenu
+												value="#{approveRejectedCountController.selectedBallot}"
+												disabled="#{approveRejectedCountController.rejected}">
+												<p:ajax event="change"
+													update="ballotApproveRejectedForm:manualCastVote"
+													actionListener="#{approveRejectedCountController.affiliationSelectChange}" />
+												<f:selectItems
+													value="#{approveRejectedCountController.ballots}"
+													var="ballot"
+													itemLabel="#{approveRejectedCountController.referendum ? msgs[approveRejectedCountController.referendumOptions[ballot.displayOrder - 1].name] : msgs[approveRejectedCountController.affiliations[ballot.displayOrder - 1].party.name]}" />
+												<f:converter converterId="entityConverter" />
+											</h:selectOneMenu>
+										</h:panelGrid>
+									</h:panelGrid>
+
+									<h:panelGrid columns="2">
+										<h:panelGrid width="10" />
+										<h:selectOneRadio id="correctedSelectOneRadio"
+											layout="lineDirection"
+											value="#{approveRejectedCountController.modifiedBallotForEdit.corrected}"
+											valueChangeListener="#{approveRejectedCountController.correctedStatusListener}"
+											disabled="#{approveRejectedCountController.rejected}">
+											<p:ajax event="click" update="ballotApproveRejectedForm:manualCastVote ballotApproveRejectedForm:correctedSelectOneRadio" />
+											<f:selectItem id="corrected" itemLabel="#{msgs['@count.modified']}" itemValue="true" />
+											<f:selectItem id="notCorrected"	itemLabel="#{msgs['@count.unmodified']}" itemValue="false" />
+										</h:selectOneRadio>
+									</h:panelGrid>
+									<h:panelGrid />
+								</h:panelGrid>
+								<h:panelGrid id="manualCastVote">
+									<ui:fragment rendered="#{!approveRejectedCountController.referendum and approveRejectedCountController.onContestLevel()}">
+										<custom:createManualCastVote id="createManualCastVote" formId="ballotApproveRejectedForm" />
+									</ui:fragment>
+								</h:panelGrid>
+								<p:commandButton value="#{msgs['@common.save']}"
+									action="#{approveRejectedCountController.addBallotCountStatus}"
+									update="ballotApproveRejectedForm:mainPage ballotApproveRejectedForm:msg"
+									oncomplete="PF('rejectedWidget').hide();" />
+							</div>
+						</p:dialog>
+						<p:messages />
+						<ui:fragment rendered="#{!approveRejectedCountController.error}">
+
+							<h:panelGroup id="mainPage">
+								<div class="ui-datatable">
+									<table>
+										<thead>
+											<ui:fragment
+												rendered="#{approveRejectedCountController.comparingCountyAndMunicipality()}">
+												<tr>
+													<th class="white next-other"><h:outputText
+															value="#{msgs['@count.ballot.approve.RejectionReason']} dfg" />
+													</th>
+													<th colspan="2"><h:outputText
+															value="#{msgs['@count.ballot.approve.municipalCountingFound']}" />
+													</th>
+													<th colspan="2"><h:outputText
+															value="#{msgs['@count.ballot.approve.municipalCountingNotFound']}" />
+													</th>
+													<th colspan="2"><h:outputText
+															value="#{msgs['@count.ballot.approve.fromCountyCounting']}" />
+													</th>
+												</tr>
+											</ui:fragment>
+											<ui:fragment
+												rendered="#{!approveRejectedCountController.comparingCountyAndMunicipality()}">
+												<tr>
+													<th class="next-other"><h:outputText
+															value="#{msgs['@count.ballot.approve.RejectionReason']}" />
+													</th>
+													<th colspan="2"><h:outputText
+															value="#{msgs['@count.ballot.approve.fromMunicipalCounting']}" />
+													</th>
+												</tr>
+											</ui:fragment>
+										</thead>
+
+										<tbody>
+											<ui:repeat var="ballotRejection" value="#{approveRejectedCountController.ballotRejections}">
+												<custom:rejectedButtons controller="#{approveRejectedCountController}" rejectionId="#{ballotRejection.id}" />
+											</ui:repeat>
+											<ui:fragment
+												rendered="#{approveRejectedCountController.comparingCountyAndMunicipality()}">
+												<tr class="has-divider bold grand-total">
+													<td class="next-other bold white"><h:outputText
+															value="#{msgs['@common.total']}" /></td>
+													<td class="align-right" colspan="2"><h:outputText
+															value="#{approveRejectedCountController.rejecedCountMunicipality} #{msgs['@common.entity.short']}"
+															styleClass="size" /></td>
+													<td class="align-right" colspan="2"><h:outputText
+															value="#{approveRejectedCountController.rejecedCountDiff} #{msgs['@common.entity.short']}"
+															styleClass="size" /></td>
+													<td class="align-right" colspan="2"><h:outputText
+															value="#{approveRejectedCountController.rejecedCount} #{msgs['@common.entity.short']}"
+															styleClass="size" /></td>
+												</tr>
+											</ui:fragment>
+											<ui:fragment
+												rendered="#{!approveRejectedCountController.comparingCountyAndMunicipality()}">
+												<tr class="has-divider bold grand-total">
+													<td class="white bold"><h:outputText
+															value="#{msgs['@common.total']}" /></td>
+													<td class="align-right"><h:outputText
+															value="#{approveRejectedCountController.rejecedCount} #{msgs['@common.entity.short']}"
+															styleClass="size" /></td>
+												</tr>
+											</ui:fragment>
+										</tbody>
+									</table>
+								</div>
+
+
+								<p:dataTable id="countTable" var="ballot"
+									value="#{approveRejectedCountController.ballots}"
+									rowIndexVar="i" styleClass="formTable rollover"
+									emptyMessage="No records found">
+									<p:column
+										rendered="#{!approveRejectedCountController.referendum}"
+										styleClass="white next-other">
+										<h:outputText
+											value="#{msgs[approveRejectedCountController.affiliations[i].party.name]}" />
+									</p:column>
+									<p:column
+										rendered="#{approveRejectedCountController.referendum}"
+										styleClass="">
+										<h:outputText
+											value="#{msgs[approveRejectedCountController.referendumOptions[i].name]}" />
+									</p:column>
+
+									<p:column
+										rendered="#{!approveRejectedCountController.referendum}"
+										styleClass="align-right">
+										<f:facet name="header">
+											<h:outputText value="#{msgs['@count.modified']}"
+												styleClass="boldTh" />
+										</f:facet>
+										<h:outputText
+											value="#{approveRejectedCountController.totalModifiedBallots[i]}"
+											rendered="#{approveRejectedCountController.ballots[i].id != 'BLANK'}"
+											styleClass="modified" />
+									</p:column>
+
+									<p:column styleClass="align-right">
+										<f:facet name="header">
+											<h:outputText value="#{msgs['@count.unmodified']}"
+												rendered="#{!approveRejectedCountController.referendum}"
+												styleClass="boldTh" />
+										</f:facet>
+										<h:outputText
+											value="#{approveRejectedCountController.totalBallots[i] - approveRejectedCountController.totalModifiedBallots[i]}"
+											styleClass="unmodified" />
+									</p:column>
+
+									<p:column styleClass="align-right">
+										<f:facet name="header">
+											<h:outputText value="#{msgs['@common.total']}"
+												styleClass="boldTh" />
+										</f:facet>
+										<h:outputText
+											value="#{approveRejectedCountController.totalBallots[i]}"
+											styleClass="sum" />
+									</p:column>
+								</p:dataTable>
+
+								<div class="bottom-buttons">
+									<ul class="right">
+										<ui:fragment rendered="#{!approveRejectedCountController.onContestLevel()}">
+											<li class="call-to-action">
+												<p:commandButton
+													value="#{msgs['@count.ballot.approve.rejected.finish_processing']}"
+													action="#{approveRejectedCountController.finishedProcessingScannedRejections()}"
+													update="ballotApproveRejectedPanel"
+													disabled="#{approveRejectedCountController.rejectedBallotsHaveBeenProcessed()}"
+													styleClass="icon-button icon-ok" /></li>
+										</ui:fragment>
+
+										<ui:fragment rendered="#{approveRejectedCountController.onContestLevel()}">
+											<li class="call-to-action">
+												<p:commandButton
+													value="#{msgs['@count.ballot.approve.rejected.toSettlement']}"
+													action="#{approveRejectedCountController.approveToSettlementScanned()}"
+													update="ballotApproveRejectedPanel"
+													disabled="#{approveRejectedCountController.rejectedBallotsHaveBeenProcessed()}"
+													styleClass="icon-button icon-ok" />
+											</li>
+										</ui:fragment>
+									</ul>
+								</div>
+							</h:panelGroup>
+						</ui:fragment>
+					</p:panel>
+				</ui:fragment>
+				<div class="bottom-buttons">
+					<ul>
+						<ui:fragment rendered="#{!approveRejectedCountController.fromOverview and mvAreaPickerController.selectedMvArea != null and UserDataController.hasMinAreaLevel(2)}">
+							<li><h:inputHidden value="#{mvAreaPickerController.backPage}" />
+								<p:commandLink
+									value="#{msgs['@count.back_to_areapicker']}"
+									styleClass="icon-link icon-back"
+									update="ballotApproveRejectedForm" process="@this" ajax="true">
+									<f:setPropertyActionListener target="#{mvAreaPickerController.selectedMvArea}" value="#{null}" />
+									<f:setPropertyActionListener target="#{approveRejectedCountController.error}" value="false" />
+								</p:commandLink>
+							</li>
+						</ui:fragment>
+						<ui:fragment rendered="#{approveRejectedCountController.fromOverview}">
+							<li>
+								<h:commandLink value="#{msgs['@count.overview.back_to_overview']}" action="#{approveRejectedCountController.backToOverview}" styleClass="icon-link icon-back" process="@this" />
+							</li>
+						</ui:fragment>
+					</ul>
+				</div>
+			</h:form>
+			<h:outputScript name="javascript/deprecated/counting/approveRejectedCount.js" />
+		</ui:define>
+	</ui:composition>
+</f:view>

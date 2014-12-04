@@ -1,0 +1,30 @@
+
+table.radioList {
+	margin-bottom: 5px !important;
+	width: 300px !important;
+}
+table.radioList td {
+	border: 0 none !important;
+	line-height: 20px;
+	padding: 3px !important;
+}
+table.radioList td.selected {
+	background-color: #eee;
+	border: 1px solid #ddd !important;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-khtml-border-radius: 3px;
+	padding: 2px !important;
+}
+
+table.radioList td div.confirmCategorySelection {
+	display: block;
+	border-top: 1px dotted #ccc;
+	padding-top: 2px;
+	margin-top: 2px;
+	line-heigh: 20px;
+}
+table.radioList td div.confirmCategorySelection input {
+	float: left;
+}

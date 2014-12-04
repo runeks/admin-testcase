@@ -1,0 +1,150 @@
+#page-my-page {
+
+  ul {
+    padding: 0;
+    margin: 0;
+    float: left;
+  }
+
+  .ui-accordion {
+
+    margin-bottom: 30px;
+
+    .ui-accordion-header {
+      background-color: @blue;
+      padding: 15px;
+      color: @white;
+      font-size: 1.2rem;
+      border: none;
+      &:hover {
+        background-color: darken(@blue, 15%);
+      }
+
+      @caretSize: 7px;
+      .ui-icon-triangle-1-s,
+      .ui-icon-triangle-1-e {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        margin-left: 2px;
+        vertical-align: middle;
+        border-top: @caretSize solid;
+        border-right: @caretSize solid transparent;
+        border-left: @caretSize solid transparent;
+        margin-right: 10px;
+        position: relative;
+        top: auto;
+        left: auto;
+      }
+
+      .ui-icon-triangle-1-s {
+        margin-top: -8px;
+        color: @white;
+      }
+      .ui-icon-triangle-1-e {
+        margin-top: -3px;
+        border-top: @caretSize solid transparent;
+        border-bottom: @caretSize solid transparent;
+        border-left: @caretSize solid @white;
+      }
+    }
+
+    .ui-accordion-content {
+      background-color: @blue;
+      padding: 15px;
+
+      .menu {
+        .sub-menu {
+          float: left;
+          width: 100%;
+          padding-top: 14px;
+          li {
+            &.ui-datalist-item {
+              padding: 5px 0;
+              a {
+                color: #fff;
+              }
+            }
+          }
+        }
+      }
+
+      .ui-datalist-header.ui-widget-header {
+        border: none;
+        color: @white;
+        padding: 0 0 5px 0;
+      }
+    }
+
+    ul {
+      color: @white;
+    }
+
+    .menu {
+      width: 200px;
+      float: left;
+      padding-right: 15px;
+
+      &:last-child {
+        padding-right: 0;
+      }
+
+      a {
+        font-weight: normal;
+        font-size: 1rem;
+      }
+    }
+
+    .ui-widget-header {
+      text-align: left;
+      font-weight: bold;
+    }
+  }
+
+  .main-menu {
+    .menu {
+      width: 300px;
+      text-align: left;
+      padding-right: 20px;
+
+      li {
+
+        &.header {
+          background-color: @theadBackgroundColor;
+          color: #fff;
+          text-align: left;
+          padding: 15px;
+          font-size: 1.2rem;
+
+          &[class*='eva-icon-']:before {
+            padding-right: 5px;
+          }
+        }
+
+        &.sub-menu {
+          padding: 20px 0 0 10px;
+          float: left;
+          width: 100%;
+
+          .ui-datalist {
+            .ui-datalist-header {
+              text-align: left;
+              padding: 10px 0px 5px 4px;
+              width: 100%;
+              float: left;
+              font-weight: bold;
+            }
+          }
+        }
+
+        &.ui-datalist-item {
+          padding: 5px;
+        }
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		contentType="text/html">
+	<ui:composition template="/templates/dialogLayout.xhtml">
+		<ui:define name="dialogTitle">
+			#{msgs['@help.operator.edit.own.contact.info.header']}
+		</ui:define>
+		<ui:define name="content">
+			<div class="row">
+				<p class="col-md-12">
+					#{msgs['@help.operator.edit.own.contact.info.text']}
+				</p>
+			</div>
+			<div class="row">
+				<div class="col-md-4 form-group required">
+					<h:outputLabel for="phone" value="#{msgs['@person.tlf.mobile']}"/>
+					<p:inputText
+							requiredMessage="#{msgs['@common.phone.mobile.required']}"
+							id="phone"
+							value="#{UserDataController.contactInfo.phone}"
+							styleClass="form-control"
+							required="true">
+						<f:validator validatorId="no.evote.presentation.validation.PhoneNumberValidator"/>
+					</p:inputText>
+				</div>
+
+				<div class="col-md-6 form-group">
+					<h:outputLabel for="email" value="#{msgs['@common.address.email']}"/>
+					<p:inputText
+							id="email"
+							value="#{UserDataController.contactInfo.email}"
+							styleClass="form-control"
+							size="52"
+							type="email">
+						<f:validator validatorId="no.evote.presentation.validation.BlankOrValidEmailValidator"/>
+					</p:inputText>
+
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<p:commandButton
+							action="#{UserDataController.saveOperator}"
+							update="msgDialog @this"
+							value="#{msgs['@common.button.saveChanges']}"
+							styleClass="btn btn-primary"
+							icon="eva-icon-checkmark"/>
+					
+					<p:commandLink
+							actionListener="#{UserDataController.closeEditContactInfoDialog}"
+							immediate="true"
+							value="#{msgs['@common.cancel']}"
+							icon="eva-icon-cancel"
+							styleClass="btn btn-link"/>					
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>        

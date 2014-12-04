@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:custom="http://java.sun.com/jsf/composite/custom/">
+
+	<composite:interface>
+		<composite:attribute name="rejectionId" required="true" />
+		<composite:attribute name="controller" required="true" />
+	</composite:interface>
+	
+	<composite:implementation>
+		<c:set var="list" value="#{cc.attrs.controller.getCastVotes(cc.attrs.rejectionId)}" />
+		<c:set var="rejectionName" value="@ballot_rejection[#{cc.attrs.rejectionId}].name" />
+		
+		<ui:fragment rendered="#{(list.size() gt 0)}">
+			<tr>
+				<ui:fragment
+					rendered="#{!cc.attrs.rejectionId.equals(approveRejectedCountController.approvedId)}">
+					<td id="rejectHeader" class="white w20 next-other">#{msgs[rejectionName]}</td>
+				</ui:fragment>
+	
+				<td class="name-column rejected-buttons"><ui:repeat
+						value="#{list}" var="modifiedBallot">
+						<h:commandLink value="#{modifiedBallot.index}"
+							action="#{approveRejectedCountController.downloadCastVote(modifiedBallot)}"
+							styleClass="statusNotChanged green" ajax="false" />
+						<h:outputText value=" " />
+					</ui:repeat></td>
+			</tr>
+		</ui:fragment>
+	</composite:implementation>
+</html>

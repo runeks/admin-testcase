@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title></title>
+</h:head>
+<h:body>
+	<composite:interface>
+		<composite:attribute name="showInputFile" required="false" />
+	</composite:interface>
+
+	<composite:implementation>
+		<p:panel header="#{msgs['@reporting.template.properties']}">
+			<h:panelGrid columns="3" columnClasses="colTitle" styleClass="formTable">
+				<h:outputText value="#{msgs['@reporting.template.name']}:" />
+				<div class="pgReqGreen">&#160;</div>
+				<h:panelGroup styleClass="required select">
+					<h:inputText id="Name" style="width:400px" maxlength="50"
+						value="#{controller.templateName}" required="false" />
+				</h:panelGroup>
+				
+				<h:outputText value="#{msgs['@reporting.template.description']}:" />
+				<div class="pgReqGreen">&#160;</div>
+				<h:panelGroup styleClass="required select">
+					<h:inputText id="Description" style="width:400px" maxlength="255"
+						value="#{controller.templateDescription}" required="false" />
+				</h:panelGroup>
+				
+				<c:if test="#{cc.attrs.showInputFile}">
+					<h:outputText value="#{msgs['@reporting.template.file']}:" />
+					<div class="pgReqGreen">&#160;</div>
+					<h:panelGroup styleClass="required file">
+						<p:fileUpload value="#{controller.file}" mode="simple" id="file" required="false" />
+					</h:panelGroup>
+				</c:if>
+			</h:panelGrid>
+		</p:panel>
+
+		<style type="text/css">
+.colTitle {
+	width: 135px;
+}
+</style>
+	</composite:implementation>
+</h:body>
+</html>

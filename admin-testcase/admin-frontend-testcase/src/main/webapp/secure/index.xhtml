@@ -1,0 +1,70 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html">
+
+	<ui:composition template="/templates/layout.xhtml">
+		<ui:param name="hideMainPageLink" value="yes"/>
+		<ui:param name="helpId" value="@help.index"/>
+		
+		<ui:define name="content">
+		
+			<div id="page-my-page" class="page">
+				<!-- to be removed before going to production -->
+				<div class="btn-group col-md-12 to-old-my-page">
+					<a class="btn btn-link col-md-12" href="/secure/indexOld.xhtml">
+						<kbd>Gammel versjon av Min side</kbd>
+					</a>
+				</div>
+				<!-- to be removed before going to production -->
+				<!-- todo add to translation -->
+				<h1 class="page-title">Min side</h1>
+				<h:form id="fwMainContentForm" action="">
+
+                    <p:accordionPanel rendered="#{UserDataController.renderAccordion}">
+						<p:tab title="#{msgs.getByElectionEvent(UserDataController.userData.operatorRole.role.name,
+							UserDataController.userData.operatorRole.role.electionEvent.pk)}">
+                            <ui:repeat var="menu" value="#{UserDataController.accordionMenus}">
+                                <ui:include src="/secure/includes/menu.xhtml">
+                                    <ui:param name="renderRootHeader" value="#{false}"/>
+                                    <ui:param name="menu" value="#{menu}"/>
+                                </ui:include>
+                            </ui:repeat>
+						</p:tab>
+                    </p:accordionPanel>
+
+                    <h:panelGroup styleClass="main-menu" layout="block">
+                    <ui:repeat var="menu" value="#{UserDataController.menus}">
+                        <ui:include src="/secure/includes/menu.xhtml">
+                            <ui:param name="renderRootHeader" value="#{true}"/>
+                            <ui:param name="menu" value="#{menu}"/>
+                        </ui:include>
+					</ui:repeat>
+                    </h:panelGroup>
+					
+					<p:confirmDialog
+							message="#{msgs['@menu.config.central_overview.show_msg']}"
+							severity="info" widgetVar="centralConfirmDialog">
+						<p:commandButton value="Ja"
+										 onclick="PF('centralConfirmDialog').hide(); window.location = 'central_configuration_overview.xhtml';"/>
+						<p:commandButton value="Avbryt"
+										 onclick="PF('centralConfirmDialog').hide();" type="button"/>
+					</p:confirmDialog>
+					
+					<p:confirmDialog
+							message="#{msgs['@listProposal.noPartyAffiliation']}"
+							modal="true" header="#{msgs['@menu.listProposal']}"
+							severity="alert" widgetVar="noOperatorPartyWidget">
+						<p:commandButton value="#{msgs['@common.ok']}"
+										 oncomplete="PF('noOperatorPartyWidget').hide()"/>
+					</p:confirmDialog>
+				
+				</h:form>
+			</div>
+		</ui:define>
+	
+	</ui:composition>
+
+</f:view>

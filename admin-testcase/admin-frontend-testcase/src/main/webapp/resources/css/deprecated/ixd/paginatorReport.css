@@ -1,0 +1,5 @@
+/* DATATABLE PAGINATOR */
+
+.ui-paginator.ui-paginator-bottom {
+  display: block !important;
+}

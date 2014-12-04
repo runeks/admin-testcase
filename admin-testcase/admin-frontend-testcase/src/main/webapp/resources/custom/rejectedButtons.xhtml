@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui" xmlns:ui="http://java.sun.com/jsf/facelets"
+        >
+
+<composite:interface>
+	<composite:attribute name="rejectionId" required="true" />
+</composite:interface>
+
+<composite:implementation>
+	<c:set var="list" value="#{approveRejectedCountController.getCastVotes(cc.attrs.rejectionId)}" />
+	<c:set var="listMunicipality" value="#{approveRejectedCountController.getCastVotesMunicipality(cc.attrs.rejectionId)}" />
+	<c:set var="listDiff" value="#{approveRejectedCountController.getCastVotesDiff(cc.attrs.rejectionId)}" />
+	<c:set var="rejectionName" value="@ballot_rejection[#{cc.attrs.rejectionId}].name" />
+	<ui:fragment rendered="#{(list.size() gt 0) or (listMunicipality.size() gt 0)}">
+
+		<tr>
+			<ui:fragment rendered="#{!cc.attrs.rejectionId.equals(approveRejectedCountController.approvedId)}">
+				<td id="rejectHeader" class="white w20 next-other">#{msgs[rejectionName]}</td>
+			</ui:fragment>
+
+			<ui:fragment rendered="#{approveRejectedCountController.comparingCountyAndMunicipality()}">
+				<td class="name-column rejected-buttons">
+					<ui:repeat value="#{listMunicipality}" var="modifiedBallot">
+						<p:commandButton value="#{modifiedBallot.index}" styleClass="blue" action="#{approveRejectedCountController.downloadCastVote(modifiedBallot)}" ajax="false" />
+					</ui:repeat>
+					
+				</td>
+				<td class="align-right">
+					<h:outputText value="#{listMunicipality.size()} #{msgs['@common.entity.short']}" styleClass="size" />
+				</td>
+				
+				<td class="name-column rejected-buttons">
+					<ui:repeat value="#{listDiff}" var="castVote">
+						<p:commandButton value="#{modifiedBallot.index}" styleClass="blue" action="#{approveRejectedCountController.downloadCastVote(modifiedBallot)}" ajax="false" />
+					</ui:repeat>
+				</td>
+				<td class="align-right">
+					<h:outputText value="#{listDiff.size()} #{msgs['@common.entity.short']}" styleClass="size" />
+				</td>
+			</ui:fragment>
+
+			<td class="name-column rejected-buttons">
+				<ui:repeat value="#{list}" var="castVote">
+					<ui:fragment rendered="#{!cc.attrs.rejectionId.equals(approveRejectedCountController.approvedId)}">
+						<p:commandButton value="#{modifiedBallot.index}" action="#{approveRejectedCountController.modifiedBallotForEdit(modifiedBallot)}"
+							disabled="#{modifiedBallot.ballotCount.voteCount.rejectedBallotsProcessed}" oncomplete="rejectedWidget.show()"
+                            update=":ballotApproveRejectedForm:rejectedDialog :ballotApproveRejectedForm:manualCastVote" styleClass="statusNotChanged green"/>
+                    </ui:fragment>
+					<ui:fragment rendered="#{cc.attrs.rejectionId.equals(approveRejectedCountController.approvedId)}">
+						<p:commandButton value="#{modifiedBallot.index}" disabled="true" styleClass="statusChanged green" />
+					</ui:fragment>
+				</ui:repeat>
+			</td>
+			<td class="align-right">
+				<h:outputText value="#{list.size()} #{msgs['@common.entity.short']}" styleClass="size" />
+			</td>
+		</tr>
+	</ui:fragment>
+
+</composite:implementation>
+
+</html>

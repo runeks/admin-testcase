@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<composite:interface>
+	<composite:attribute name="compareCount" type="no.valg.eva.admin.counting.presentation.view.CompareCountsSelect" required="true"/>
+	<composite:attribute name="ctrl" type="no.valg.eva.admin.counting.presentation.CompareCountsController" required="true"/>
+</composite:interface>
+
+<composite:implementation>
+
+	<div class="table-header compare#{cc.attrs.compareCount.finalCountApproved ? ' approved' : ''}">
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<ui:fragment rendered="#{cc.attrs.compareCount.hasFinalCount()}">
+						<div class="row">
+							<div class="col-md-6 left">
+								<span class="ballot-count-label">
+									<h:outputText value="#{msgs.get('@count.label.final_count_nr', cc.attrs.compareCount.finalCount.index)}"
+												  rendered="#{!cc.attrs.compareCount.finalCountApproved}"/>
+									<h:outputText value="#{msgs.get('@count.label.final_count_nr_approved', cc.attrs.compareCount.finalCount.index)}"
+												  rendered="#{cc.attrs.compareCount.finalCountApproved}"/>
+								</span>
+							</div>
+							<div class="col-md-6 right">
+								<ui:fragment rendered="#{cc.attrs.compareCount.approveButton.rendered}">
+									<p:commandButton id="approve"
+													 actionListener="#{cc.attrs.compareCount.openConfirmApproveCountDialog}"
+													 value="#{msgs['@common.approve']}"
+													 styleClass="btn btn-success"
+													 icon="eva-icon-checkmark"
+													 disabled="#{cc.attrs.compareCount.approveButton.disabled}"
+													 update="@form">
+										<p:ajax event="dialogReturn" listener="#{cc.attrs.compareCount.onConfirmApproveCountDialogReturn}" update="@form"/>
+									</p:commandButton>
+								</ui:fragment>
+
+								<ui:fragment rendered="#{cc.attrs.compareCount.rejectButton.rendered}">
+									<p:commandButton id="reject"
+													 actionListener="#{cc.attrs.compareCount.reject}"
+													 value="#{msgs['@common.decline']} #{msgs['@count.count']}"
+													 disabled="#{cc.attrs.compareCount.rejectButton.disabled}"
+													 styleClass="btn btn-danger"
+													 icon="eva-icon-notification"
+													 update="@form"/>
+								</ui:fragment>
+							</div>
+						</div>
+					</ui:fragment>
+				</div>
+			</div>
+
+		</div>
+
+
+		<div class="row">
+			<div class="col-md-12">
+
+				<h:selectOneMenu value="#{cc.attrs.compareCount.id}">
+					<f:selectItem itemLabel="#{msgs['@count.label.select_a_final_count']}" itemValue=""/>
+					<f:selectItems var="count" value="#{cc.attrs.ctrl.processedFinalCounts}" itemLabel="#{msgs.get('@count.label.final_count_nr', count.index)}"
+								   itemValue="#{count.id}"/>
+					<p:ajax event="change" process="@form" update="@form"/>
+				</h:selectOneMenu>
+
+			</div>
+		</div>
+	</div>
+</composite:implementation>
+</html>

@@ -1,0 +1,66 @@
+<f:view xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:p="http://primefaces.org/ui"
+        contentType="text/html"
+        xmlns="http://www.w3.org/1999/xhtml"
+        >
+    <ui:composition>
+
+        <div class="row">
+            
+            <div class="col-lg-6 pull-left">
+                <a class="col-md-1  eva-icon-logo" id="logo" href="#{request.contextPath}/secure/index.xhtml"/>
+            </div>
+
+            <div class="col-md-6 pull-right dashed-border-left user-badge">
+                <h:form>
+                    <div class="user-meta">
+                        <p:commandLink
+                                styleClass="user-name eva-icon-user"
+                                title="#{userContext.nameLine}"
+                                value="#{userContext.nameLine}"
+								disabled="#{empty UserDataController.userData.operatorRole}"
+								ajax="true"
+								action="#{UserDataController.showContactInfoDialog}" />
+                            <h:outputText
+                                    styleClass="user-role"
+                                    title="#{msgs[UserDataController.userData.operatorRole.role.name]}, #{UserDataController.userData.operatorRole.mvArea} #{msgs[UserDataController.userData.operatorRole.mvArea.areaLevelString]}"
+                                    value=" | #{UserDataController.userData.uid}"/>
+                            <h:outputText
+                                    styleClass="election-event-name bold"
+                                    title="#{msgs[UserDataController.userData.operatorRole.mvElection.electionEventName]}"
+                                    value="#{msgs[UserDataController.userData.operatorRole.mvElection.electionEventName]}"/>
+
+                        <div class="user-menu">
+
+                            <c:if test="${not empty helpId}">
+                                <p:commandLink onclick="PF('helpModal').show();" id="helpLink" styleClass="icon-link icon-help main-help-link">
+                                    #{msgs['@help']}
+                                </p:commandLink>
+
+                                <c:set var="helpHeader" value="#{helpId}.header"/>
+                                <c:set var="helpText" value="#{helpId}.text"/>
+                                <p:dialog header="#{msgs['@help']}: #{msgs[helpHeader]}" id="helpText" widgetVar="helpModal" modal="true" width="900"
+                                          resizable="false">
+                                    <h:outputText value="#{htmlMsgs[helpText]}" escape="false"/>
+                                </p:dialog>
+                            </c:if>
+
+                            <c:if test="${UserDataController.userData.operatorRole != null}">
+                                <a href="/secure/changeLocale.xhtml">#{msgs['@common.change_locale']}</a>
+                            </c:if>
+
+                            <c:if test="${UserDataController.userData.operatorRole != null}">
+                                <h:commandLink action="#{userSessionController.changeRole}" value="Change role"/>
+                            </c:if>
+
+                            <a href="/logout">Log out</a>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+        </div>
+    </ui:composition>
+</f:view>

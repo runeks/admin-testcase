@@ -1,0 +1,28 @@
+body {
+  & > .container-fluid {
+
+	padding: 0;
+
+	& > .line {
+	  background-color: @black;
+	  .size(10px, 100%);
+	}
+
+	& > .container {
+	  .size(auto, @minScreenWidth);
+
+	  & + .line {
+		.size(auto, 100%);
+		background-color: transparent;
+		border-bottom-width: 1px;
+		border-bottom-color: @black;
+		border-bottom-style: dotted;
+	  }
+
+	  & > .content {
+		padding-top: 30px;
+	  }
+	}
+  }
+}
+

@@ -1,0 +1,19 @@
+<f:view xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+		contentType="text/html"
+		xmlns="http://www.w3.org/1999/xhtml"
+	>
+	<ui:composition>
+		<div class="container">
+			<div class="page-footer col-md-12">
+				<div class="content">
+					<div class="right">
+						EVA - v#{versionController.version} - #{versionController.hostId}
+					</div>
+					<div class="center">
+						#{pmsgs['@footer.text']}
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:composition>
+</f:view>

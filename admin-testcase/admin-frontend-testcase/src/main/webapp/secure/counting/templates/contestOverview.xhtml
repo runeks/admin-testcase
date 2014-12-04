@@ -1,0 +1,191 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                contentType="text/html">
+
+
+	<div class="col-md-12">
+		<ul class="legend list list-unstyled list-inline">
+			<li class="legend-header col-md-12 bold">Tegnforklaring</li>
+	
+			<li>
+				<h:outputText value="#{msgs['@count.overview.count_approved']}" styleClass="eva-icon-checkmark"/>
+			</li>
+	
+			<li>
+				<h:outputText value="#{msgs['@count.overview.count_registered']}" styleClass="eva-icon-file"/>
+			</li>
+	
+			<li>
+				<h:outputText value="#{msgs['@count.overview.count_rejected_ballots_not_processed']}" styleClass="eva-icon-warning"/>
+			</li>
+	
+			<li>
+				<h:outputText value="#{msgs['@count.overview.count_not_required']}" styleClass="eva-icon-ellipsis"/>
+			</li>
+	
+			<li>
+				<h:outputText value="#{msgs['@count.manual_count']}" styleClass="eva-icon-user"/>
+			</li>
+	
+			<li>
+				<h:outputText value="#{msgs['@count.automatic_count']}" styleClass="eva-icon-print"/>
+			</li>
+		</ul>
+	</div>
+
+	<div class="col-md-12">
+		
+			<ui:repeat
+					varStatus="status"
+					var="countingOverviewMunicipality"
+					value="#{countingOverviewController.countingOverviews}">
+		
+				<p:panel
+						header="#{countingOverviewMunicipality.name}"
+						toggleable="#{countingOverviewController.countingOverviews.size() gt 1}"
+						id="municipalityPanel"
+						collapsed="#{countingOverviewController.countingOverviews.size() gt 1}"
+						styleClass="panel panel-primary"
+						widgetVar="municipalityPanel#{status.index}">
+					
+						<p:treeTable
+								id="treeTable"
+								value="#{countingOverviewMunicipality.root}"
+								var="countingOverview"
+								tableStyleClass="table table-striped"
+								widgetVar="treeTable#{status.index}">
+			
+							<p:column>
+			
+								<f:facet name="header">
+									<h:outputText value="#{msgs['@count.overview.category']}"/>
+								</f:facet>
+			
+								<h:outputText value="#{countingOverview.name}" styleClass="childRow#{!countingOverview.category}"/>
+								
+							</p:column>
+			
+							<p:column rendered="#{countingOverviewController.renderProtocolColumn(countingOverviewMunicipality)}">
+			
+								<f:facet name="header">
+									<h:outputText value="#{msgs['@count.overview.protocol']}"/>
+								</f:facet>
+			
+								<h:outputText styleClass="eva-icon-checkmark" rendered="#{countingOverview.voteCountStatusProtocolApproved}"/>
+			
+								<h:outputText styleClass="eva-icon-file" rendered="#{countingOverview.voteCountStatusProtocolCounting}"/>
+			
+								<h:outputText styleClass="eva-icon-ellipsis" rendered="#{countingOverviewController.renderNoCountNeededProtocol(countingOverview)}"/>
+			
+							</p:column>
+			
+							<p:column>
+			
+								<f:facet name="header">
+									<h:outputText value="#{msgs['@count.overview.final_municipality']}" rendered="#{!countingOverviewController.userAreaLevelAtMunicipality}"/>
+									<h:outputText value="#{msgs['@count.overview.preliminary']}" rendered="#{countingOverviewController.userAreaLevelAtMunicipality}"/>
+								</f:facet>
+			
+								<h:outputText styleClass="eva-icon-checkmark" rendered="#{countingOverviewController.renderCheckedPreliminary(countingOverview)}"/>
+			
+								<h:outputText styleClass="eva-icon-file" rendered="#{countingOverview.voteCountStatusPreliminaryCounting}"/>
+			
+								<h:outputText styleClass="eva-icon-warning" rendered="#{countingOverviewController.renderCorrectedBallotsWarning(countingOverview)}"/>
+			
+								<h:outputText styleClass="eva-icon-ellipsis" rendered="#{countingOverviewController.renderNoCountNeededPreliminary(countingOverview)}"/>
+			
+								<ui:fragment rendered="#{!countingOverview.parent and countingOverview.preliminaryCountExists()}">
+									<h:outputText styleClass="eva-icon-print" rendered="#{!countingOverview.manualCountPreliminary}"/>
+									<h:outputText styleClass="eva-icon-user" rendered="#{countingOverview.manualCountPreliminary}"/>
+								</ui:fragment>
+			
+							</p:column>
+			
+							<p:column>
+			
+								<f:facet name="header">
+									<h:outputText value="#{msgs['@count.overview.final']}"/>
+								</f:facet>
+			
+								<h:outputText styleClass="eva-icon-checkmark" rendered="#{countingOverview.voteCountStatusFinalApproved}"/>
+			
+								<ui:fragment rendered="#{!countingOverview.parent and countingOverview.finalCountExists()}">
+			
+									<h:outputText styleClass="eva-icon-print" rendered="#{!countingOverview.manualCountFinal}"/>
+			
+									<h:outputText styleClass="eva-icon-user" rendered="#{countingOverview.manualCountFinal}"/>
+			
+								</ui:fragment>
+			
+								<h:outputText styleClass="eva-icon-file" rendered="#{countingOverview.voteCountStatusFinalCounting}"/>
+			
+								<h:outputText styleClass="eva-icon-ellipsis" rendered="#{countingOverviewController.renderNoCountNeededFinal(countingOverview)}"/>
+			
+							</p:column>
+			
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="#{msgs['@count.overview.rejected']}"/>
+								</f:facet>
+			
+								<ui:fragment rendered="#{countingOverviewController.shouldShowRejected(countingOverview)}">
+			
+									<h:outputText styleClass="eva-icon-checkmark"
+												  rendered="#{countingOverview.rejectedBallotsProcessedFinal or countingOverview.rejectedBallotsFinal == 0}"/>
+			
+									<h:outputText styleClass="eva-icon-warning"
+												  rendered="#{!countingOverview.rejectedBallotsProcessedFinal and countingOverview.rejectedBallotsFinal != 0}"/>
+			
+									<h:outputText styleClass="eva-icon-user" rendered="#{countingOverview.manualCountFinal}"/>
+			
+									#{countingOverview.rejectedBallotsFinal}
+			
+								</ui:fragment>
+			
+								<h:outputText styleClass="eva-icon-ellipsis" rendered="#{countingOverviewController.renderNoRejected(countingOverview)}"/>
+			
+							</p:column>
+			
+							<p:column>
+			
+								<f:facet name="header">
+									<h:outputText value="#{msgs['@count.overview.action']}"/>
+								</f:facet>
+			
+								<ui:fragment rendered="#{!countingOverview.parent}">
+			
+									<p:commandLink
+											ajax="false" process="@none"
+											value="#{msgs['@count.overview.view']}"
+											action="#{countingOverviewController.goToCount(countingOverview)}"
+											styleClass="btn-sm btn-link"/>
+			
+								</ui:fragment>
+	
+								<ui:fragment rendered="#{!countingOverview.parent}">
+									<p:commandLink
+										ajax="false" process="@none"
+										value="#{msgs['@count.overview.rejected']}"
+										action="#{countingOverviewController.goToRejectedManual(countingOverview)}"
+										styleClass="btn-sm btn-link"
+										rendered="#{countingOverviewController.renderRejectedManual(countingOverview)}" />
+								</ui:fragment>
+								
+								<p:commandLink
+									ajax="false" process="@none"
+									value="#{msgs['@count.overview.rejected.scanned']}"
+									action="#{countingOverviewController.goToRejectedScanned(countingOverview)}"
+									styleClass="btn-sm btn-link"
+									rendered="#{countingOverviewController.renderRejectedScanned(countingOverview)}"/>
+							</p:column>
+			
+						</p:treeTable>            
+				</p:panel>
+			</ui:repeat>
+	</div>
+    
+
+</ui:composition>

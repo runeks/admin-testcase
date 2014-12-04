@@ -1,0 +1,78 @@
+.config_ok, .config_not_ok {
+	vertical-align: middle;
+}
+
+.config_not_ok img {
+	width: 16px;
+	vertical-align: middle;
+}
+
+.config_ok img {
+	width: 16px;
+	vertical-align: middle;
+}
+
+div.config_status {
+	margin-bottom: 3em;
+}
+
+div.config_status span {
+	background-color: #E0E0E0;
+	font-size: 120%;
+	padding: 4px;
+}
+
+div.config_status b {
+	font-weight: bold;
+}
+
+span.lbl {
+	font-weight: normal !important;
+	display: inline-block;
+	width: 22em;
+	vertical-align: middle;
+}
+
+h4 {
+	font-weight: normal;
+	font-style: italic;
+}
+
+button {
+	margin-bottom: 3em;
+}
+
+table th {
+	font-weight: bold;
+	text-align: left;
+	font-size: 110%;
+	border-bottom: 1px solid black;
+}
+
+table td {
+	padding-top: 4px;
+}
+
+td {
+	min-width: 10em;
+}
+
+.approved_notification,.sent_to_approval_notification {
+	height: 39px;
+	line-height: 39px;
+	margin-bottom: 2em;
+}
+
+.approved_notification {
+	
+}
+
+.sent_to_approval_notification {
+	
+}
+
+li {
+	vertical-align: middle;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}

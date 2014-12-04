@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:custom="http://java.sun.com/jsf/composite/custom/">
+<h:body>
+
+	<ui:composition template="/templates/masterReportLayout.xhtml">			
+		<ui:param name="menuType" value="sub" />
+
+		<ui:define name="topinfoheader">
+			<h:outputText value="#{msgs['@menu.report.heading']}" />
+		</ui:define>
+
+		<ui:define name="pagemenu">
+			<custom:reportingMenu menuSelection="template"
+				menuSubselection="#{menuSubselection}"
+				reportMenuAction="reportMenuAction" />
+		</ui:define>
+
+		<ui:define name="content">
+
+			<p:messages id="messages" />
+
+			<!-- Defines the encoding type of the form -->
+			<c:set var="enctype" value="application/x-www-form-urlencoded" />
+			<c:if test="#{showInputFile}">
+				<c:set var="enctype" value="multipart/form-data" />
+			</c:if>
+
+			<h:form id="reportingTemplateForm" prependId="false"
+				enctype="#{enctype}">
+										
+				<c:if test="#{controller.step ge 1}">
+					<custom:reportingPropertiesPanel showInputFile="#{showInputFile}" />
+				</c:if>
+
+				<custom:reportingElectionPathSelectPanel />
+
+				<c:if test="#{controller.step ge 1}">
+					<custom:reportingAreaPathSelectPanel />
+				</c:if>
+
+				<c:if test="#{controller.step lt 1}">
+					<h:panelGrid columns="1">
+						<p:commandButton id="searchButton"
+							value="#{msgs['@common.search']}" ajax="false"
+							action="#{controller.doSearchReportTemplates}" 
+							styleClass="icon-button icon-search" />
+					</h:panelGrid>
+				</c:if>
+
+				<c:if
+					test="#{controller.step lt 1 and not empty controller.reportTemplateItems}">
+					<h:panelGrid columns="1">
+						<p:dataTable id="reportTemplateDataTable"
+							var="tmplt"
+							value="#{controller.reportTemplateItems}"
+							rowKey="#{tmplt.templateName}"
+							selection="#{controller.selectedReportTemplateList}"
+							selectionMode="single"
+							border="1"
+							dynamic="true"
+							paginator="true"
+							rows="10"
+							emptyMessage="#{msgs['@pf.datatable.emptyMsg']}"
+							errorMessage="#{msgs['@pf.datatable.errMsg']}"
+							firstPageLinkLabel="#{msgs['@pf.datatable.first']}"
+							nextPageLinkLabel="#{msgs['@pf.datatable.next']}"
+							previousPageLinkLabel="#{msgs['@pf.datatable.prev']}"
+							lastPageLinkLabel="#{msgs['@pf.datatable.last']}"
+							paginatorPosition="bottom">
+							<p:ajax event="rowSelect" update=":reportingTemplateForm:actionButton" />
+							<p:column sortBy="#{tmplt.templateName}" filterBy="#{tmplt.templateName}" width="300">
+								<f:facet name="header">
+									<h:outputText value="#{msgs['@common.name']}" />
+								</f:facet>
+								<h:outputText value="#{tmplt.templateName}" />
+							</p:column>
+
+							<p:column sortBy="#{tmplt.description}" filterBy="#{tmplt.description}" width="500">
+								<f:facet name="header">
+									<h:outputText
+										value="#{msgs['@reporting.template.description']}" />
+								</f:facet>
+								<h:outputText value="#{tmplt.description}" />
+							</p:column>
+
+							<c:if test="#{showValidatedColumn}">
+								<p:column sortBy="#{tmplt.validate}" width="60">
+									<f:facet name="header">
+										<h:outputText value="#{msgs['@reporting.template.validated']}" />
+									</f:facet>
+									<h:selectBooleanCheckbox value="#{tmplt.validate}"
+										readonly="#{tmplt.validate or not canValidate}"
+										disabled="#{tmplt.validate or not canValidate}" />
+								</p:column>
+							</c:if>
+						</p:dataTable>
+					</h:panelGrid>
+				</c:if>
+
+				<c:if
+					test="#{controller.step ge 1 or not empty controller.reportTemplateItems}">
+					<h:panelGrid columns="2">
+						<c:if test="#{controller.step gt 1}">
+							<p:commandButton id="backButton" value="#{msgs['@common.back']}"
+								ajax="false" action="#{controller.doGoBack}" styleClass="icon-button icon-back"/>
+						</c:if>
+						<!-- Button must define the concrete action -->
+						<ui:insert name="button"></ui:insert>
+					</h:panelGrid>
+				</c:if>
+
+				<!-- More content to insert in the body view -->
+				<ui:insert name="morecontent"></ui:insert>				
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

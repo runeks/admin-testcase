@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<composite:interface >
+    <composite:attribute name="mvAreaSelectionLevel" required="#{cc.attrs.mvElectionSelectionLevel eq null}"/>
+    <composite:attribute name="mvElectionSelectionLevel" required="#{cc.attrs.mvAreaSelectionLevel eq null}"/>
+</composite:interface>
+
+<composite:implementation>
+
+        <!-- MvElection selection -->
+        <ui:fragment rendered="#{cc.attrs.mvElectionSelectionLevel != null and mvElectionPickerController.selectedMvElection == null}">
+            <c:set var="messageKey" value="@election_level[#{cc.attrs.mvElectionSelectionLevel}].name"/>
+            <p:messages id="msgAboveElection" globalOnly="true"/>
+
+            <h2>#{msgs['@common.choose']} #{msgs[messageKey].toLowerCase()}</h2>
+
+            <c:forEach
+                    var="currentElection"
+                    items="#{mvElectionPickerController.mvElectionPickerTables}">
+
+                <h:panelGroup id="electionLevel#{currentElection.level}" styleClass="context-level" layout="block">
+                    
+                    <p:dataTable
+                            id="electionLevel#{currentElection.level}Table"
+                            value="#{currentElection.mvElections}"
+                            var="electionItem"
+                            rowKey="#{electionItem.id}"
+                            selectionMode="single"
+                            selection="#{currentElection.selectedMvElection}"
+                            emptyMessage="">
+
+                        <c:if test="#{mvElectionPickerController.shouldAddAjaxUpdate(currentElection.level, cc.attrs.mvElectionSelectionLevel)}">
+                            <p:ajax event="rowSelect" update="#{mvElectionPickerController.getAjaxUpdateSelector(currentElection.level, cc.attrs.mvElectionSelectionLevel)}"/>
+                            <p:ajax event="rowUnselect" update="#{mvElectionPickerController.getAjaxUpdateSelector(currentElection.level, cc.attrs.mvElectionSelectionLevel)}"/>
+                        </c:if>
+
+                        <p:column id="electionId#{electionItem.id}">
+                            <c:set var="messageKey" value="@election_level[#{currentElection.level}].name"/>
+
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs[messageKey]}"/>
+                                <h:outputText value="(#{currentElection.size})"/>
+                            </f:facet>
+
+                            <h:panelGroup layout="block" styleClass="btn-group context-actions">
+                                <p:commandLink
+                                        id="editElectionLevel#{currentElection.level}"
+                                        actionListener="#{mvElectionPickerController.editMvElection(electionItem)}"
+                                        update=":electionLevel#{currentElection.level}Form"
+                                        oncomplete="PF('editElectionLevel#{currentElection.level}Widget').show();"
+                                        styleClass="eva-icon-pencil"
+                                        rendered="#{mvElectionPickerController.getIsEditable(currentElection.level, electionItem)}"/>
+
+                                <p:commandLink
+                                        id="showElectionLevel#{currentElection.level}"
+                                        actionListener="#{mvElectionPickerController.readMvElection(electionItem)}"
+                                        update=":electionLevel#{currentElection.level}Form"
+                                        oncomplete="PF('editElectionLevel#{currentElection.level}Widget').show();"
+                                        styleClass="eva-icon-search"
+                                        rendered="#{!mvElectionPickerController.getIsEditable(currentElection.level, electionItem)}"/>
+								
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" styleClass="context-meta">
+                                <h:panelGroup layout="block" styleClass="context-id">
+                                    <h:outputText value="#{electionItem.id}"/>
+                                </h:panelGroup>
+
+                                <h:panelGroup layout="block" styleClass="context-name">
+                                    <h:outputText value="#{electionItem.toString()}"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </p:column>
+                    </p:dataTable>
+
+                    <h:panelGroup layout="block" styleClass="btn-group create-context" rendered="#{mvElectionPickerController.getParentMvElection(currentElection.level) != null and mvElectionPickerController.getIsCreatable(currentElection.level)}">
+                        <p:commandLink
+                                value="#{msgs['@common.add']} #{msgs[messageKey]}"
+                                actionListener="#{mvElectionPickerController.injectParentMvElection(currentElection.level)}"
+                                oncomplete="PF('createElectionLevel#{currentElection.level}Widget').show();"
+                                update=":electionLevel#{currentElection.level}CreateForm"
+                                styleClass="btn btn-link"
+                                id="addLink#{currentElection.level}"/>
+                    </h:panelGroup>
+                    
+                </h:panelGroup>
+
+            </c:forEach>
+
+        </ui:fragment>
+
+        <!-- Area selection -->
+        <ui:fragment rendered="#{(cc.attrs.mvAreaSelectionLevel != null and ((cc.attrs.mvElectionSelectionLevel != null and mvElectionPickerController.selectedMvElection != null) or cc.attrs.mvElectionSelectionLevel == null) and mvAreaPickerController.selectedMvArea == null)}">
+
+            <p:messages id="msgAbove" globalOnly="true"/>
+
+            <h2>#{msgs['@area.list_areas.header2']}</h2>
+
+            <c:forEach 
+                    var="areaType" 
+                    varStatus="iterator"
+                    items="#{mvAreaPickerController.mvAreaPickerTables}">
+
+                <h:panelGroup id="areaLevel#{areaType.level}" styleClass="context-level" layout="block">
+
+                    <p:dataTable
+                            id="areaLevel#{areaType.level}Table"
+                            value="#{areaType.mvAreas}"
+                            var="areaItem"
+                            selectionMode="single"
+                            selection="#{areaType.selectedMvArea}"
+                            rowKey="#{areaItem.id()}"
+                            emptyMessage="">
+
+                        
+                        <c:if test="#{mvAreaPickerController.shouldAddAjaxUpdate(areaType.level, cc.attrs.mvAreaSelectionLevel)}">
+                            <p:ajax event="rowSelect" update="#{mvAreaPickerController.getAjaxUpdateSelector(areaType.level, cc.attrs.mvAreaSelectionLevel)}"/>
+                            <p:ajax event="rowUnselect" update="#{mvAreaPickerController.getAjaxUpdateSelector(areaType.level, cc.attrs.mvAreaSelectionLevel)}"/>
+                        </c:if>
+
+                        <p:column id="areaId#{areaItem.id()}">
+
+                            <c:set var="messageKey" value="@area_level[#{areaType.level}].name"/>
+
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs[messageKey]}"/>
+                                <h:outputText value="(#{areaType.size})"/>
+                            </f:facet>
+
+                            <h:panelGroup layout="block" styleClass="btn-group context-actions">
+                                <p:commandLink
+                                        id="editAreaLevel#{areaType.level}"
+                                        styleClass="eva-icon-pencil edit"
+                                        title="#{msgs['@common.redact']}"
+                                        actionListener="#{mvAreaPickerController.editMvArea(areaItem)}"
+                                        update=":level#{areaType.level}Form"
+                                        rendered="#{mvAreaPickerController.getIsEditable(areaType.level, areaItem)}">
+                                        <!--oncomplete="PF('editAreaLevel#{areaType.level}Widget').show();"-->
+                                </p:commandLink>
+
+                                <p:commandLink
+                                        id="viewAreaLevel#{areaType.level}"
+                                        styleClass="eva-icon-search show"
+                                        title="#{msgs['@common.details_view']}"
+                                        actionListener="#{mvAreaPickerController.readMvArea(areaItem)}"
+                                        update=":level#{areaType.level}Form"
+                                        rendered="#{!mvAreaPickerController.getIsEditable(areaType.level, areaItem)}">
+                                        <!--oncomplete="PF('editAreaLevel#{areaType.level}Widget').show();"-->
+                                </p:commandLink>
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" styleClass="context-meta">
+                                <h:panelGroup layout="block" styleClass="context-id">
+                                    <h:outputText value="#{areaItem.id()}"/>
+                                </h:panelGroup>
+
+                                <h:panelGroup layout="block" styleClass="context-name">
+                                    <h:outputText value="#{areaItem.toString()}"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+
+                        </p:column>
+                    </p:dataTable>
+
+
+                    <h:panelGroup layout="block" styleClass="btn-group create-context" rendered="#{mvAreaPickerController.getParentMvArea(areaType.level) != null}">
+                        <p:commandLink
+                                styleClass="btn btn-link create"
+                                value="#{msgs['@common.add']} #{msgs[messageKey]}"
+                                actionListener="#{mvAreaPickerController.injectParentMvArea(areaType.level)}"
+                                update=":level#{areaType.level}CreateForm"
+                                rendered="#{mvAreaPickerController.getIsCreatable(areaType)}"/>
+                                <!--oncomplete="PF('createAreaLevel#{areaType.level}Widget').show();"-->
+                    </h:panelGroup>
+                </h:panelGroup>
+            </c:forEach>
+
+        </ui:fragment>
+    
+
+    <script type="text/javascript">
+        //<![CDATA[
+        function scrollToSelectedItems() {
+            setTimeout(function () {
+                var selectedItems = $('.context-level', '.page').find('tr[aria-selected="true"]');
+                selectedItems.each(function (i, element) {
+                    var selectedItem = $(element);
+                    var parent = selectedItem.parents('tbody');
+                    var scrollTop = selectedItem.offset().top;
+
+                    parent.scrollTop(scrollTop - parent.offset().top);
+                });
+            }, 1);
+        }
+        //]]>
+    </script>
+</composite:implementation>
+
+</html>

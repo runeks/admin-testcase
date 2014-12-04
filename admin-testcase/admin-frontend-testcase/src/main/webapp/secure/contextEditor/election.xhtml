@@ -1,0 +1,395 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:c="http://java.sun.com/jsp/jstl/core" contentType="text/html">
+
+<h:form id="electionLevel2Form">
+<ui:param name="helpId" value="@help.rbac"/>
+
+<p:dialog
+		header="#{msgs['@common.redact']} #{msgs['@election_level[2].name']}"
+		widgetVar="editElectionLevel2Widget"
+		fixedCenter="true"
+		modal="true"
+		fitViewport="true"
+		visible="false"
+		resizable="false"
+		width="940"
+		height="600">
+
+<h:panelGroup styleClass="row" layout="block">
+
+<div class="col-md-9 center-block">
+	<p:messages id="msg"/>
+</div>
+
+
+<!-- electionGroupName -->
+<h:panelGroup styleClass="form-group col-md-12" layout="block">
+	<h:outputLabel value="#{msgs['@election_level[1].name']}" for="electionGroupName"/>
+	<h:inputText
+			id="electionGroupName"
+			value="#{electionController.currentElection.electionGroup.name}"
+			styleClass="form-control"
+			disabled="true"
+			readonly="true"/>
+</h:panelGroup>
+
+<!-- electionId -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+	<h:outputLabel value="#{msgs['@common.id']}" for="electionId"/>
+	<h:inputText
+			value="#{electionController.currentElection.id}"
+			id="electionId"
+			maxlength="2"
+			label="#{msgs['@common.id']}"
+			disabled="#{isElectionEventDisabled or electionController.readOnly}"
+			required="true"
+			styleClass="form-control"/>
+	<h:message for="electionId" id="idError"/>
+</h:panelGroup>
+
+<!-- electionName -->
+<h:panelGroup styleClass="required form-group col-md-6" layout="block">
+	<h:outputLabel value="#{msgs['@common.name']}" for="electionName"/>
+	<h:inputText
+			value="#{electionController.currentElection.name}"
+			id="electionName"
+			label="#{msgs['@common.name']}"
+			styleClass="form-control"
+			maxlength="100"
+			required="true"
+			disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+	<h:message for="electionName" id="nameError"/>
+</h:panelGroup>
+
+<!-- electionLocale -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+	<h:outputLabel value="#{msgs['@common.locale']}" for="electionLocale"/>
+	<h:selectOneListbox
+			id="electionLocale"
+			label="#{msgs['@common.locale']}"
+			value="#{electionController.currentElection.locale}"
+			size="1"
+			required="true"
+			styleClass="form-control"
+			disabled="#{isElectionEventDisabled or electionController.readOnly}">
+		<f:selectItem itemLabel="#{msgs['@common.locale.preselect']}"/>
+		<f:selectItems value="#{LocaleController.localeMap}"/>
+		<f:converter converterId="localeConverter"/>
+	</h:selectOneListbox>
+	<h:message for="electionLocale" id="localeError"/>
+</h:panelGroup>
+
+<!-- electionAreaLevel -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+	<h:outputLabel value="#{msgs['@election.election.area_level']}" for="electionAreaLevel"/>
+	<h:selectOneListbox
+			id="electionAreaLevel"
+			label="#{msgs['@election.election.area_level']}"
+			value="#{electionController.selectedAreaLevel}"
+			size="1"
+			required="true"
+			styleClass="form-control"
+			disabled="true">
+		<f:selectItems
+				value="#{areaLevelController.areaLevelList}"
+				var="areaLevel"
+				itemLabel="#{msgs[areaLevel.name]}"
+				itemValue="#{areaLevel.id}"/>
+	</h:selectOneListbox>
+	<h:message for="electionAreaLevel" id="areaLevelError"/>
+</h:panelGroup>
+
+<!-- Election type -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+	<h:outputLabel value="#{msgs['@election.election.election_type']}" for="electionType"/>
+	<h:selectOneListbox
+			id="electionType"
+			label="#{msgs['@election.election.election_type']}"
+			value="#{electionController.currentElection.electionType}"
+			size="1"
+			required="true"
+			styleClass="form-control"
+			disabled="#{true}"
+			valueChangeListener="#{electionController.changeElectionType}">
+		<f:selectItem itemLabel="#{msgs['@election.election.election_type.preselect']}"/>
+		<f:selectItems value="#{ElectionTypeController.electionTypeMap}"/>
+		<f:converter converterId="electionTypeConverter"/>
+		<p:ajax update="@form" process="@this" event="change"/>
+	</h:selectOneListbox>
+	<h:message for="electionType" id="electionTypeError"/>
+</h:panelGroup>
+
+<!-- End date of birth, age limit for voter -->
+<c:if test="#{UserDataController.hasAccess('w.configuration.change_age_limit')}">
+	<h:panelGroup styleClass="required form-group col-md-12" layout="block">
+		<h:outputLabel value="#{msgs['@election.common.end_date_of_birth']}" for="electionAgeLimit"/>
+		<p:inputMask
+				id="electionAgeLimit"
+				styleClass="form-control datepicker"
+				value="#{electionController.currentElection.endDateOfBirth}"
+				mask="#{msgs['@common.date.date_mask']}"
+				converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+				label="#{msgs['@election.common.end_date_of_birth']}"
+				maxLength="10"
+				required="true"
+				disabled="#{isElectionEventDisabled or electionController.readOnly}">
+			<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+		</p:inputMask>
+		<h:outputText styleClass="help-block" value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+		<h:message for="electionAgeLimit" id="endDateOfBirthError"/>
+	</h:panelGroup>
+</c:if>
+
+<h:panelGroup styleClass="required form-group col-md-6" layout="block">
+
+	<!-- electionEventSingleArea -->
+	<h:panelGroup styleClass="checkbox">
+
+		<h:outputLabel for="electionEventSingleArea">
+
+			<h:selectBooleanCheckbox
+					id="electionEventSingleArea"
+					value="#{electionController.currentElection.singleArea}"
+					styleClass="ui-radio-group ui-radio-group-inline"
+					required="true"
+					disabled="true"/>
+			#{msgs['@election.election.single_area']}
+		</h:outputLabel>
+
+		<h:message for="electionEventSingleArea" id="singleAreaError"/>
+	</h:panelGroup>
+
+	<c:if test="#{!electionController.referendum}">
+
+		<!-- penultimateRecount -->
+		<h:panelGroup styleClass="checkbox" layout="block">
+
+			<h:outputLabel for="param19">
+				<h:selectBooleanCheckbox
+						id="param19"
+						value="#{electionController.currentElection.penultimateRecount}"
+						disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+				#{msgs['@election.election.penultimateRecount']}
+			</h:outputLabel>
+
+		</h:panelGroup>
+
+		<!-- Renumber -->
+		<h:panelGroup styleClass="checkbox" layout="block">
+
+			<h:outputLabel for="param10">
+				<h:selectBooleanCheckbox
+						id="param10"
+						value="#{electionController.currentElection.renumber}"
+						disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+				#{msgs['@election.election.rotation']}
+			</h:outputLabel>
+
+		</h:panelGroup>
+
+		<!-- Renumber Limit -->
+		<h:panelGroup styleClass="checkbox" layout="block">
+			<h:outputLabel for="param20">
+				<h:selectBooleanCheckbox
+						id="param20"
+						value="#{electionController.currentElection.renumberLimit}"
+						disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+				#{msgs['@election.election.renumberLimit']}
+			</h:outputLabel>
+		</h:panelGroup>
+
+	</c:if>
+
+</h:panelGroup>
+
+<h:panelGroup styleClass="required form-group col-md-6" layout="block" rendered="#{!electionController.referendum}">
+
+	<!-- Writein -->
+	<h:panelGroup styleClass="checkbox" layout="block">
+		<h:outputLabel for="param11">
+			<h:selectBooleanCheckbox
+					id="param11"
+					value="#{electionController.currentElection.writein}"
+					disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+			#{msgs['@election.election.writein']}
+		</h:outputLabel>
+	</h:panelGroup>
+
+	<!-- Strikeout -->
+	<h:panelGroup styleClass="checkbox" layout="block">
+		<h:outputLabel for="param12">
+			<h:selectBooleanCheckbox
+					id="param12"
+					value="#{electionController.currentElection.strikeout}"
+					disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+			#{msgs['@election.election.strikeout']}
+		</h:outputLabel>
+	</h:panelGroup>
+
+	<!-- Personal -->
+	<h:panelGroup styleClass="checkbox" layout="block">
+		<h:outputLabel for="param15">
+			<h:selectBooleanCheckbox
+					id="param15"
+					value="#{electionController.currentElection.personal}"
+					disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+			#{msgs['@election.election.personal']}
+		</h:outputLabel>
+	</h:panelGroup>
+
+	<!-- candidatesInContestArea -->
+	<h:panelGroup styleClass="checkbox" layout="block">
+		<h:outputLabel for="param21">
+			<h:selectBooleanCheckbox
+					id="param21"
+					value="#{electionController.currentElection.candidatesInContestArea}"
+					disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+			#{msgs['@election.election.candidatesInContestArea']}
+		</h:outputLabel>
+	</h:panelGroup>
+
+</h:panelGroup>
+
+<!-- candidateRankVoteShareThreshold -->
+<h:panelGroup id="param24" styleClass="form-group col-md-4" rendered="#{!electionController.referendum}" layout="block">
+	<h:outputLabel value="#{msgs['@election.election.candidate_rank_vote_share_threshold']}" for="param17"/>
+    <span class="has-feedback pull-left">
+        <p:inputText
+				id="param17"
+				value="#{electionController.currentElection.candidateRankVoteShareThreshold}"
+				disabled="#{isElectionEventDisabled or electionController.readOnly}"
+				styleClass="form-control"
+				converter="percentageConverter"/>
+        <span class="form-control-feedback grey">%</span>
+    </span>
+</h:panelGroup>
+
+<!-- settlementFirstDivisor -->
+<h:panelGroup styleClass="form-group col-md-8" rendered="#{!electionController.referendum}" layout="block">
+	<h:outputLabel value="#{msgs['@election.election.settlement_first_divisor']}" styleClass="full-width" for="param18"/>
+	<p:spinner
+			id="param18"
+			value="#{electionController.currentElection.settlementFirstDivisor}"
+			min="1"
+			max="2"
+			stepFactor="0.1"
+			disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+</h:panelGroup>
+
+<!-- Baseline vote factor -->
+<h:panelGroup styleClass="form-group col-md-4" rendered="#{electionController.proportionalRepresentation}" layout="block">
+	<h:outputLabel for="param14" value="#{msgs['@election.election.affiliation_vote_factor']}"/>
+	<h:inputText
+			id="param14"
+			value="#{electionController.currentElection.baselineVoteFactor}"
+			label="#{msgs['@election.election.affiliation_vote_factor']}"
+			maxlength="4"
+			styleClass="form-control"
+			required="false"
+			disabled="#{isElectionEventDisabled or electionController.readOnly}">
+		<f:converter converterId="bigDecimalConverter"/>
+	</h:inputText>
+	<h:message for="param14" id="affiliationVoteFactorError"/>
+</h:panelGroup>
+
+<!-- Antall utjevningsmandater -->
+<h:panelGroup styleClass="form-group col-md-8" rendered="#{!electionController.referendum}" layout="block">
+	<h:outputLabel value="#{msgs['@election.election.leveling_seats']}" for="levelingSeats"/>
+	<h:inputText
+			id="levelingSeats"
+			styleClass="form-control"
+			value="#{electionController.currentElection.levelingSeats}"
+			disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+</h:panelGroup>
+
+<!-- Sperregrense for patrtier for å kunne få utjevningsmandater -->
+<h:panelGroup id="param25" rendered="#{!electionController.referendum}" styleClass="form-group col-md-6 has-feedback" layout="block">
+	<h:outputLabel for="param23" value="#{msgs['@election.election.leveling_seats_vote_share_threshold']}"/>
+    <span class="has-feedback pull-left">
+        <p:inputText
+				id="param23"
+				styleClass="form-control"
+				value="#{electionController.currentElection.levelingSeatsVoteShareThreshold}"
+				disabled="#{isElectionEventDisabled or electionController.readOnly}"
+				converter="percentageConverter"/>
+        <span class="form-control-feedback grey">%</span>
+    </span>
+</h:panelGroup>
+</h:panelGroup>
+<f:facet name="footer">
+	<p:commandButton
+			id="update"
+			actionListener="#{electionController.doUpdateElection(electionController.currentElection)}"
+			update=":electionLevel2Form:msg :hierarchyEditor"
+			oncomplete="editElectionDialogBox(xhr, status, args)"
+			value="#{msgs['@common.save']}"
+			disabled="#{isElectionEventDisabled or !UserDataController.hasAccess('w.configuration.election.election') or electionController.readOnly}"
+			icon="eva-icon-checkmark"
+			styleClass="btn btn-primary"/>
+
+	<p:commandButton
+			id="deleteButton"
+			onclick="PF('level2Confirmation').show()"
+			update=":level2DialogForm:dialogMessage"
+			value="#{msgs['@common.delete']}"
+			disabled="#{!electionController.currentRemovable or !UserDataController.hasAccess('w.configuration.election.election') or electionController.readOnly}"
+			icon="eva-icon-close"
+			styleClass="btn btn-danger"/>
+
+	<p:commandLink
+			id="backToElectionList"
+			onclick="PF('editElectionLevel2Widget').hide(); return false;"
+			value="#{msgs['@common.cancel']}"
+			styleClass="btn btn-link"/>
+</f:facet>
+</p:dialog>
+</h:form>
+
+
+<h:form id="level2DialogForm">
+	<p:confirmDialog
+			header="#{msgs['@common.delete']} #{msgs['@election_level[2].name']}"
+			severity="alert"
+			widgetVar="level2Confirmation"
+			modal="true">
+
+		<f:facet name="message">
+			<h:outputText id="dialogMessage"
+						  value="#{msgs.get('@common.delete.confirmation', msgs['@election_level[2].name'], electionController.currentElection.name)}"/>
+		</f:facet>
+
+		
+		<p:commandButton
+				id="YesButton"
+				icon="eva-icon-close"
+				styleClass="btn btn-danger"
+				value="#{msgs['@common.yes']}"
+				immediate="true"
+				update="@(#contextPicker)"
+				oncomplete="PF('editElectionLevel2Widget').hide();"
+				action="#{electionController.doDeleteElection(electionController.currentElection)}"
+				onclick="PF('level2Confirmation').hide();"/>
+
+		<p:commandButton
+				id="NoButton"
+				styleClass="btn"
+				value="#{msgs['@common.no']}"
+				onclick="PF('level2Confirmation').hide()"
+				update="level2DialogForm:NoButton"/>
+
+	</p:confirmDialog>
+</h:form>
+<script type="text/javascript">
+	//<![CDATA[
+	function editElectionDialogBox(xhr, status, args) {
+		if (args.editElectionHideDialog) {
+			PF('editElectionLevel2Widget').hide();
+		}
+	}
+	//]]>
+</script>
+</ui:composition>

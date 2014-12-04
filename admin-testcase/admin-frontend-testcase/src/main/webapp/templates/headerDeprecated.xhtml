@@ -1,0 +1,71 @@
+<f:view contentType="text/html" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:custom="http://java.sun.com/jsf/composite/custom/">
+	<ui:composition>
+		<c:choose>
+			<c:when test="#{empty simpleHeader or !simpleHeader}">
+				<a href="#{request.contextPath}/secure/index.xhtml" title="Klikk her for å komme til startsiden" class="logo">
+					<h:outputText value=" "/>
+				</a>
+				<div class="right user ${UserDataController.userData.operatorRole == null? 'reduced':''}">
+					<div class="content">
+						<h:form>
+							<c:if test="${UserDataController.userData.operatorRole != null}">
+								<div class="left icon">
+									<img alt="user icon" src="#{resource['images:ixd/userbar-icon-user.png']}" width="38" height="38" />
+								</div>
+							</c:if>
+							<c:if test="${UserDataController.userData.operatorRole != null}">
+								<div class="left name">
+									<a href="/secure/exportToken.xhtml"><strong>#{UserDataController.userData.operator.nameLine}</strong></a>
+									<em>(<h:outputText value="#{msgs[UserDataController.userData.operatorRole.role.name]}" />)</em>
+									<div class="info">
+										<div class="left small">
+											<c:if test="${UserDataController.userData.operatorRole != null}">
+												<div class="row">
+													<strong><h:outputText value="#{msgs['@common.area']}: " /></strong>
+													<h:outputText value="#{UserDataController.userData.operatorRole.mvArea} #{msgs[UserDataController.userData.operatorRole.mvArea.areaLevelString]}" />
+												</div>
+											</c:if>
+											<c:if test="${UserDataController.userData.operatorRole != null}">
+												<div class="row">
+													<strong><h:outputText value="#{msgs['@common.election']}:" /></strong>
+													<h:outputText value="#{UserDataController.userData.operatorRole.mvElection}" />
+												</div>
+											</c:if>
+										</div>
+									</div>
+								</div>
+							</c:if>
+							<div class="right buttons">
+								<ul>
+									<c:if test="${UserDataController.userData.operatorRole != null}">
+										<li><h:commandLink action="#{userSessionController.changeRole}" value="#{msgs['@header.change_role']}" /></li>
+									</c:if>
+									<li id="logout"><a href="/logout">#{msgs['@rbac.logout']}</a></li>
+									
+									
+									
+									<c:if test="${UserDataController.userData.operatorRole != null}">
+										<li><a href="/secure/changeLocale.xhtml">#{msgs['@common.change_locale']}</a></li>
+									</c:if>
+								</ul>
+							</div>
+						</h:form>
+					</div>
+				</div>
+				<c:if test="${empty hideMainPageLink}">
+					<div class="right home">
+						<a href="#{request.contextPath}/secure/index.xhtml">#{msgs['@menu.main_page']}</a>
+					</div>
+				</c:if>
+			</c:when>
+			<c:otherwise>
+				<!-- TRANSLATE --><a href="#{request.contextPath}/" title="Velkommen til administrasjonssystemet for valg i Norge" class="logo"><img src="#{resource['images:ixd/logo.png']}" width="195" height="100" alt="Logo" /></a>
+			</c:otherwise>
+		</c:choose>
+	</ui:composition>
+</f:view>

@@ -1,0 +1,18 @@
+#form\3A personalInformation {
+	float: left;
+	width: 40%;
+}
+
+#form\3A contactInformation {
+	float: left;
+	width: 40%;
+	margin-left: 20px;
+}
+
+div.fwFormRow span.fwFormField {
+	width: 18em !important;
+}
+
+#form\3A municipalityDropdown, #form\3A selectedMvAreaPk {
+	width: 12em;
+}

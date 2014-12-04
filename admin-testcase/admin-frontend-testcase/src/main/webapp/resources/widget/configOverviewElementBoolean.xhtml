@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<composite:interface>
+    <composite:attribute name="id"/>
+    <composite:attribute name="isOK"/>
+    <composite:attribute name="label"/>
+    <composite:attribute name="required" type="java.lang.Boolean"/>
+</composite:interface>
+
+<composite:implementation>
+    <div class="form-group">
+        <ui:fragment rendered="#{cc.attrs.isOK}">
+			<span class="eva-icon-checkmark"></span>
+        </ui:fragment>
+        <ui:fragment rendered="#{!cc.attrs.isOK and cc.attrs.required}">
+            <span class="eva-icon-error"></span>
+        </ui:fragment>
+        <ui:fragment rendered="#{!cc.attrs.isOK and !cc.attrs.required}">
+            <span class="eva-icon-warning"></span>
+        </ui:fragment>
+        <label class="dashed-border-left">#{cc.attrs.label}</label>
+    </div>
+</composite:implementation>
+</html>

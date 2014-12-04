@@ -1,0 +1,201 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:composite="http://java.sun.com/jsf/composite"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <composite:interface>
+        <composite:attribute name="renderDropdownAreaLevel" required="true"/>
+        <composite:attribute name="renderDropdownSelectedAreaLevel" required="true"/>
+        <composite:attribute name="createAll" required="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+
+        <!-- composite variables -->
+        <c:set var="selectedAreaLevel" value="#{mvAreaController.selectedAreaLevel}"/>
+        <c:set var="selectedAreaLevelUpLevel" value="#{mvAreaController.selectedAreaLevelUpLevel}"/>
+        <c:choose>
+            <c:when test="#{cc.attrs.renderDropdownSelectedAreaLevel == 'true'}">
+                <c:set var="headerKey"
+                       value="@area_level[#{selectedAreaLevel}].name"/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="headerKey"
+                       value="@area_level[#{selectedAreaLevelUpLevel}].name"/>
+            </c:otherwise>
+        </c:choose>
+        <c:set var="headerText" value="#{msgs['@common.choose']} #{msgs[headerKey]}"/>
+        <!-- /composite variables -->
+
+        <h:panelGroup styleClass="row" layout="block">
+
+            <!-- Area level -->
+            <h:panelGroup id="areaLevelPanel" styleClass="form-group col-md-3" layout="block" rendered="#{cc.attrs.renderDropdownAreaLevel == 'true'}">
+
+                <h:outputLabel value="#{msgs['@area.common.area_level']}" for="areaLevelId"/>
+                <h:selectOneListbox
+                        id="areaLevelId"
+                        size="1"
+                        binding="#{mvAreaController.areaLevelListbox}">
+
+                    <f:selectItem itemLabel="#{msgs['@area.common.area_level.preselect']}"/>
+                    <f:selectItems value="#{mvAreaController.areaLevelItems}"/>
+                    <p:ajax
+                            update="areaSelectPanel"
+                            process="areaLevelId"
+                            event="change"
+                            listener="#{mvAreaController.changeAreaLevel}"/>
+                </h:selectOneListbox>
+
+            </h:panelGroup>
+
+            <h:panelGroup id="areaSelectPanel" styleClass="col-md-12" layout="block"
+                          rendered="#{mvAreaController.selectedAreaLevel > 1 or (mvAreaController.selectedAreaLevel == 1 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}">
+
+                <h3>#{headerText}</h3>
+
+                <!-- Country -->
+                <h:panelGroup id="country" layout="block" styleClass="form-group required col-md-3 #{mvAreaController.selectedAreaLevel==1 ? 'updateNameId' : ''}">
+                    <h:outputLabel value="#{msgs['@area_level[1].name']}" for="countryId"/>
+                    <h:selectOneListbox
+                            id="countryId"
+                            size="1"
+                            styleClass="form-control"
+                            binding="#{mvAreaController.countryListbox}">
+                        <f:selectItem itemLabel="#{msgs['@area_level[1].preselect']}"/>
+                        <f:selectItems value="#{mvAreaController.countryItems}"/>
+                        <p:ajax
+                                update="county municipality borough pollingDistrict pollingPlace"
+                                process="countryId"
+                                event="change"
+                                listener="#{mvAreaController.changeCountry}"/>
+                    </h:selectOneListbox>
+                </h:panelGroup>
+
+                <!-- County -->
+                <h:panelGroup id="county" layout="block" styleClass="form-group required col-md-3 #{mvAreaController.selectedAreaLevel==2 ? 'updateNameId' : ''}"
+                              rendered="#{mvAreaController.selectedAreaLevel > 2 or (mvAreaController.selectedAreaLevel == 2 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}">
+
+                    <h:outputLabel value="#{msgs['@area_level[2].name']}" for="countyId"/>
+
+                    <h:selectOneListbox
+                            id="countyId"
+                            styleClass="form-control"
+                            size="1"
+                            binding="#{mvAreaController.countyListbox}">
+                        <f:selectItem itemLabel="#{msgs['@area_level[2].preselect']}"/>
+                        <f:selectItems value="#{mvAreaController.countyItems}"/>
+                        <p:ajax
+                                update="municipality borough pollingDistrict pollingPlace :electionLevel3CreateForm:contestName :electionLevel3CreateForm:contestId"
+                                process="countyId"
+                                event="change"
+                                listener="#{mvAreaController.changeCounty}"/>
+                    </h:selectOneListbox>
+                </h:panelGroup>
+
+                <!--  Municipality -->
+                <h:panelGroup id="municipality" layout="block"
+                              styleClass="required form-group col-md-3 #{mvAreaController.selectedAreaLevel==3 ? 'updateNameId' : ''}"
+                              rendered="#{mvAreaController.selectedAreaLevel > 3 or (mvAreaController.selectedAreaLevel == 3 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}">
+
+                    <h:outputLabel value="#{msgs['@area_level[3].name']}" for="municipalityId"/>
+
+                    <h:selectOneListbox
+                            id="municipalityId"
+                            styleClass="form-control"
+                            size="1"
+                            binding="#{mvAreaController.municipalityListbox}">
+                        <f:selectItem itemLabel="#{msgs['@area_level[3].preselect']}"/>
+                        <f:selectItems value="#{mvAreaController.municipalityItems}"/>
+                        <p:ajax
+                                update="borough pollingDistrict pollingPlace :electionLevel3CreateForm:contestName :electionLevel3CreateForm:contestId"
+                                process="municipalityId" event="change"
+                                listener="#{mvAreaController.changeMunicipality}"/>
+                    </h:selectOneListbox>
+                </h:panelGroup>
+
+                <!-- Borough -->
+                <h:panelGroup id="borough" layout="block"
+                              styleClass="required form-group col-md-3 #{mvAreaController.selectedAreaLevel==4 ? 'updateNameId' : ''}"
+                              rendered="#{mvAreaController.selectedAreaLevel > 4 or (mvAreaController.selectedAreaLevel == 4 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}">
+
+                    <h:outputLabel value="#{msgs['@area_level[4].name']}" for="boroughId"/>
+
+                    <h:selectOneListbox
+                            id="boroughId"
+                            size="1"
+                            styleClass="form-control"
+                            binding="#{mvAreaController.boroughListbox}">
+                        <f:selectItem itemLabel="#{msgs['@area_level[4].preselect']}"/>
+                        <f:selectItems value="#{mvAreaController.boroughItems}"/>
+                        <p:ajax
+                                update="pollingDistrict pollingPlace :electionLevel3CreateForm:contestName :electionLevel3CreateForm:contestId"
+                                process="boroughId"
+                                event="change"
+                                listener="#{mvAreaController.changeBorough}"/>
+                    </h:selectOneListbox>
+                </h:panelGroup>
+
+                <!-- Polling district -->
+                <h:panelGroup id="pollingDistrict" layout="block"
+                              rendered="#{mvAreaController.selectedAreaLevel > 5 or (mvAreaController.selectedAreaLevel == 5 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}"
+                              styleClass="required form-group col-md-3 #{mvAreaController.selectedAreaLevel==5 ? 'updateNameId' : ''}">
+
+                    <h:outputLabel value="#{msgs['@area_level[5].name']}" for="pollingDistrictId"/>
+
+                    <h:selectOneListbox
+                            id="pollingDistrictId"
+                            size="1"
+                            styleClass="form-control"
+                            binding="#{mvAreaController.pollingDistrictListbox}">
+                        <f:selectItem itemLabel="#{msgs['@area_level[5].preselect']}"/>
+                        <f:selectItems value="#{mvAreaController.pollingDistrictItems}"/>
+                        <p:ajax
+                                update="pollingPlace :electionLevel3CreateForm:contestName :electionLevel3CreateForm:contestId"
+                                process="pollingDistrictId"
+                                event="change"
+                                listener="#{mvAreaController.changePollingDistrict}"/>
+                    </h:selectOneListbox>
+                </h:panelGroup>
+
+                <!-- Polling place -->
+                <h:panelGroup
+                        id="pollingPlace" layout="block"
+                        styleClass="required form-group col-md-3 #{mvAreaController.selectedAreaLevel==6 ? 'updateNameId' : ''}"
+                        rendered="#{mvAreaController.selectedAreaLevel > 6 or (mvAreaController.selectedAreaLevel == 6 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}">
+
+                    <h:outputLabel value="#{msgs['@area_level[6].name']}" for="pollingPlaceId"/>
+
+                    <h:selectOneListbox
+                            id="pollingPlaceId"
+                            size="1"
+                            styleClass="form-control"
+                            binding="#{mvAreaController.pollingPlaceListbox}">
+                        <f:selectItem itemLabel="#{msgs['@area_level[6].preselect']}"/>
+                        <f:selectItems value="#{mvAreaController.pollingPlaceItems}"/>
+                    </h:selectOneListbox>
+                </h:panelGroup>
+
+                <h:panelGroup
+                        id="createAll"
+                        layout="block"
+                        styleClass="checkbox"
+                        rendered="#{cc.attrs.createAll == 'true'}">
+
+                    <h:outputLabel for="createAllForParentArea">
+                        <h:selectBooleanCheckbox
+                                id="createAllForParentArea"
+                                value="#{mvAreaController.createAllForParentArea}"
+                                styleClass="form-control"/>
+                        #{msgs['@area.common.selectAll']}
+                    </h:outputLabel>
+
+
+                </h:panelGroup>
+            </h:panelGroup>
+        </h:panelGroup>
+    </composite:implementation>
+</ui:composition>

@@ -1,0 +1,478 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				contentType="text/html">
+
+<h:form id="electionLevel1CreateForm" role="form">
+<ui:param name="helpId" value="@help.election.election_group"/>
+
+<p:dialog
+		id="createElectionLevel1Dialog"
+		header="#{msgs['@election.election_group.create.header']}"
+		widgetVar="createElectionLevel1Widget"
+		fixedCenter="true"
+		modal="true"
+		fitViewport="true"
+		visible="false"
+		resizable="false"
+		width="940"
+		height="600">
+
+
+<h:panelGroup styleClass="row" layout="block">
+
+<div class="col-md-9 center-block">
+	<p:messages id="msg"/>
+</div>
+
+
+<!-- electionEventName -->
+<h:panelGroup styleClass="form-group col-md-12" layout="block">
+	<h:outputLabel value="#{msgs['@election_level[0].name']}" for="electionEventName"/>
+	<h:inputText
+			id="electionEventName"
+			disabled="true"
+			readonly="true"
+			styleClass="form-control"
+			value="#{electionGroupController.currentElectionGroup.electionEvent.name}"
+			/>
+</h:panelGroup>
+
+<!-- electionGroupId -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+	<h:outputLabel value="#{msgs['@common.id']}" for="electionGroupId"/>
+	<h:inputText
+			id="electionGroupId"
+			value="#{electionGroupController.currentElectionGroup.id}"
+			label="#{msgs['@common.id']}"
+			required="true"
+			maxlength="2"
+			disabled="#{isElectionEventDisabled}"
+			styleClass="form-control"/>
+</h:panelGroup>
+
+<!-- electionGroupName -->
+<h:panelGroup styleClass="required form-group col-md-6" layout="block">
+	<h:outputLabel value="#{msgs['@common.name']}" for="electionGroupName"/>
+	<h:inputText
+			id="electionGroupName"
+			value="#{electionGroupController.currentElectionGroup.name}"
+			label="#{msgs['@common.name']}"
+			styleClass="form-control"
+			maxlength="100"
+			required="true"
+			disabled="#{isElectionEventDisabled}"/>
+</h:panelGroup>
+
+<!-- voting type -->
+<h:panelGroup styleClass="required form-group col-md-12" layout="block">
+	<h:outputLabel value="#{msgs['@election.election_group.voting_type']}"/>
+	<h:selectOneRadio
+			id="votingType"
+			styleClass="ui-radio-group ui-radio-group-inline"
+			value="#{electionGroupController.votingType}"
+			label="#{msgs['@election.election_group.voting_type']}"
+			required="true"
+			disabled="#{isElectionEventDisabled}"
+			valueChangeListener="#{electionGroupController.changeVotingType}"
+			immediate="false">
+		<f:selectItem
+				itemLabel="#{msgs['@election.election_group.voting_type_select.paper']}"
+				itemValue="1"/>
+		<f:selectItem
+				itemLabel="#{msgs['@election.election_group.voting_type_select.electronic']}"
+				itemValue="2"/>
+		<f:selectItem
+				itemLabel="#{msgs['@election.election_group.voting_type_select.paper_and_electronic']}"
+				itemValue="3"/>
+		<p:ajax event="click" process="@this"
+				update="votingAccordion votingType votingAccordion:electronicUncontrolled"/>
+	</h:selectOneRadio>
+	<h:message for="votingType" id="votingTypeError"/>
+</h:panelGroup>
+
+<h:panelGroup styleClass="col-md-12" layout="block">
+<p:accordionPanel id="votingAccordion" styleClass="form-group pull-left panel panel-default pull-left">
+
+<!-- vote casting domestic/foreign/early -->
+<p:tab title="#{msgs['@election.election_group.cast_vote']}" titleStyleClass="panel-heading">
+	<!-- Early advance voting -->
+	<h:panelGroup id="earlyAdvanceVotingGroup" styleClass="form-group pull-left full-width panel" layout="block">
+
+		<h:panelGroup styleClass="form-group col-md-12" layout="block">
+
+			<h:outputLabel for="earlyAdvanceVotingAllowed" styleClass="checkbox-inline">
+
+				<h:selectBooleanCheckbox
+						id="earlyAdvanceVotingAllowed"
+						value="#{electionGroupController.earlyAdvanceVotingAllowed}"
+						immediate="true">
+
+					<p:ajax event="click" process="@this" update="earlyAdvanceVotingGroup"/>
+
+				</h:selectBooleanCheckbox>
+
+				#{msgs['@election.election_group.early_advance_voting_allowed']}
+
+			</h:outputLabel>
+
+		</h:panelGroup>
+
+		<!-- start date -->
+		<h:panelGroup styleClass="required form-group col-md-5 col-md-offset-1" rendered="#{electionGroupController.earlyAdvanceVotingAllowed}" layout="block">
+
+
+			<!-- Early advance voting start date -->
+			<h:outputLabel value="#{msgs['@election.election_group.early_advance_voting_from']}" for="earlyAdvanceVotingStartDate"/>
+
+			<p:inputMask
+					value="#{electionGroupController.currentElectionGroup.earlyAdvanceVotingStartDate}"
+					mask="#{msgs['@common.date.date_mask']}"
+					disabled="#{isElectionEventDisabled}"
+					converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+					id="earlyAdvanceVotingStartDate"
+					label="#{msgs['@election.election_group.early_advance_voting_from']}"
+					styleClass="form-control datepicker"
+					maxLength="10"
+					required="true">
+				<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+			</p:inputMask>
+			<h:outputText
+					styleClass="help-block"
+					value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+
+			<h:message for="earlyAdvanceVotingStartDate" id="earlyAdvanceVotingStartDateError"/>
+		</h:panelGroup>
+
+		<!-- end date -->
+		<h:panelGroup styleClass="required form-group col-md-5" rendered="#{electionGroupController.earlyAdvanceVotingAllowed}" layout="block">
+
+			<!-- Early advance voting end date -->
+			<h:outputLabel value="#{msgs['@common.to']}" for="earlyAdvanceVotingEndDate"/>
+			<p:inputMask
+					value="#{electionGroupController.currentElectionGroup.earlyAdvanceVotingEndDate}"
+					mask="#{msgs['@common.date.date_mask']}"
+					disabled="#{isElectionEventDisabled}"
+					label="#{msgs['@common.to']}"
+					converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+					id="earlyAdvanceVotingEndDate"
+					styleClass="form-control datepicker"
+					maxLength="10"
+					required="true">
+				<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+			<h:message for="earlyAdvanceVotingEndDate" id="earlyAdvanceVotingEndDateError"/>
+		</h:panelGroup>
+
+	</h:panelGroup>
+
+	<!-- Foreign advance voting -->
+	<h:panelGroup id="foreignAdvanceVotingGroup" styleClass="form-group pull-left full-width panel" layout="block">
+
+		<h:panelGroup styleClass="form-group col-md-12" layout="block">
+			<h:outputLabel for="foreignAdvanceVotingAllowed" styleClass="checkbox-inline">
+				<h:selectBooleanCheckbox
+						id="foreignAdvanceVotingAllowed"
+						value="#{electionGroupController.foreignAdvanceVotingAllowed}"
+						immediate="true">
+					<p:ajax event="click" process="@this" update="foreignAdvanceVotingGroup"/>
+				</h:selectBooleanCheckbox>
+				#{msgs['@election.election_group.foreign_advance_voting_allowed']}
+			</h:outputLabel>
+		</h:panelGroup>
+
+		<!-- start date -->
+		<h:panelGroup styleClass="required form-group col-md-5 col-md-offset-1" layout="block" rendered="#{electionGroupController.foreignAdvanceVotingAllowed}">
+
+			<h:outputLabel value="#{msgs['@election.election_group.foreign_advance_voting_from']}" for="foreignAdvanceVotingStartDate"/>
+
+			<p:inputMask
+					value="#{electionGroupController.currentElectionGroup.foreignAdvanceVotingStartDate}"
+					mask="#{msgs['@common.date.date_mask']}"
+					disabled="#{isElectionEventDisabled}"
+					label="#{msgs['@election.election_group.foreign_advance_voting_from']}"
+					converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+					id="foreignAdvanceVotingStartDate"
+					styleClass="form-control datepicker"
+					maxLength="10"
+					required="true">
+
+				<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+			</p:inputMask>
+
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+			<h:message for="foreignAdvanceVotingStartDate" id="foreignAdvanceVotingStartDateError"/>
+		</h:panelGroup>
+
+		<!-- end date -->
+		<h:panelGroup styleClass="required form-group col-md-5" layout="block" rendered="#{electionGroupController.foreignAdvanceVotingAllowed}">
+			<h:outputLabel value=" #{msgs['@common.to']}" for="foreignAdvanceVotingEndDate"/>
+			<p:inputMask
+					value="#{electionGroupController.currentElectionGroup.foreignAdvanceVotingEndDate}"
+					mask="#{msgs['@common.date.date_mask']}"
+					disabled="#{isElectionEventDisabled}"
+					label="#{msgs['@common.to']}"
+					converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+					id="foreignAdvanceVotingEndDate"
+					styleClass="form-control datepicker"
+					maxLength="10"
+					required="true">
+				<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+			<h:message for="foreignAdvanceVotingEndDate" id="foreignAdvanceVotingEndDateError"/>
+		</h:panelGroup>
+
+	</h:panelGroup>
+
+	<!-- Domestic advance voting -->
+	<h:panelGroup id="domesticAdvanceVoting" styleClass="form-group pull-left full-width panel" layout="block">
+
+		<h:panelGroup styleClass="form-group col-md-12" layout="block">
+			<h:outputLabel styleClass="checkbox-inline" for="domesticAdvanceVotingAllowed">
+				<h:selectBooleanCheckbox
+						id="domesticAdvanceVotingAllowed"
+						value="#{electionGroupController.domesticAdvanceVotingAllowed}"
+						immediate="true">
+					<p:ajax event="click" process="@this" update="domesticAdvanceVoting"/>
+				</h:selectBooleanCheckbox>
+				#{msgs['@election.election_group.domestic_advance_voting_allowed']}
+			</h:outputLabel>
+		</h:panelGroup>
+
+
+		<!-- start date -->
+		<h:panelGroup styleClass="required form-group col-md-5 col-md-offset-1" layout="block" rendered="#{electionGroupController.domesticAdvanceVotingAllowed}">
+			<h:outputLabel value="#{msgs['@election.election_group.domestic_advance_voting_from']}" for="domesticAdvanceVotingStartDate"/>
+			<p:inputMask
+					value="#{electionGroupController.currentElectionGroup.domesticAdvanceVotingStartDate}"
+					mask="#{msgs['@common.date.date_mask']}"
+					disabled="#{isElectionEventDisabled}"
+					label="#{msgs['@election.election_group.domestic_advance_voting_from']}"
+					converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+					id="domesticAdvanceVotingStartDate"
+					styleClass="form-control datepicker"
+					maxLength="10"
+					required="true">
+				<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+			<h:message for="domesticAdvanceVotingStartDate" id="domesticAdvanceVotingStartDateError"/>
+		</h:panelGroup>
+
+		<!-- end date -->
+		<h:panelGroup styleClass="required  form-group col-md-5" layout="block" rendered="#{electionGroupController.domesticAdvanceVotingAllowed}">
+			<h:outputLabel value=" #{msgs['@common.to']}" for="domesticAdvanceVotingEndDate"/>
+
+			<p:inputMask
+					value="#{electionGroupController.currentElectionGroup.domesticAdvanceVotingEndDate}"
+					mask="#{msgs['@common.date.date_mask']}"
+					disabled="#{isElectionEventDisabled}"
+					label="#{msgs['@common.to']}"
+					converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+					id="domesticAdvanceVotingEndDate"
+					styleClass="form-control datepicker"
+					maxLength="10"
+					required="true">
+				<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+			<h:message for="domesticAdvanceVotingEndDate" id="domesticAdvanceVotingEndDateError"/>
+		</h:panelGroup>
+
+	</h:panelGroup>
+</p:tab>
+<!-- /vote casting domestic/foreign/early -->
+
+<!-- electronic uncontrolled -->
+<p:tab title="#{msgs['@election.election_group.electronic_uncontrolled_voting']}" rendered="#{electionGroupController.currentElectionGroup.electronicVoting}"
+	   titleStyleClass="panel-heading required">
+	<!-- electronic uncontrolled -->
+	<h:panelGroup id="electronicUncontrolled" styleClass="panel-body" layout="block">
+
+		<!-- Electronic voting start date -->
+		<h:panelGroup styleClass="required form-group col-md-6" layout="block">
+			<h:outputLabel value="#{msgs['@election.election_group.date_info.electronic_voting_from']}" for="electronicVotingStartDatetime"/>
+			<p:inputMask
+					value="#{electionGroupController.currentElectionGroup.electronicVotingStartDatetime}"
+					mask="#{msgs['@common.date.date_mask']}"
+					disabled="#{isElectionEventDisabled}"
+					converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+					id="electronicVotingStartDatetime"
+					label="#{msgs['@election.election_group.date_info.electronic_voting_from']}:"
+					styleClass="form-control datepicker"
+					maxLength="10"
+					required="true">
+				<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+			<h:message for="electronicVotingStartDatetime" id="electronicVotingStartDateError"/>
+		</h:panelGroup>
+
+		<h:panelGroup styleClass="required form-group col-md-6" layout="block">
+			<h:outputLabel value="#{msgs['@common.clock.short']}" for="startTimeElectronicVoting"/>
+			<!-- #{electionGroupController.startTimeElectronicVoting}-->
+			<p:inputMask
+					value=""
+					mask="#{msgs['@common.date.time_mask']}"
+					id="startTimeElectronicVoting"
+					label="#{msgs['@common.clock.short']}"
+					required="true"
+					styleClass="form-control">
+				<f:converter converterId="timeConverter"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.time_display_pattern']}"/>
+			<h:message for="startTimeElectronicVoting" id="startTimeElectronicVotingError" styleClass="inline-error"/>
+		</h:panelGroup>
+
+		<!-- Electronic voting end date -->
+		<h:panelGroup styleClass="required form-group col-md-6" layout="block">
+			<h:outputLabel value=" #{msgs['@election.election_group.date_info.electronic_voting_to']}" for="electronicVotingEndDatetime"/>
+			<p:inputMask
+					value="#{electionGroupController.currentElectionGroup.electronicVotingEndDatetime}"
+					mask="#{msgs['@common.date.date_mask']}"
+					disabled="#{isElectionEventDisabled}"
+					converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+					id="electronicVotingEndDatetime"
+					label="#{msgs['@election.election_group.date_info.electronic_voting_to']}:"
+					styleClass="form-control datepicker"
+					maxLength="10"
+					required="true">
+				<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+			<h:message for="electronicVotingEndDatetime" id="electronicVotingEndDateError"/>
+		</h:panelGroup>
+
+		<h:panelGroup styleClass="required form-group col-md-6" layout="block">
+			<h:outputLabel value="#{msgs['@common.clock.short']}" for="endTimeElectronicVoting"/>
+			<!--#{electionGroupController.endTimeElectronicVoting} -->
+			<p:inputMask
+					value=""
+					mask="#{msgs['@common.date.time_mask']}"
+					id="endTimeElectronicVoting"
+					label="#{msgs['@common.clock.short']}"
+					required="true"
+					styleClass="form-control">
+				<f:converter converterId="timeConverter"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.time_display_pattern']}"/>
+			<h:message for="endTimeElectronicVoting" id="endTimeElectronicVotingError" styleClass="inline-error"/>
+		</h:panelGroup>
+	</h:panelGroup>
+</p:tab>
+<!-- /electronic uncontrolled -->
+
+<!-- electronic controlled -->
+<p:tab title="#{msgs['@election.election_group.electronic_controlled_voting']}" rendered="#{electionGroupController.currentElectionGroup.electronicVoting}"
+	   titleStyleClass="panel-heading required">
+
+	<h:panelGroup id="electronicControlledVoting" styleClass="panel-body" layout="block">
+
+		<!-- Electronic voting start date -->
+		<h:panelGroup styleClass="required form-group col-md-6">
+			<h:outputLabel
+					value="#{msgs['@election.election_group.date_info.electronic_voting_from']}"
+					for="electronicVotingControlledStartDatetime"/>
+			<p:inputMask
+					value="#{electionGroupController.currentElectionGroup.electronicVotingControlledStartDatetime}"
+					mask="#{msgs['@common.date.date_mask']}"
+					disabled="#{isElectionEventDisabled}"
+					converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+					id="electronicVotingControlledStartDatetime"
+					label="#{msgs['@election.election_group.date_info.electronic_voting_from']}:"
+					styleClass="form-control datepicker"
+					maxLength="10">
+				<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+			<h:message for="electronicVotingControlledStartDatetime" id="electronicVotingControlledStartDateError"/>
+		</h:panelGroup>
+
+		<h:panelGroup styleClass="required form-group col-md-6">
+			<h:outputLabel value="#{msgs['@common.clock.short']}" for="startTimeElectronicVotingControlled"/>
+			<p:inputMask
+					value="#{electionGroupController.startTimeElectronicVotingControlled}"
+					mask="#{msgs['@common.date.time_mask']}"
+					id="startTimeElectronicVotingControlled"
+					label="#{msgs['@common.clock.short']}"
+					styleClass="form-control">
+				<f:converter converterId="timeConverter"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.time_display_pattern']}"/>
+			<h:message for="startTimeElectronicVotingControlled" id="startTimeElectronicVotingControlledError" styleClass="inline-error"/>
+		</h:panelGroup>
+
+		<!-- Electronic voting end date -->
+		<h:panelGroup styleClass="required form-group col-md-6">
+			<h:outputLabel
+					value=" #{msgs['@election.election_group.date_info.electronic_voting_to']}: "
+					for="electronicVotingControlledEndDatetime"/>
+			<p:inputMask
+					value="#{electionGroupController.currentElectionGroup.electronicVotingControlledEndDatetime}"
+					mask="#{msgs['@common.date.date_mask']}"
+					disabled="#{isElectionEventDisabled}"
+					converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+					id="electronicVotingControlledEndDatetime"
+					label="#{msgs['@election.election_group.date_info.electronic_voting_to']}:"
+					styleClass="form-control datepicker"
+					maxLength="10">
+				<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+			<h:message for="electronicVotingControlledEndDatetime" id="electronicVotingControlledEndDateError"/>
+		</h:panelGroup>
+
+		<h:panelGroup styleClass="required form-group col-md-6">
+			<h:outputLabel value="#{msgs['@common.clock.short']}" for="endTimeElectronicVotingControlled"/>
+			<p:inputMask
+					value="#{electionGroupController.endTimeElectronicVotingControlled}"
+					mask="#{msgs['@common.date.time_mask']}"
+					id="endTimeElectronicVotingControlled"
+					label="#{msgs['@common.clock.short']}"
+					styleClass="form-control">
+				<f:converter converterId="timeConverter"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.time_display_pattern']}"/>
+			<h:message for="endTimeElectronicVotingControlled" id="endTimeElectronicVotingControlledError" styleClass="inline-error"/>
+		</h:panelGroup>
+	</h:panelGroup>
+</p:tab>
+<!-- /electronic controlled -->
+
+</p:accordionPanel>
+</h:panelGroup>
+</h:panelGroup>
+<f:facet name="footer">
+	<p:commandButton
+			id="create"
+			actionListener="#{electionGroupController.doCreateElectionGroup(electionGroupController.currentElectionGroup)}"
+			oncomplete="createElectionGroupDialogBox(xhr, status, args)"
+			update=":electionLevel1CreateForm:msg :hierarchyEditor"
+			value="#{msgs['@common.save']}"
+			disabled="#{!UserDataController.hasAccess('w.configuration.election.election_group')}"
+			icon="eva-icon-checkmark"
+			styleClass="btn btn-primary"/>
+
+	<p:commandLink
+			id="backToElectionList"
+			onclick="PF('createElectionLevel1Widget').hide(); return false;"
+			value="#{msgs['@common.cancel']}"
+			styleClass="btn btn-link"/>
+</f:facet>
+
+</p:dialog>
+</h:form>
+<script type="text/javascript">
+	//<![CDATA[
+	function createElectionGroupDialogBox(xhr, status, args) {
+		if (args.createElectionGroupHideDialog) {
+			PF('createElectionLevel1Widget').hide();
+		}
+	}
+	//]]>
+</script>
+</ui:composition>

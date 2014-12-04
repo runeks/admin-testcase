@@ -1,0 +1,696 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://java.sun.com/jsp/jstl/core" contentType="text/html">
+
+<ui:composition template="/templates/layoutDeprecated.xhtml">
+<ui:param name="hideMainPageLink" value="yes"/>
+
+<ui:param name="helpId" value="@help.index"/>
+
+<ui:define name="topinfoheader">
+    <img src="#{resource['images:ixd/section-home.png']}" alt="#{msgs['@menu.main_page']}"/>
+    <h:outputText value="#{msgs['@menu.main_page']}"/>
+</ui:define>
+
+<ui:define name="content">
+<h:form id="fwMainContentForm" action="">
+<div class="frontpage">
+<div class="left">
+<div class="box">
+<h2>#{UserDataController.electionEvent.name}</h2>
+
+<div>
+<!-- Konfigurasjon -->
+<c:set var="anyConfArea"
+       value="#{UserDataController.hasAccess('w.configuration.area.country,
+													w.configuration.area.country, w.configuration.area.county, w.configuration.area.municipality, 
+													w.configuration.area.borough, w.configuration.area.polling_district, w.configuration.area.polling_place, 
+													w.configuration.area.polling_station') }"/>
+<c:set var="anyConfElection"
+       value="#{UserDataController.hasAccess('w.configuration.election.election_event,
+													w.configuration.election.election_group, w.configuration.election.election, 
+													w.configuration.election.contest, w.configuration.enable_election_event') }"/>
+
+<c:if
+        test="#{anyConfArea
+										or anyConfElection
+										or UserDataController.hasAccess('w.configuration.download')
+										or UserDataController.hasAccess('w.configuration.reporting_unit')
+										or UserDataController.hasAccess('w.configuration.reporting_unit_type')
+										or UserDataController.hasAccess('w.configuration.local_configuration_overview')
+										or UserDataController.hasAccess('w.configuration.local_configuration_overview.election')
+										or UserDataController.hasAccess('w.configuration.local_configuration_overview.area')
+										or UserDataController.hasAccess('w.configuration.central_configuration_overview')}">
+    <div class="box">
+        <h3 class="icon-header header-configuration">#{msgs['@menu.config.header']}</h3>
+
+        <p:confirmDialog
+                message="#{msgs['@menu.config.central_overview.show_msg']}"
+                severity="info" widgetVar="centralConfirmDialog">
+            <p:commandButton value="Ja"
+                             onclick="PF('centralConfirmDialog').hide(); window.location = 'central_configuration_overview.xhtml';"/>
+            <p:commandButton value="Avbryt"
+                             onclick="PF('centralConfirmDialog').hide();" type="button"/>
+        </p:confirmDialog>
+
+
+        <div>
+            <ul>
+                <c:if
+                        test="#{anyConfArea or anyConfElection or UserDataController.hasAccess('w.configuration.download') or UserDataController.hasAccess('w.configuration.reporting_unit')}">
+                    <c:if
+                            test="#{UserDataController.hasAccess('w.create_election_event')}">
+                        <li><a href="/secure/listElectionEvents.xhtml">#{msgs['@menu.config.election_event_administration']}</a>
+                        </li>
+                    </c:if>
+                    <c:if
+                            test="#{UserDataController.hasAccess('w.copy_roles')}">
+                        <li><a href="/secure/copyRoles.xhtml">#{msgs['@menu.config.copy_roles']}</a>
+                        </li>
+                    </c:if>
+                    <c:if
+                            test="#{UserDataController.hasAccess('w.configuration.election.election_event')}">
+                        <li><a href="/secure/electionEvent.xhtml">#{msgs['@menu.config.edit_election_event']}</a>
+                        </li>
+                    </c:if>
+                    <c:if test="#{anyConfArea}">
+                        <li><a href="/secure/listAreas.xhtml">#{msgs['@menu.config.area']}</a>
+                        </li>
+                    </c:if>
+                    <c:if test="#{anyConfElection}">
+                        <li><a href="/secure/listElections.xhtml">#{msgs['@menu.config.election']}</a>
+                        </li>
+                    </c:if>
+                    <c:if
+                            test="#{UserDataController.hasAccess('w.configuration.reporting_count_category') }">
+                        <li><a href="/secure/categories/listReportCountCategories.xhtml">#{msgs['@menu.config.report_count_category']}</a>
+                        </li>
+                    </c:if>
+                    <c:if
+                            test="#{UserDataController.hasAccess('w.configuration.election_vote_count_category') }">
+                        <li><a href="/secure/categories/configureCentralCountCategories.xhtml">#{msgs['@menu.config.election_vote_count_category']}</a>
+                        </li>
+                    </c:if>
+                    <c:if
+                            test="#{UserDataController.hasAccess('w.configuration.reporting_unit')}">
+                        <li><a href="/secure/listReportingUnits.xhtml">#{msgs['@menu.config.reporting_unit']}</a>
+                        </li>
+                    </c:if>
+                    <c:if
+                            test="#{UserDataController.hasAccess('w.configuration.download')}">
+                        <li><a href="/secure/generateEML.xhtml">#{msgs['@menu.config.generate_download_EML']}</a>
+                        </li>
+                    </c:if>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.configuration.reporting_unit_type')}">
+                    <li><a href="/secure/reportingUnitType.xhtml">#{msgs['@menu.config.reporting_unit_type']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.configuration.central_configuration_overview')}">
+                    <li><p:commandLink
+                            value="#{msgs['@menu.config.central_overview']}"
+                            onclick="PF('centralConfirmDialog').show(); return false;"/></li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.configuration.local_configuration_overview') or UserDataController.hasAccess('w.configuration.local_configuration_overview.election')}">
+                    <c:choose>
+                        <c:when
+                                test="not #{UserDataController.hasAccess('w.configuration.local_configuration_overview.area')})">
+                            <li><a href="/secure/local_area_configuration.xhtml">#{msgs['@menu.config.local_overview']}</a>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li><a href="/secure/local_area_configuration.xhtml">#{msgs['@menu.config.local_overview']}</a>
+                            </li>
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.configuration.area_import')}">
+                    <li><a href="/secure/import_area_hierarchy.xhtml">#{msgs['@menu.config.area_import']}</a></li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.certificates.management')}">
+                    <li><a href="/secure/signingKeys.xhtml">#{msgs['@menu.config.certificate_management']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.configuration.area.polling_station')
+							and menuController.canConfigurePollingStations()}">
+                    <li><a href="/secure/pollingStationConf.xhtml">#{msgs['@menu.config.polling_station']}</a>
+                    </li>
+                </c:if>
+            </ul>
+        </div>
+    </div>
+</c:if>
+<!-- Valglister -->
+<c:set var="candEditF"
+       value="#{UserDataController.hasAccess('w.ballot') and menuController.hasElectionsWithElectionType('F')}"/>
+<c:set var="canCreateF"
+       value="#{UserDataController.hasAccess('w.ballot.create') and menuController.hasElectionsWithElectionType('F')}"/>
+<c:set var="canEditR"
+       value="#{UserDataController.hasAccess('w.ballot') and menuController.hasElectionsWithElectionType('R')}"/>
+<c:set var="canEditP"
+       value="#{UserDataController.hasAccess('w.party')}"/>
+<c:if test="#{candEditF or canCreateF or canEditR or canEditP}">
+    <div class="box">
+        <h3 class="icon-header header-lists">#{msgs['@menu.listProposal.header']}</h3>
+
+        <div>
+            <ul>
+                <c:if test="#{candEditF}">
+                    <li><a href="/secure/listProposal/createListProposal.xhtml">#{msgs['@menu.listProposal.create']}</a>
+                    </li>
+                </c:if>
+                <c:if test="#{canEditP}">
+                    <li><a href="/secure/editPartyList.xhtml">#{msgs['@menu.config.partyregister']}</a>
+                    </li>
+                </c:if>
+                <c:if test="#{canCreateF and !candEditF}">
+                    <c:if
+                            test="#{UserDataController.userData.operatorRole.operator.party != null}">
+                        <li><a href="/secure/listProposal/editListProposal.xhtml">#{msgs['@menu.listProposal']}</a>
+                        </li>
+                    </c:if>
+                    <c:if
+                            test="#{UserDataController.userData.operatorRole.operator.party == null}">
+                        <p:confirmDialog
+                                message="#{msgs['@listProposal.noPartyAffiliation']}"
+                                modal="true" header="#{msgs['@menu.listProposal']}"
+                                severity="alert" widgetVar="noOperatorPartyWidget">
+                            <p:commandButton value="#{msgs['@common.ok']}"
+                                             oncomplete="PF('noOperatorPartyWidget').hide()"/>
+                        </p:confirmDialog>
+                        <li><p:commandLink
+                                value="#{msgs['@menu.listProposal']}"
+                                onclick="PF('noOperatorPartyWidget').show()"/></li>
+                    </c:if>
+                </c:if>
+                <c:if test="#{candEditF}">
+                    <li><a href="/secure/listProposal/chooseEditListProposal.xhtml">#{msgs['@menu.listProposal.existing']}</a>
+                    </li>
+                    <li><a href="/secure/listProposal/configContestListProposal.xhtml">#{msgs['@menu.listProposal.config']}</a>
+                    </li>
+                </c:if>
+                <c:if test="#{canEditR}">
+                    <li><a href="/secure/editReferendumOption.xhtml">#{msgs['@menu.listProposal.optionLists']}</a>
+                    </li>
+                </c:if>
+                <!-- The functionality for listProposa RSS Ref. Issue #1503
+                <li><a
+                    href="/lists/?#{UserDataController.electionEvent.id}"
+                    target="_blank">#{msgs['@listProposal.rss-feeds']}</a></li>
+                    -->
+            </ul>
+        </div>
+    </div>
+</c:if>
+<!-- Manntall -->
+<c:if
+        test="#{UserDataController.hasAccess('w.voter.create')
+										or UserDataController.hasAccess('w.voter.update')
+										or UserDataController.hasAccess('w.voter.search')
+										or UserDataController.hasAccess('w.electoral_roll.create')
+										or UserDataController.hasAccess('w.electoral_roll.reports')
+										or UserDataController.hasAccess('w.electoral_roll.download')
+										or UserDataController.hasAccess('w.voting.receive.emptyElectionCard')}">
+    <div class="box">
+        <h3 class="icon-header header-voters">#{msgs['@menu.electoralRoll.header']}</h3>
+
+        <div>
+            <ul>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.voter.create') or UserDataController.hasAccess('w.voter.update') or UserDataController.hasAccess('w.voter.search')}">
+                    <li><a href="/secure/searchElectoralRoll.xhtml">#{msgs['@menu.electoralRoll.update']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.voter.create') and UserDataController.hasAccess('w.voter.update') and UserDataController.hasMinAreaLevel('3')}">
+                    <li><a href="/secure/newVoterElectoralRoll.xhtml">#{msgs['@menu.electoralRoll.create']}</a>
+                    </li>
+                </c:if>
+
+                <!-- The functionality for creating person when receiving votes are temporarily disabled in controller getter. Ref. Issue #792
+                <c:if
+                    test="#{UserDataController.hasAccess('w.voter.update') and UserDataController.hasMinAreaLevel('3')}">
+                    <li><a href="/secure/votersNotApprovedReport.xhtml">#{msgs['@menu.electoralRoll.approve']}</a>
+                    </li>
+                </c:if>
+                -->
+                <c:if
+                        test="#{UserDataController.hasAccess('w.electoral_roll.create')}">
+                    <li><a href="/secure/generateVoterNumbers.xhtml">#{msgs['@menu.electoralRoll.voterNumbers']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.electoral_roll.create')}">
+                    <li><a href="/secure/generateVoterNumberBatches.xhtml">#{msgs['@menu.electoralRoll.listVoterNumbers']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.voter.create') and UserDataController.hasAccess('w.voter.update') and UserDataController.hasMinAreaLevel('3')}">
+                    <li><a href="/secure/listVoterAudit.xhtml">#{msgs['@menu.electoralRoll.history']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.electoral_roll.create')}">
+                    <li><a href="/secure/importElectoralRoll.xhtml">#{msgs['@menu.electoralRoll.import']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.electoral_roll.create')}">
+                    <li><a href="/secure/electoralRollBatches.xhtml">#{msgs['@menu.electoralRoll.listImports']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.voting.receive.emptyElectionCard')}">
+                    <li><a href="/secure/emptyElectionCard.xhtml">#{msgs['@menu.report.empty_election_card']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.electoral_roll.download')}">
+                    <li><a href="/secure/downloadElectionList.xhtml">#{msgs['@menu.electoralRoll.download']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.voter.returnVotingCard')}">
+                    <li><a href="/secure/voting/searchReturnVotingCard.xhtml">#{msgs['@menu.electoralRoll.returnVotingCard']}</a>
+                    </li>
+                </c:if>
+
+                <c:if
+                        test="#{UserDataController.hasAccess('w.electoral_roll.reports')}">
+                    <li><a href="/secure/reporting/electoralRollReports.xhtml">#{msgs['@menu.electoralRoll.reports']}</a>
+                    </li>
+                </c:if>
+
+            </ul>
+        </div>
+    </div>
+</c:if> <!-- Systembrukere --> <c:if
+        test="#{UserDataController.hasAccess('w.rbac.operator, w.rbac.role, w.rbac.inspect, w.rbac.role_export_import')}">
+    <div class="box">
+        <h3 class="icon-header header-users">#{msgs['@menu.rbac']}</h3>
+
+        <div>
+            <ul>
+                <c:if test="#{UserDataController.hasAccess('w.rbac.operator')}">
+                    <li><a href="/secure/adminOperators.xhtml" id="adminOperators">#{msgs['@menu.rbac.operators']}</a>
+                    </li>
+                </c:if>
+                <c:if test="#{UserDataController.hasAccess('w.rbac.role')}">
+                    <li><a href="/secure/adminRoles.xhtml" id="adminRoles">#{msgs['@menu.rbac.roles']}</a>
+                    </li>
+                </c:if>
+
+                <c:if test="#{UserDataController.hasAccess('w.rbac.role_export_import')}">
+                    <li><a href="/secure/exportImportRoles.xhtml">#{msgs['@menu.rbac.roles_export_import']}</a>
+                    </li>
+                </c:if>
+
+                <c:if test="#{UserDataController.hasAccess('w.rbac.inspect')}">
+                    <li><a href="/secure/inspectSecObj.xhtml" id="inspect">#{msgs['@rbac.inspect.inspectTitle']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.rbac.import_export')}">
+                    <li><a href="/secure/exportImportOperators.xhtml">#{msgs['@menu.rbac.import_export']}</a>
+                    </li>
+                </c:if>
+            </ul>
+        </div>
+    </div>
+</c:if> <!-- Tekstoversettelser --> <c:if
+        test="#{UserDataController.hasAccess('w.translation.local, w.translation.global')}">
+    <div class="box">
+        <h3 class="icon-header header-translation">#{msgs['@menu.translation.heading']}</h3>
+
+        <div>
+            <ul>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.translation.local')}">
+                    <li><a href="/secure/translation.xhtml">#{msgs['@translation.edit.heading']}</a>
+                    </li>
+                    <li><a href="/secure/translationAdd.xhtml">#{msgs['@translation.add.heading']}</a>
+                    </li>
+                    <li><a href="/secure/translationDelete.xhtml">#{msgs['@translation.delete.heading']}</a>
+                    </li>
+                    <li><a href="/secure/translationImport.xhtml">#{msgs['@translation.import.heading']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.translation.global')}">
+                    <li><a href="/secure/translation.xhtml?global=true">#{msgs['@translation.edit.globalHeading']}</a>
+                    </li>
+                    <li><a href="/secure/translationAdd.xhtml?global=true">#{msgs['@translation.add.globalHeading']}</a>
+                    </li>
+                    <li><a href="/secure/translationDelete.xhtml?global=true">#{msgs['@translation.delete.globalHeading']}</a>
+                    </li>
+                    <li><a href="/secure/translationImport.xhtml?global=true">#{msgs['@translation.import.globalHeading']}</a>
+                    </li>
+                </c:if>
+            </ul>
+        </div>
+    </div>
+</c:if> <!-- Opptelling --> <c:if
+        test="#{UserDataController.hasAccess('w.count.early_voting.ballot_count, w.count.election_day.voting_count, w.count.election_day.ballot_count, e.count.upload, e.count.barcode')}">
+    <div class="box">
+        <h3 class="icon-header header-counting">#{msgs['@menu.counting.heading']}</h3>
+
+        <div>
+            <ul>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.early_voting.ballot_count') and menuController.isValidCountCategoryId('FO')}">
+                    <li><a href="/secure/counting/countingStart.xhtml?vcc=FO">#{msgs['@menu.counting.ordinary_advance_votes']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.early_voting.ballot_count') and menuController.isValidCountCategoryId('FS')}">
+                    <li><a href="/secure/counting/countingStart.xhtml?vcc=FS">#{msgs['@menu.counting.late_advance_votes']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.election_day.voting_count, w.count.election_day.ballot_count') and menuController.isValidCountCategoryId('VO')}">
+                    <li><a href="/secure/counting/countingStart.xhtml?vcc=VO">#{msgs['@menu.counting.regular_electionday_votes']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.election_day.ballot_count') and menuController.isValidCountCategoryId('VF')}">
+                    <li><a href="/secure/counting/countingStart.xhtml?vcc=VF">#{msgs['@menu.counting.foreign_votes']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.election_day.ballot_count') and menuController.isValidCountCategoryId('VS')}">
+                    <li><a href="/secure/counting/countingStart.xhtml?vcc=VS">#{msgs['@menu.counting.special_cover_votes']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.approve_rejected')}">
+                    <li><a href="/secure/counting/approveManualRejectedCount.xhtml">#{msgs['@menu.counting.approve_rejected.manual']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.approve_rejected')}">
+                    <li><a href="/secure/counting/approveScannedRejectedCount.xhtml">#{msgs['@menu.counting.approve_rejected.scan']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.early_voting.ballot_count') and menuController.isValidCountCategoryId('EO')}">
+                    <li><a href="/secure/counting/countingStart.xhtml?vcc=EO">#{msgs['@menu.counting.electronic']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.early_voting.ballot_count') and menuController.isValidCountCategoryId('EK')}">
+                    <li><a href="/secure/counting/countingStart.xhtml?vcc=EK">#{msgs['@menu.counting.electronic_controlled_environment']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.election_day.ballot_count') and menuController.isValidCountCategoryId('VB')}">
+                    <ui:fragment rendered="#{menuController.isElectronicMarkoffsConfigured()}">
+                        <li><a href="/secure/counting/countingStart.xhtml?vcc=VB">#{msgs['@menu.counting.emergency_envelopes']}</a>
+                        </li>
+                    </ui:fragment>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.overview')}">
+                    <li><a href="/secure/counting/countingOverview.xhtml">#{msgs['@menu.counting.overview']}</a>
+                    </li>
+                </c:if>
+                <c:if test="#{UserDataController.hasAccess('e.count.barcode')}">
+                    <li><a href="/secure/sticker.xhtml">#{msgs['@menu.counting.barcode_sticker']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.county_vote_count') and UserDataController.userData.operatorRole.mvArea.areaLevel eq 3 and menuController.hasElectionsWithElectionType('F')}">
+                    <li><a href="/secure/countyCollatedCountResults.xhtml">#{msgs['@menu.counting.countyResults']}</a>
+                    </li>
+                </c:if>
+            </ul>
+        </div>
+    </div>
+
+
+</c:if> <!-- Valgoppgjør --> <c:if
+        test="#{UserDataController.hasAccess('w.settlement.read') or UserDataController.hasAccess('w.count.leveling_seats')}">
+    <div class="box">
+        <h3 class="icon-header header-settlement">#{msgs['@menu.settlement.heading']}</h3>
+
+        <div>
+            <ul>
+                <c:if test="#{UserDataController.hasAccess('w.settlement.read')}">
+                    <li><a href="/secure/counting/countingOverview.xhtml">#{msgs['@menu.counting.overview']}</a>
+                    </li>
+                    <li><a href="/secure/settlement/settlementStatus.xhtml?p=1">#{msgs['@menu.settlement.status']}</a>
+                    </li>
+                    <li><a href="/secure/settlement/collatedCountResults.xhtml?p=2">#{msgs['@menu.settlement.result']}</a>
+                    </li>
+                    <li><a href="/secure/settlement/settlementResult.xhtml?p=3">#{msgs['@menu.settlement.mandate_distribution']}</a>
+                    </li>
+                    <li><a href="/secure/settlement/candidateAnnouncement.xhtml?p=4">#{msgs['@menu.settlement.candidate_announcement']}</a>
+                    </li>
+                    <c:if
+                            test="#{false and UserDataController.hasAccess('w.count.revokeVoteCounts')}">
+                        <li><a href="/secure/revokeVoteCounts.xhtml">#{msgs['@revoke.voteCount.header']}</a>
+                        </li>
+                    </c:if>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.count.leveling_seats')}">
+                    <li><a href="/secure/levelingSeats.xhtml">#{msgs['@menu.settlement.leveling_seats']}</a>
+                    </li>
+                </c:if>
+            </ul>
+        </div>
+    </div>
+</c:if> <!-- Forhåndsstemme --> <c:if
+        test="#{(UserDataController.hasAccess('w.voting.receive.early_vote') or UserDataController.hasAccess('w.voting.issuing_point.advance')) and UserDataController.hasMinAreaLevel('6') and UserDataController.hasMinElectionLevel('1')}">
+    <div class="box">
+        <h3 class="icon-header header-earlyvote">#{msgs['@menu.earlyVoting.header']}</h3>
+
+        <div>
+            <ul>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.voting.receive.early_vote')}">
+                    <li><a href="/secure/searchAdvanceVoting.xhtml">#{msgs['@menu.earlyVoting.manual']}</a>
+                    </li>
+                </c:if>
+
+                <c:if test="#{UserDataController.hasAccess('w.voting.reports.advance')}">
+                    <li>
+                        <a href="/secure/reporting/advanceVotingReports.xhtml">#{msgs['@menu.earlyVoting.reports']}</a>
+                    </li>
+                </c:if>
+            </ul>
+        </div>
+    </div>
+</c:if> <!-- Valgting --> <c:if
+        test="#{UserDataController.hasAccess('w.voting.receive.central_registration') or UserDataController.hasAccess('w.voting.receive.election_day_vote') or UserDataController.hasAccess('w.voting.receive.election_day_vote_special')
+					        or UserDataController.hasAccess('w.voting.revoke') or UserDataController.hasAccess('w.voting.issuing_point.election_day')}">
+    <div class="box">
+        <h3 class="icon-header header-electionday">#{msgs['@menu.electionDay.header']}</h3>
+
+        <div>
+            <ul>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.voting.receive.election_day_vote') and UserDataController.hasMinAreaLevel('6') and UserDataController.hasMinElectionLevel('1')
+													        and UserDataController.userData.operatorRole.electronicMarkoffsConfigured}">
+                    <li><a href="/secure/searchElectionDay.xhtml">#{msgs['@menu.electionDay.register']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.voting.receive.election_day_vote_special') and UserDataController.hasMinAreaLevel('6') and UserDataController.hasMinElectionLevel('1')}">
+                    <li><a href="/secure/searchElectionDaySpecialCover.xhtml">#{msgs['@menu.electionDay.registerSpecialCover']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.voting.revoke') and UserDataController.hasMinAreaLevel('6') and UserDataController.hasMinElectionLevel('1')}">
+                    <li><a href="/secure/removeVotingReport.xhtml">#{msgs['@menu.electionDay.remove']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.voting.receive.election_day_emergency') and UserDataController.hasMinAreaLevel('6') and UserDataController.hasMinElectionLevel('1')}">
+                    <ui:fragment
+                            rendered="#{menuController.isElectronicMarkoffsConfigured()}">
+                        <li><a href="/secure/searchElectionDayEmergency.xhtml">#{msgs['@menu.electionDay.registerEmergency']}</a>
+                        </li>
+                    </ui:fragment>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.voting.receive.central_registration')}">
+                    <li><a href="/secure/searchCentralRegistration.xhtml">#{msgs['@menu.electionDay.central_registration']}</a>
+                    </li>
+                </c:if>
+            </ul>
+        </div>
+    </div>
+</c:if>
+<!-- Rapport -->
+<c:if
+        test="#{UserDataController.hasAccess('e.reporting.kit.download') or UserDataController.hasAccess('e.reporting.template.upload')
+									or UserDataController.hasAccess('e.reporting.template.download') or UserDataController.hasAccess('e.reporting.template.edit')
+									or UserDataController.hasAccess('e.reporting.template.duplicate') or UserDataController.hasAccess('e.reporting.template.validate')
+									or UserDataController.hasAccess('e.reporting.template.deactivate') or UserDataController.hasAccess('e.reporting.template.reactivate')
+									or UserDataController.hasAccess('e.reporting.template.delete') or UserDataController.hasAccess('e.reporting.template.execute')
+									or UserDataController.hasAccess('e.reporting.template.execute_in_process') or UserDataController.hasAccess('e.reporting.report.download')
+									or UserDataController.hasAccess('e.reporting.report.validate') or UserDataController.hasAccess('e.reporting.report.deactivate')
+									or UserDataController.hasAccess('e.reporting.report.reactivate') or UserDataController.hasAccess('e.reporting.report.delete')
+									or UserDataController.hasAccess('e.reporting.statistic.data') or UserDataController.hasAccess('e.reporting.statistic.election')
+									or UserDataController.hasAccess('e.reporting.statistic.corrected_result') or UserDataController.hasAccess('w.reporting.user.list')}">
+    <div class="box">
+        <h3 class="icon-header header-reporting">#{msgs['@menu.report.heading']}</h3>
+
+        <div>
+            <ul>
+                <c:if
+                        test="#{UserDataController.hasAccess('e.reporting.statistic.data') or UserDataController.hasAccess('e.reporting.statistic.election') or UserDataController.hasAccess('e.reporting.statistic.corrected_result')}">
+                    <li><a href="/secure/ssb2013/statisticReporting2013.xhtml">#{msgs['@menu.statistic.reporting']} 2013</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.reporting.links')}">
+                    <li><a href="/secure/reporting/reportLinks.xhtml">#{msgs['@menu.reports.links.header']}</a></li>
+                </c:if>
+            </ul>
+        </div>
+    </div>
+</c:if>
+<!-- Prøving av stemmegivning -->
+<c:if
+        test="#{(UserDataController.hasAccess('w.voting.approve_advance') or UserDataController.hasAccess('w.voting.approve_special')) and UserDataController.hasMinAreaLevel('3') and UserDataController.hasMinElectionLevel('1')}">
+    <div class="box">
+        <h3 class="icon-header header-approve">#{msgs['@menu.approveVoting.header']}</h3>
+
+        <div>
+            <ul>
+                <li><a href="/secure/searchApproveVoting.xhtml">#{msgs['@menu.approveVoting.approveVoting']}</a>
+                </li>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.voting.approve_advance')}">
+                    <li><a href="/secure/searchApproveNegativeVoting.xhtml">#{msgs['@menu.approveVoting.approveVotingNegative']}</a>
+                    </li>
+                    <li><a href="/secure/voting/faVotingsSentFromMunicipality.xhtml">#{msgs['@menu.earlyVoting.faVotings']}</a>
+                    </li>
+                </c:if>
+
+                <c:if test="#{menuController.isElectronicMarkoffsConfigured()}">
+                    <li>
+                        <a href="/secure/searchApproveElectionDayNegativeVoting.xhtml">#{msgs['@menu.approveVoting.approveVotingNegativeElectionDay']}</a>
+                    </li>
+                </c:if>
+
+                <li><a href="/secure/rejectedVotingsReport.xhtml">#{msgs['@menu.approveVoting.rejectedVotings']}</a>
+                </li>
+                <ui:fragment rendered="#{menuController.isElectronicMarkoffsConfigured()}">
+                    <li>
+                        <a href="/secure/voting_status.xhtml">#{msgs['@menu.voting.voting_status']}</a>
+                    </li>
+                </ui:fragment>
+            </ul>
+        </div>
+    </div>
+</c:if>
+<!-- Batch import -->
+<c:if test="#{UserDataController.hasAccess('w.batch.batch')}">
+    <div class="box">
+        <h3 class="icon-header header-batches">#{msgs['@menu.import.heading']}</h3>
+
+        <div>
+            <ul>
+                <li><a href="/secure/batches.xhtml">#{msgs['@menu.import.heading']}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</c:if>
+<c:if
+        test="#{UserDataController.hasAccess('w.evoting.set_ready')}">
+    <div class="box">
+        <h3 class="icon-header header-setready">#{msgs['@menu.voting.recieve']}</h3>
+        <ui:fragment rendered="#{menuController.isEvoteConfigured()}">
+            <div>
+                <ul>
+                    <li><a href="/secure/evoting_count.xhtml">#{msgs['@menu.voting.evoting_count']}</a></li>
+                </ul>
+            </div>
+        </ui:fragment>
+    </div>
+</c:if>
+<!-- Delete protected data -->
+<c:if
+        test="#{UserDataController.hasAccess('w.delete.election_event, w.delete.vote_counts, w.delete.votings, w.delete.voters')}">
+    <div class="box">
+        <h3 class="icon-header header-delete">#{msgs['@menu.delete']}</h3>
+
+        <div>
+            <ul>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.delete.vote_counts')}">
+                    <li><a href="/secure/deleteVoteCounts.xhtml">#{msgs['@delete.vote_counts.header']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.delete.votings')}">
+                    <li><a href="/secure/deleteVotings.xhtml">#{msgs['@delete.votings.header']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.delete.voters')}">
+                    <li><a href="/secure/deleteVoters.xhtml">#{msgs['@delete.voters.header']}</a>
+                    </li>
+                    <c:if test="#{UserDataController.hasMinAreaLevel('0')}">
+                        <li><a href="/secure/deleteVotersWithoutMvArea.xhtml">#{msgs['@delete.votersWithoutMvArea.header']}</a>
+                        </li>
+                    </c:if>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.delete.settlement')}">
+                    <li><a href="/secure/deleteSettlement.xhtml">#{msgs['@delete.settlement.header']}</a>
+                    </li>
+                    <li><a href="/secure/deleteLevelingSeatSettlement.xhtml">#{msgs['@delete.levelingSeatSettlement.header']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.delete.voters')}">
+                    <li><a href="/secure/deleteVotersBatches.xhtml">#{msgs['@delete.listDeleteVoters.header']}</a>
+                    </li>
+                </c:if>
+                <c:if
+                        test="#{UserDataController.hasAccess('w.delete.voters')}">
+                    <li><a href="/secure/prepareNewInitialLoad.xhtml">#{msgs['@delete.prepareInitialLoad.header']}</a>
+                    </li>
+                </c:if>
+            </ul>
+        </div>
+    </div>
+</c:if>
+</div>
+</div>
+</div>
+<!--
+Task #1303 Fjerne Mine Oppgaver
+<div class="right">
+    <div class="box">
+        <h2>#{msgs['@menu.taskList.header']}</h2>
+        <div>
+            <ui:include src="includes/taskListTable.xhtml" />
+            <c:if test="#{not smallTaskListController.taskList.isEmpty()}">
+                <a href="/secure/taskList.xhtml" class="fullTaskList">#{msgs['@menu.taskList.fullList']}</a>
+            </c:if>
+        </div>
+    </div>
+</div>
+ -->
+</div>
+</h:form>
+<h:outputScript name="javascript/deprecated/ixd/global.js"/>
+</ui:define>
+
+</ui:composition>
+
+</f:view>

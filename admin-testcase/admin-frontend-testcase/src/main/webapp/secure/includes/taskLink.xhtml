@@ -1,0 +1,67 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:custom="http://java.sun.com/jsf/composite/custom/"
+	xmlns:evote="http://evote.no" contentType="text/html">
+	<ui:fragment
+		rendered="${taskObj.path == 't.ballot.proposal' or taskObj.path == 't.ballot.approval'}">
+		<p:commandLink styleClass="taskLink"
+			action="#{affiliationController.editTask(taskObj.taskEntityPk)}"
+			ajax="false">
+			#{msgs[taskObj.accessName]} - #{taskListController.format(taskObj.additionalText)}
+		</p:commandLink>
+	</ui:fragment>
+	<ui:fragment
+		rendered="${taskObj.path == 't.generic_communication.approval' or taskObj.path == 't.generic_communication'}">
+		<p:commandLink styleClass="taskLink"
+			action="#{electoralRollApplicantsController.editTask(taskObj.taskEntityPk)}"
+			ajax="false">
+			#{msgs[taskObj.accessName]} - #{taskListController.format(taskObj.additionalText)}
+		</p:commandLink>
+	</ui:fragment>
+	<ui:fragment rendered="${taskObj.path == 't.contest.local_config'}">
+		<p:commandLink styleClass="taskLink"
+			action="#{contestController.editTask(taskObj.taskEntityPk)}"
+			ajax="false">
+			#{msgs[taskObj.accessName]} - #{taskListController.format(taskObj.additionalText)}
+		</p:commandLink>
+	</ui:fragment>
+	<ui:fragment rendered="${taskObj.path == 't.contest.approval'}">
+		<a href="local_election_configuration.xhtml">
+		#{msgs[taskObj.accessName]} -
+		#{taskListController.format(taskObj.additionalText)}</a>
+	</ui:fragment>
+
+	<ui:fragment rendered="${taskObj.path == 't.election_event.approval'}">
+		<a href="central_configuration_overview.xhtml">
+		#{msgs[taskObj.accessName]} -
+		#{taskListController.format(taskObj.additionalText)} </a>
+	</ui:fragment>
+	<ui:fragment
+		rendered="${taskObj.path == 't.election.approval' or taskObj.path == 't.election.local_config'}">
+		<p:commandLink styleClass="taskLink"
+			action="#{electionController.editTask(taskObj.taskEntityPk)}"
+			ajax="false">
+			#{msgs[taskObj.accessName]} - #{taskListController.format(taskObj.additionalText)}
+		</p:commandLink>
+	</ui:fragment>
+	<ui:fragment rendered="${taskObj.path == 't.municipality.approval'}">
+		<a href="local_area_configuration.xhtml">
+		#{msgs[taskObj.accessName]} -
+		#{taskListController.format(taskObj.additionalText)}</a>
+	</ui:fragment>
+	<ui:fragment
+		rendered="${taskObj.path == 't.municipality.local_config'}">
+		<p:commandLink styleClass="taskLink"
+			action="#{municipalityController.editTask(taskObj.taskEntityPk)}"
+			ajax="false">
+			#{msgs[taskObj.accessName]} - #{taskListController.format(taskObj.additionalText)}
+		</p:commandLink>
+	</ui:fragment>
+	<ui:fragment rendered="#{taskListController.isUnsupported(taskObj)}">
+		Unsupported task: #{taskObj.path}
+	</ui:fragment>
+</f:view>

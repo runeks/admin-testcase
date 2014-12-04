@@ -1,0 +1,15 @@
+.divisionInput {
+	-moz-box-shadow: inset 2px 2px 5px #eee;
+	-webkit-box-shadow: inset 2px 2px 5px #eee;
+	box-shadow: inset 2px 2px 5px #eee;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	-moz-border-radius: 2px;
+	-khtml-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	padding: 3px;
+	line-height: 15px;
+	height: 15px;
+	vertical-align: top;
+}

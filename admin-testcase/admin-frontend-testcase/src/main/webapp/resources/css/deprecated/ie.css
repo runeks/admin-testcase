@@ -1,0 +1,10 @@
+﻿/* IE6/IE7 resize fix 1em => ca 10px - IE6 doesnt support fixed decimals, so 125/2=62.5   */
+html
+{
+	/* font-size: 125%; */
+	 font-size: 140%; 
+}
+body
+{
+	font-size: 50%;
+}

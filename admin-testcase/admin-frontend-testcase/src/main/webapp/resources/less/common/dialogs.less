@@ -1,0 +1,79 @@
+
+.ui-dialog {
+  .box-shadow(0px 5px 10px #333);
+  background-color: @white;
+  padding: 0;
+  border: 8px solid #007FA9;
+
+  .ui-dialog-titlebar {
+
+    position: relative;
+    
+	.ui-dialog-title {
+	  font-size: @fontLarge;
+	}
+
+	.ui-dialog-titlebar-close {
+
+	  color: @black;
+	  padding: 6px;
+	  text-decoration: none;
+	  background: transparent;
+      position: absolute;
+      right: 0px;
+
+	  .setIcomoonFont();
+
+	  &.ui-state-hover {
+		background: transparent;
+		border: none;
+	  }
+
+	  //Close icon
+	  &:before {
+		content: "\e60e";
+	  }
+
+	  &:hover {
+		padding: 6px; 
+	  }
+	}
+  }
+
+  .ui-dialog-footer {
+    padding:1em;
+    
+    a:not(:first-child),
+    button:not(:first-child) {
+      margin-left:20px;
+    }
+    
+  }
+  
+  .ui-dialog-content {
+	overflow-x: hidden !important;
+	&.ui-widget-content {}
+  }
+
+  .center-block[class*="col-"] {
+	float: none;
+  }
+
+  &.ui-shadow {
+	.box-shadow(none);
+	border: 5px solid rgba(36, 94, 148, 1);
+  }
+
+}
+
+.ui-widget-overlay {
+  background-color: rgba(0, 0, 0, .26);
+}
+
+.ui-blockui-content {
+
+  &.ui-shadow {
+	.box-shadow(none);
+  }
+
+}

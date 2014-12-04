@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+
+<composite:interface>
+	<composite:attribute name="count"
+						 type="no.valg.eva.admin.common.counting.model.Count"
+						 required="true"/>
+	<composite:attribute name="disabled"
+						 type="java.lang.Boolean"
+						 required="true"/>
+</composite:interface>
+
+<composite:implementation>
+
+	
+		<h:outputLabel value="#{msgs['@common.comment']}" for="comment" styleClass="font-bold"/>
+		<p:inputTextarea
+			id="comment"
+			styleClass="form-control full-width"
+			value="#{cc.attrs.count.comment}"
+			disabled="#{cc.attrs.disabled}">
+			<p:ajax event="blur" update="@form" process="@form"/>
+		</p:inputTextarea>
+	
+	
+</composite:implementation>
+</html>

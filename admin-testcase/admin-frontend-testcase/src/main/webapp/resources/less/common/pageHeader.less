@@ -1,0 +1,76 @@
+.page-header {
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none;
+  overflow: hidden;
+
+  .col-md-6 {
+	height: 90px;
+  }
+
+  .user-badge {
+	background: url("#{resource['images:gullstemmeseddel_head.png']}") 100% 0 no-repeat;
+
+	& > form {
+	  padding-top: 17px;
+	  padding-left: 10px;
+	}
+
+	&:before {
+	  height: 65px;
+	  display: block;
+	  margin-top: 14px;
+	  width: 0px;
+	  position: absolute;
+	}
+
+	.user-meta {
+	  .size(70px, 100%);
+	  display: table;
+	  position: relative;
+
+	  .user-name {
+		display: inline-block;
+		overflow: hidden;
+		float: left;
+		
+		&.eva-icon-user:before {
+		  margin-right: 5px;
+		  position: relative;
+		  top: 1px;
+		}
+	  }
+
+	  .user-role {
+		display: inline-block;
+		max-width: 400px;
+		float: left;
+		margin-left: 5px;
+		.text-overflow();
+	  }
+
+	  .user-menu {
+		position: absolute;
+		bottom: 7px;
+
+		a {
+		  padding-right: 15px;
+		}
+	  }
+
+	  .election-event-name {
+		display: inline-block;
+		width: 100%;
+	  }
+	}
+
+  }
+
+  .line {
+	background-color: @beige;
+  }
+  
+  & > .row {
+	min-width: @minScreenWidth !important;
+  }
+}

@@ -1,0 +1,96 @@
+.ui-panel-titlebar {
+    position: relative;
+}
+.ui-panel .ui-panel-titlebar .ui-panel-title {
+    margin-left: 15px!important;
+}
+.ui-panel-titlebar-icon {
+    position: absolute;
+    top: 6px;
+}
+.ui-panel-titlebar .ui-icon-minusthick {
+    background-position: -64px -16px;
+}
+.ui-panel-titlebar .ui-icon-plusthick {
+    background-position: -32px -16px;
+}
+.status-icon .ui-widget-header .ui-panel-title {
+    background-repeat: no-repeat;
+    background-position-y: 4px;
+    background-position-x: 99%;
+}
+.status-COUNTING .ui-widget-header .ui-panel-title, .status-REJECTED .ui-widget-header .ui-panel-title{
+    background-image: url(#{resource['images:ixd/icon-link-listProposal-edit-ballot-preview.png']}) !important;
+}
+.status-TO_APPROVAL .ui-widget-header .ui-panel-title {
+    background-image: url(#{resource['images:ixd/icon-link-listProposal-edit-ballot-preview-yellow.png']}) !important;
+}
+.status-APPROVED .ui-widget-header .ui-panel-title {
+    background-image: url(#{resource['images:ixd/icon-button-ok.png']}) !important;
+}
+.status-TO_SETTLEMENT .ui-widget-header .ui-panel-title {
+    background-image: url(#{resource['images:ixd/section-settlement.png']}) !important;
+}
+.ui-panel .ui-treetable tbody tr {
+    height: 40px;
+}
+.ui-panel .ui-treetable tbody tr:last-child {
+    border-bottom: none;
+}
+.ui-panel .ui-treetable tbody tr td, .ui-panel .ui-treetable thead tr th {
+    border-style: none;
+    vertical-align: middle;
+    border-right: 1px dotted #DBDBD3;
+    border-bottom: 1px dotted #DBDBD3!important;
+    padding:4px 10px 4px 10px;
+}
+.ui-panel .ui-treetable tr td .expander {
+    margin-left: 0!important;
+}
+
+.ui-treetable-indent {
+    width: 41px;
+}
+
+.childRowtrue {
+    margin-left: 0px;
+}
+.ui-panel .ui-treetable tr .ui-treetable-last {
+    border-right: none!important;
+}
+.municipalitiesTable table {
+    background: transparent!important;
+    border: none!important;
+    -moz-border-radius: none!important;
+    margin-bottom: 0!important;
+}
+.municipalitiesTable > table > thead{
+    display: none;
+}
+table thead tr th {
+    background: transparent!important;
+}
+.municipalityPanel0 table tr td, .municipalityPanel0 table thead tr th {
+    background: transparent!important;
+}
+.municipalitiesTable table tr td {
+    padding: 0!important;
+}
+.overview-column .ui-icon-minus {
+    margin: 0 auto;
+    width: 16px;
+    height: 16px;
+}
+.buttons_action {
+    width: 90px;
+}
+.buttons_action button.ui-button {
+    width: 90%;
+    margin: 0 5% !important;
+}
+.buttons_rejected {
+    border-right: 0 none !important;
+}
+.buttons_rejected button.ui-button {
+    margin-left: 5px !important;
+}

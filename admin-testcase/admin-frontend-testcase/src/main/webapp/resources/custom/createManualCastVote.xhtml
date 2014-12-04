@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<composite:interface>
+	<composite:attribute name="formId" required="true" />
+</composite:interface>
+
+<composite:implementation>
+	<c:set var="formId" value="#{cc.attrs.formId}" />
+	<ui:fragment rendered="#{formId=='countForm' or (approveRejectedCountController.modifiedBallotForEdit.corrected and !approveRejectedCountController.rejected)}">
+
+		<p:panel header="Renummerering/strykninger" id="cbpanel"
+			rendered="#{registerCorrectedBallotsController.electionRenumbering or registerCorrectedBallotsController.electionStrikeout}">
+
+			<p:dataTable
+				value="#{registerCorrectedBallotsController.candidateList}"
+				var="candidate">
+
+				<p:column style="width: 10%; text-align: center">
+					<h:outputText value="#{candidate.displayOrder}" />
+				</p:column>
+
+				<p:column style="width: 10%; text-align: center"
+					rendered="#{registerCorrectedBallotsController.electionRenumbering}">
+					<f:facet name="header">
+						<h:outputText value="#{msgs['@vote_category[renumber].name']}" />
+					</f:facet>
+					<p:inputText maxlength="4" size="2"
+						disabled="#{registerCorrectedBallotsController.strikeout[candidate.pk]}"
+						value="#{registerCorrectedBallotsController.renumbering[candidate.pk]}">
+						<p:ajax />
+					</p:inputText>
+				</p:column>
+
+				<p:column style="width: 10%; text-align: center"
+					rendered="#{registerCorrectedBallotsController.electionStrikeout}">
+					<f:facet name="header">
+						<h:outputText value="#{msgs['@vote_category[strikeout].name']}" />
+					</f:facet>
+					<h:selectBooleanCheckbox id="strikeout"
+						value="#{registerCorrectedBallotsController.strikeout[candidate.pk]}">
+						<p:ajax
+							update="countForm ballotApproveRejectedForm:createManualCastVote:cbpanel"
+							listener="#{registerCorrectedBallotsController.strikeoutChanged}" />
+					</h:selectBooleanCheckbox>
+				</p:column>
+
+				<p:column>
+					<h:outputText value="#{candidate.nameLine}" />
+				</p:column>
+
+
+			</p:dataTable>
+
+
+		</p:panel>
+
+		<p:panel
+			header="#{msgs['@common.person.votes']} (#{msgs['@common.from']} #{msgs[registerCorrectedBallotsController.selectedAffiliation.party.name]})"
+			rendered="#{registerCorrectedBallotsController.selectedAffiliation.ballot.contest.election.personal}">
+
+			<h:selectManyCheckbox layout="pageDirection"
+				value="#{registerCorrectedBallotsController.selectedCandidatePkList}">
+				<f:selectItems
+					value="#{registerCorrectedBallotsController.candidateList}"
+					var="candidate" itemValue="#{candidate.pk}"
+					itemLabel="#{candidate.baselineVotes ? registerCorrectedBallotsController.getBold(candidate.nameLine) : candidate}" />
+			</h:selectManyCheckbox>
+
+		</p:panel>
+
+		<p:panel
+			rendered="#{registerCorrectedBallotsController.selectedAffiliation.ballot.contest.election.writein}"
+			header="#{msgs['@common.person.writeIns']} (#{msgs['@count.ballot.register.change.personVotesFromOtherParty']})">
+			<div class="row padded">
+				<h:panelGrid styleClass="formTable wAuto" style="width: auto;"
+					columns="3" columnClasses="wAuto,inputs,wAuto">
+					<h:outputLabel
+						value="#{msgs['@count.ballot.register.change.nameOrWriteIn']}"
+						for="autoComplete" />
+					<h:panelGrid columns="2">
+						<p:autoComplete id="autoComplete"
+							value="#{registerCorrectedBallotsController.currentWriteInCandidate}"
+							style="width:200px;" forceSelection="true"
+							completeMethod="#{registerCorrectedBallotsController.completeOtherCandidates}"
+							var="candidate"
+							itemLabel="#{candidate.nameLine} - #{candidate.partyName}"
+							itemValue="#{candidate}" converter="entityConverter" />
+						<p:commandButton id="addCandidate" value="#{msgs['@common.add']}"
+							disabled="#{registerCorrectedBallotsController.currentRegistrationComplete}"
+							action="#{registerCorrectedBallotsController.addWriteInCandidate()}"
+							update=":#{formId}:createManualCastVote:candidatesDataTable :#{formId}:createManualCastVote:autoComplete"
+							oncomplete="setAutoCompleteFocus(); tabIndexHook('body',1);"
+							styleClass="icon-button icon-add" />
+					</h:panelGrid>
+				</h:panelGrid>
+			</div>
+			<!-- <h:outputText value="#{msgs['@count.ballot.register.change.addedWriteIn']}" /> -->
+			<p:dataTable id="candidatesDataTable"
+				value="#{registerCorrectedBallotsController.writeinsForCurrentBallot}"
+				emptyMessage="#{msgs['@count.ballot.register.change.addedWriteIn.eg']}"
+				var="candidate" styleClass="candidateList" rowIndexVar="index">
+
+				<p:column id="name">
+					<f:facet name="header">#{msgs['@person.name']}</f:facet>
+					<h:outputText value="#{candidate.nameLine}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"></f:facet>
+					<p:commandLink id="deleteCandidate"
+						action="#{registerCorrectedBallotsController.deleteWriteInCandidate(index)}"
+						update=":#{formId}:createManualCastVote:candidatesDataTable">
+						<p:graphicImage
+							value="#{resource['images:ixd/icon-dataTable-delete.png']}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+	</ui:fragment>
+</composite:implementation>
+
+</html>

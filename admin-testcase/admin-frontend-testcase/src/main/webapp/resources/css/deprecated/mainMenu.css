@@ -1,0 +1,59 @@
+.menu h2 {
+	line-height: 1.2em;
+}
+
+.menu {
+	float: left;
+	width: 200px;
+	height: 190px;
+	padding: 10px;
+	margin: 4px;
+}
+
+.lowmenu {
+	height: 70px;
+}
+.resizemenu {
+	height: auto;
+}
+.menu a { /*font-size: 110%;*/
+	line-height: 1.4em;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.menu a:hover {
+	text-decoration: underline;
+}
+
+.menu div.img {
+	height: 100%;
+	float: left;
+	width: 55px;
+	margin-top: 8px;
+}
+
+.menu .img img {
+	height: 50px !important;
+}
+
+.resolveImg {
+	height: 18px !important;
+	width: 18px !important;
+}
+
+
+#fwTopInfoHeader {
+	height: 40px !important;
+	margin-left: 15px !important;
+	margin-bottom: 5px !important;
+}
+
+#fwTopInfoHeader * {
+	line-height: 40px !important;
+	vertical-align: middle !important;
+}
+
+#fwTopInfoHeader img {
+	height: 40px !important;
+}

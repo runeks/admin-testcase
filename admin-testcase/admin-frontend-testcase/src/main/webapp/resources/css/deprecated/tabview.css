@@ -1,0 +1,65 @@
+﻿/* tabview start */
+
+.yui-skin-sam .yui-navset .yui-nav {
+	border-color: #999999;
+	border-width: 0px;
+	border-bottom-width: 1px; 
+	margin-top: 7px;
+}
+
+.yui-skin-sam .yui-navset .yui-nav a {
+	background: #cccccc;
+	border: solid 1px #999999;
+	border-bottom-width: 0px;
+	padding: 0px 5px 0px 5px;
+	margin: 0px 0px 0px px;
+}
+
+.yui-skin-sam .yui-navset .yui-nav a:hover {
+	background: #999999;
+	color: #ffffff;
+	border-color: #666666;
+}
+.yui-skin-sam .yui-navset .yui-nav li
+{
+	background-image: none;
+}
+
+.yui-skin-sam .yui-navset .yui-nav li:FIRST-CHILD
+{
+margin-left: 2px;
+}
+
+.yui-skin-sam .yui-navset .yui-nav li.selected
+{
+	background-color: transparent;
+	background-image: none;
+	border: none;
+	
+	
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a,
+.yui-skin-sam .yui-navset .yui-nav .selected a:focus,
+.yui-skin-sam .yui-navset .yui-nav .selected a:hover
+	{
+	color: #000000;
+	border: solid 1px #999999;
+	border-bottom-width: 0px;
+	background: #ffffff;
+	
+}
+
+.yui-skin-sam .yui-navset .yui-nav li a em
+{
+border: none;
+}
+
+
+
+.yui-skin-sam .yui-navset .yui-content {
+	background: #ffffff;
+	border-color: #ffffff;
+}
+
+/* tabview end */

@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title></title>
+</h:head>
+<h:body>
+
+	<composite:interface>
+		<composite:attribute name="ctrl" type="no.valg.eva.admin.voting.presentation.search.SearchController" required="true" />
+	</composite:interface>
+
+	<composite:implementation>
+	
+		<ui:fragment rendered="#{cc.attrs.ctrl.renderRemoveButtons()}">
+			<div class="left row">
+				<ul class="tools">
+					<li class="icon-link listProposal-canidate-deleteAll"><p:commandLink
+							rendered="#{cc.attrs.ctrl.isShowRemoveVotingButton()}"
+							onclick="deleteAdvanceVoting.show();"
+							value="#{msgs['@voting.requestRemoveAdvanceVoting']}" /></li>
+				</ul>
+			</div>
+		</ui:fragment>
+
+		<ui:fragment
+			rendered="#{cc.attrs.ctrl.isAllowedToCreateFictitiousVoter()}">
+			<div class="left row">
+				<ul class="tools">
+					<li class="icon-link listProposal-edit-add"><h:commandLink
+							id="createFictitiousVoter" onclick="clickPreventer(this);"
+							action="#{cc.attrs.ctrl.createFictitiousVoterAndRegister}"
+							immediate="true"
+							value="#{msgs['@voting.markOff.registerOnPersonNotInEL']}" /></li>
+				</ul>
+			</div>
+		</ui:fragment>
+
+		<p:panel header="#{cc.attrs.ctrl.getPanelHeader()}">
+			<p:messages id="msgs" />
+			<p:tabView cache="false" activeIndex="#{cc.attrs.ctrl.activeTabIndex}">
+
+				<p:tab title="#{msgs['@voting.number']}" rendered="#{cc.attrs.ctrl.searchMode.is('APPROVE_VOTING')}">
+					<input type="radio" name="searchGroup" id="votingNumberRadio"
+						onclick="changeSearchMode();" class="hidden" />
+					<h:panelGrid columns="2" styleClass="formTable"
+						columnClasses="w20,inputs">
+						<h:outputLabel value="#{msgs['@voting.votingCategory']}: " />
+						<h:panelGroup>
+							<h:selectOneRadio
+								value="#{cc.attrs.ctrl.searchForm.selectedVotingCategoryId}"
+								required="true" id="votingCategory"
+								label="#{msgs['@voting.votingCategory']}" styleClass="left"
+								layout="pageDirection">
+								<c:if
+									test="#{UserDataController.hasAccess('w.voting.approve_advance')}">
+									<f:selectItem
+										itemLabel="#{msgs['@voting.approveVoting.advanceVoting']}"
+										itemValue="FO" />
+								</c:if>
+								<c:if
+									test="#{UserDataController.hasAccess('w.voting.approve_special')}">
+									<f:selectItem
+										itemLabel="#{msgs['@voting.approveVoting.specialVoting']}"
+										itemValue="VS" />
+								</c:if>
+							</h:selectOneRadio>
+						</h:panelGroup>
+
+						<h:outputLabel value="#{msgs['@voting.number']}: "
+							for="votingNumber" />
+						<h:panelGroup styleClass="text">
+							<p:inputText value="#{cc.attrs.ctrl.searchForm.votingNumber}"
+								label="#{msgs['@voting.number']}" id="votingNumber"
+								onkeypress="submitVotingNumber(event);" size="18" maxlength="7">
+								<f:convertNumber />
+							</p:inputText>
+						</h:panelGroup>
+					</h:panelGrid>
+					<div class="bottom-buttons">
+						<ui:fragment rendered="#{cc.attrs.ctrl.searchMode.is('APPROVE_VOTING')}">
+							<ul class="left">
+								<li><h:commandLink
+										action="#{runReport.runReportLink('@reportlink.report.80', mvAreaPickerController.selectedMvArea, mvElectionPickerController.selectedMvElection)}"
+										value="#{msgs['@reportlink.report.80']}" /></li>
+							</ul>
+						</ui:fragment>
+						<ul class="right">
+							<li><p:commandButton id="searchVotingNumber" widgetVar="searchVotingNumber"
+									action="#{cc.attrs.ctrl.searchVotingNumber}"
+									styleClass="icon-button icon-search" ajax="false"
+									value="#{msgs['@common.search']}" /></li>
+						</ul>
+					</div>
+				</p:tab>
+
+				<p:tab title="#{msgs['@electoralRoll.number']}">
+					<input type="radio" name="searchGroup" id="numberRadio"
+						onclick="changeSearchMode();" class="hidden" />
+					<h:panelGrid columns="2" styleClass="formTable"
+						columnClasses="w20,inputs">
+						<h:outputLabel value="#{msgs['@electoralRoll.number']}:"
+							for="voterNumber" />
+						<h:panelGroup styleClass="text">
+							<p:inputText value="#{cc.attrs.ctrl.searchForm.voterNumber}"
+								id="voterNumber" size="18" maxlength="12"
+								onkeypress="submitNumber(event);" styleClass="left" widgetVar="voterNumber" />
+							<span class="info-text left"> <h:outputText
+									value="#{msgs['@electoralRoll.search.numberLimit']}" />
+							</span>
+						</h:panelGroup>
+					</h:panelGrid>
+					<div class="bottom-buttons">
+						<ui:fragment rendered="#{cc.attrs.ctrl.searchMode.is('APPROVE_VOTING')}">
+							<ul class="left">
+								<li><h:commandLink
+										action="#{runReport.runReportLink('@reportlink.report.80', mvAreaPickerController.selectedMvArea, mvElectionPickerController.selectedMvElection)}"
+										value="#{msgs['@reportlink.report.80']}" /></li>
+							</ul>
+						</ui:fragment>
+						<ul class="right">
+							<li><p:commandButton id="searchNumber" widgetVar="searchNumber" 
+									action="#{cc.attrs.ctrl.searchVoter('number')}"
+									styleClass="icon-button icon-search" ajax="false"
+									value="#{msgs['@common.search']}" /></li>
+						</ul>
+					</div>
+				</p:tab>
+
+				<p:tab title="#{msgs['@person.id']}">
+					<input type="radio" name="searchGroup" id="ssnRadio"
+						onclick="changeSearchMode();" class="hidden" />
+					<h:panelGrid columns="2" styleClass="formTable"
+						columnClasses="w20,inputs">
+						<h:outputLabel value="#{msgs['@person.id']}:" for="ssn" />
+						<h:panelGroup styleClass="text">
+							<p:inputText value="#{cc.attrs.ctrl.searchForm.voterDetails.id}" id="ssn" widgetVar="ssn"
+								onkeypress="submitSSN(event);" size="18" maxlength="11"
+								tabindex="3" styleClass="left" />
+							<span class="info-text left"> <h:outputText
+									value="#{msgs['@electoralRoll.search.ssnLimit']}" />
+							</span>
+						</h:panelGroup>
+					</h:panelGrid>
+					<div class="bottom-buttons">
+						<ui:fragment rendered="#{cc.attrs.ctrl.searchMode.is('APPROVE_VOTING')}">
+							<ul class="left">
+								<li><h:commandLink
+									action="#{runReport.runReportLink('@reportlink.report.80', mvAreaPickerController.selectedMvArea, mvElectionPickerController.selectedMvElection)}"
+									value="#{msgs['@reportlink.report.80']}" /></li>
+							</ul>
+						</ui:fragment>
+						<ul class="right">
+							<li><p:commandButton id="searchSSN" widgetVar="searchSSN"
+									action="#{cc.attrs.ctrl.searchVoter('ssn')}"
+									styleClass="icon-button icon-search" ajax="false"
+									value="#{msgs['@common.search']}" /></li>
+						</ul>
+					</div>
+				</p:tab>
+
+				<p:tab title="#{msgs['@electoralRoll.search.advance']}">
+					<input type="radio" name="searchGroup" id="advanceRadio"
+						onclick="changeSearchMode();" class="hidden" />
+					<f:validateBean disabled="true">
+						<h:panelGrid columns="4" styleClass="formTable"
+							columnClasses="w20,inputs,w20,inputs">
+							<h:outputLabel value="#{msgs['@common.name']}: " />
+							<h:panelGroup styleClass="text">
+								<p:inputText value="#{cc.attrs.ctrl.searchForm.voterDetails.nameLine}"
+									id="nameLine" widgetVar="nameLine" maxlength="152" size="40" tabindex="5"
+									onkeypress="submitAdvance(event);" />
+							</h:panelGroup>
+
+							<h:outputLabel value="#{msgs['@person.birthdate']}: " />
+							<h:panelGroup styleClass="text">
+								<p:inputMask
+									value="#{cc.attrs.ctrl.searchForm.voterDetails.dateOfBirth}"
+									mask="#{msgs['@common.date.date_mask']}"
+									converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+									id="date" widgetVar="date" onkeypress="submitAdvance(event);" styleClass="left">
+									<f:converter converterId="nonLenientDateConverter" />
+								</p:inputMask>
+								<span class="info-text left"> <h:outputText
+										value="#{msgs['@common.date.date_display_pattern']}" />
+								</span>
+							</h:panelGroup>
+
+							<h:outputLabel value="#{msgs['@person.address']}: " />
+							<h:panelGroup styleClass="text">
+								<p:inputText
+									value="#{cc.attrs.ctrl.searchForm.voterDetails.addressLine1}"
+									onkeypress="submitAdvance(event);" id="addressLine1" widgetVar="addressLine1"
+									maxlength="50" tabindex="6" />
+							</h:panelGroup>
+							<h:outputLabel value="#{msgs['@person.municipality']}: " />
+							<h:outputText
+									rendered="#{cc.attrs.ctrl.showStaticMunicipalityListInSearch()}"
+									value="#{mvAreaPickerController.selectedMvArea.municipalityId} - #{mvAreaPickerController.selectedMvArea.municipalityName}"
+									id="municipalityStatic" />
+
+							<h:panelGroup
+									rendered="#{!cc.attrs.ctrl.showStaticMunicipalityListInSearch()}">
+								<p:selectOneMenu
+										value="#{cc.attrs.ctrl.searchForm.selectedMunicipalityIdSearch}"
+										styleClass="radio" id="municipality"
+										onkeypress="submitAdvance(event);" tabindex="7"
+										widgetVar="municipality">
+									<f:selectItem itemLabel="" itemValue="" />
+									<f:selectItems value="#{cc.attrs.ctrl.getMunicipalityList()}"
+												   var="srt"
+												   itemLabel="#{srt.municipalityId} - #{srt.municipalityName}"
+												   itemValue="#{srt.municipalityId}" />
+								</p:selectOneMenu>
+							</h:panelGroup>
+                        </h:panelGrid>
+						<div class="bottom-buttons">
+							<ui:fragment rendered="#{cc.attrs.ctrl.searchMode.is('APPROVE_VOTING')}">
+								<ul class="left">
+									<li><h:commandLink
+											action="#{runReport.runReportLink('@reportlink.report.80', mvAreaPickerController.selectedMvArea, mvElectionPickerController.selectedMvElection)}"
+											value="#{msgs['@reportlink.report.80']}" /></li>
+								</ul>
+							</ui:fragment>
+							<ul class="right">
+								<li><p:commandButton id="searchAdvance" widgetVar="searchAdvance"
+										action="#{cc.attrs.ctrl.searchVoter('advance')}"
+										value="#{msgs['@common.search']}" ajax="false"
+										styleClass="icon-button icon-search" /></li>
+							</ul>
+						</div>
+					</f:validateBean>
+				</p:tab>
+
+			</p:tabView>
+		</p:panel>
+
+		<p:confirmDialog
+			message="#{msgs['@voting.requestRemoveAdvanceVotingText']}"
+			header="#{msgs['@voting.requestRemoveAdvanceVoting']}"
+			severity="alert" widgetVar="deleteAdvanceVoting" width="400"
+			fixedCenter="true" modal="true" visible="false" resizable="false">
+
+			<div class="bottom-buttons">
+				<ul>
+					<li class="cancel"><p:commandButton
+							value="#{msgs['@common.cancel']}"
+							onclick="deleteAdvanceVoting.hide()" type="button"
+							styleClass="icon-button icon-cancel" /></li>
+				</ul>
+				<ul class="right">
+					<li class="call-to-action"><p:commandButton
+							value="#{msgs['@common.yes']}" ajax="false" immediate="true"
+							action="#{cc.attrs.ctrl.removeAdvanceVotingForVoter()}"
+							styleClass="icon-button icon-ok"
+							oncomplete="deleteAdvanceVoting.hide()" /></li>
+				</ul>
+			</div>
+		</p:confirmDialog>
+
+		<script type="text/javascript">
+		function setSearchMode() {
+			jQuery('.ui-tabs-panel').not('.ui-tabs-hide').find('[name=searchGroup]').click();
+			changeSearchMode();
+			return false;
+		}
+		function changeSearchMode() {
+			
+			try {
+				var electionDay = "#{cc.attrs.ctrl.searchMode.is('ELECTION_DAY')}";
+				var approveVoting = "#{cc.attrs.ctrl.searchMode.is('APPROVE_VOTING')}";
+				var issuingPoint = 'false';
+				if (document.getElementById('numberRadio').checked == true) {
+					PF('voterNumber').jq.disabled = false;
+					PF('voterNumber').jq.focus();
+					PF('searchNumber').jq.disabled = false;
+					PF('searchSSN').jq.disabled = true;
+					PF('searchAdvance').jq.disabled = true;
+					PF('ssn').jq.disabled = true;
+					PF('nameLine').jq.disabled = true;
+					PF('addressLine1').jq.disabled = true;
+					PF('date').jq = true;
+					if (approveVoting == 'true') {
+						PF('votingNumber').jq.disabled = true;
+						PF('searchVotingNumber').jq.disabled = true;
+					}
+					if (approveVoting == 'false' &amp;&amp; electionDay == 'false' &amp;&amp; issuingPoint == 'false') {
+						PF('municipality').disabled = true;
+					}
+				}
+				if ($('#ssnRadio').checked == true) {
+					PF('ssn').jq.disabled = false;
+					PF('ssn').jq.focus();
+					PF('searchSSN').jq.disabled = false;
+					PF('voterNumber').jq.disabled = true;
+					PF('searchNumber').jq.disabled = true;
+					PF('searchAdvance').jq.disabled = true;
+					PF('nameLine').jq.disabled = true;
+					PF('addressLine1').jq.disabled = true;
+					PF('date').jq.disabled = true;
+					if (approveVoting == 'true') {
+						votingNumber.disabled = true;
+						searchVotingNumber.disabled = true;
+					}
+					if (approveVoting == 'false' &amp;&amp; electionDay == 'false' &amp;&amp; issuingPoint == 'false') {
+						document.getElementById('#{cc.clientId}' + ':municipality').disabled = true;
+					}
+				}
+				if ($('#advanceRadio').checked == true) {
+					nameLine.disabled = false;
+					addressLine1.disabled = false;
+					date.disabled = false;
+					if (approveVoting == 'false' &amp;&amp; electionDay == 'false' &amp;&amp; issuingPoint == 'false') {
+						document.getElementById('#{cc.clientId}' + ':municipality').disabled = false;
+					}
+					if (approveVoting == 'true') {
+						votingNumber.disabled = true;
+						searchVotingNumber.disabled = true;
+					}
+					nameLine.jq.focus();
+					voterNumber.disabled = true;
+					ssn.disabled = true;
+					searchAdvance.disabled = false;
+					searchSSN.disabled = true;
+					searchNumber.disabled = true;
+				}
+				if (approveVoting == 'true') {
+					if (document.getElementById('votingNumberRadio').checked == true) {
+						votingNumber.disabled = false;
+						votingNumber.jq.focus();
+						searchVotingNumber.disabled = false;
+						
+						searchSSN.disabled = true;
+						searchAdvance.disabled = true;
+						voterNumber.disabled = true;
+						searchNumber.disabled = true;
+						ssn.disabled = true;
+						nameLine.disabled = true;
+						addressLine1.disabled = true;
+						date.disabled = true;
+					}
+				}
+			} catch(err) {
+				console.log(err);
+			}
+		}
+	
+		function submitSSN(e) {
+			if (enterHere(e) == true) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				PF('searchSSN').jq.click();
+				return false;
+			}
+		}
+		
+		function submitNumber(e) {
+			if (enterHere(e) == true) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				PF('searchNumber').jq.click();
+				return false;
+			}
+		}
+		
+		function submitAdvance(e) {
+			if (enterHere(e) == true) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				PF('searchAdvance').jq.click();
+				return false;
+			}
+		}
+		
+		function submitVotingNumber(e) {
+			if (enterHere(e) == true) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				searchVotingNumber.jq.click();
+				return false;
+			}
+		}
+		
+		function enterHere(e) {
+			e = e || window.event;
+			var code = e.keyCode || e.which;
+			if(code == 13) {
+				return true;
+			}
+			return false;
+		}
+	
+		jQuery(document).ready(function() {
+			jQuery('.ui-tabs-nav li a').click(function(){ setSearchMode(); });
+			setSearchMode();
+		});
+</script>
+	</composite:implementation>
+</h:body>
+</html>

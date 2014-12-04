@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<composite:interface>
+    <composite:attribute name="id"/>
+    <composite:attribute name="value"/>
+    <composite:attribute name="min" required="#{cc.attrs.required}"/>
+    <composite:attribute name="label"/>
+    <composite:attribute name="required" type="java.lang.Boolean" default="#{false}"/>
+</composite:interface>
+
+<composite:implementation>
+    <div class="form-group">
+
+        <c:choose>
+            
+            <c:when test="#{cc.attrs.required}">
+
+                <c:choose>
+                    
+                    <c:when test="#{cc.attrs.value lt cc.attrs.min}">
+                        <span class="eva-icon-error"></span>
+                    </c:when>
+
+                    <c:otherwise>
+                        <span class="eva-icon-checkmark"></span>
+                    </c:otherwise>
+
+                </c:choose>
+
+            </c:when>
+            
+            <c:when test="#{cc.attrs.min ne null}">
+
+                <c:choose>
+                    
+                    <c:when test="#{cc.attrs.value lt cc.attrs.min}">
+                        <span class="eva-icon-warning"></span>
+                    </c:when>
+                    
+                </c:choose>
+
+                <c:otherwise>
+                    <span class="eva-icon-checkmark"></span>
+                </c:otherwise>
+                
+            </c:when>
+
+            <c:otherwise>
+                <span class="eva-icon-info"></span>
+            </c:otherwise>
+            
+        </c:choose>
+        
+        <label class="dashed-border-left">#{cc.attrs.label}</label>
+        <h:outputText value="#{cc.attrs.value}" styleClass="badge"/>
+
+    </div>
+</composite:implementation>
+</html>

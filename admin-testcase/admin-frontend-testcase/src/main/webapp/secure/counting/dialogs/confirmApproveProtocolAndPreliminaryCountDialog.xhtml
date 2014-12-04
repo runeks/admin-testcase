@@ -1,0 +1,60 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		contentType="text/html">
+
+	<ui:composition template="/templates/dialogLayout.xhtml">
+		<ui:define name="dialogTitle">
+			<h:outputText value="#{msgs['@count.dialog.header.confirmation.approve']}"/>
+		</ui:define>
+		<ui:define name="content">
+			<div class="ui-grid bold">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-3">
+						<h:outputText value="#{msgs['@count.votes.total']}"/>
+					</div>
+					<div class="ui-grid-col-1">
+						<h:outputText value="#{protocolAndPreliminaryCountController.totalMarkOffCount}"/>
+					</div>
+				</div>
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-3">
+						<h:outputText value="#{msgs['@count.ballot.total']}"/>
+					</div>
+					<div class="ui-grid-col-1">
+						<h:outputText value="#{protocolAndPreliminaryCountController.count.totalBallotCount}"/>
+					</div>
+				</div>
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-2">#{msgs['@common.comment']}</div>
+					<ui:fragment rendered="#{protocolAndPreliminaryCountController.commentRequired}">
+						<div class="ui-grid-col-10">
+							<h:outputText value="#{msgs['@count.error.validation.missing_comment.preliminary_count']}" style="color: red"/>
+						</div>
+					</ui:fragment>
+				</div>
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-12">
+						<p:inputTextarea value="#{protocolAndPreliminaryCountController.count.comment}"
+										 disabled="#{!protocolAndPreliminaryCountController.isCountEditable()}"
+										 style="width:100%">
+							<p:ajax event="keyup" delay="200" update="confirmButton" process="@form"/>
+						</p:inputTextarea>
+					</div>
+				</div>
+			</div>
+			<p:commandButton id="confirmButton"
+							 actionListener="#{protocolAndPreliminaryCountController.closeConfirmApproveCountDialog('CONFIRM')}"
+							 value="#{msgs['@common.yes']}"
+							 styleClass="btn btn-primary"
+							 icon="eva-icon-checkmark"
+							 onclick="window.scrollTo(0,0);"
+							 disabled="#{protocolAndPreliminaryCountController.confirmApproveCountDisabled}"/>
+			<p:commandButton actionListener="#{protocolAndPreliminaryCountController.closeConfirmApproveCountDialog('CANCEL')}"
+							 value="#{msgs['@common.no']}"
+							 styleClass="btn btn-link"/>
+		</ui:define>
+	</ui:composition>
+</f:view>

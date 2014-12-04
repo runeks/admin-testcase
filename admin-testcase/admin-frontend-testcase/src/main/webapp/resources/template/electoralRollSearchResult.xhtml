@@ -1,0 +1,58 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+			  xmlns:p="http://primefaces.org/ui"
+			  xmlns:ui="http://java.sun.com/jsf/facelets"
+			  xmlns:composite="http://java.sun.com/jsf/composite"
+			  xmlns:h="http://java.sun.com/jsf/html"
+		>
+
+	<composite:interface>
+		<composite:attribute name="electoralRollResult" required="true"/>
+		<composite:attribute name="selectedVoter" required="true"/>
+	</composite:interface>
+
+	<composite:implementation>
+        <p:dataTable
+                id="searchResult"
+                var="voter"
+                value="#{cc.attrs.electoralRollResult}"
+                selection="#{cc.attrs.selectedVoter}"
+                selectionMode="single"
+                emptyMessage="#{msgs['@listProposal.dialog.choose.voter.notFound']}"
+                tableStyleClass="table table-striped"
+                rowKey="#{voter.pk}">
+
+            <p:column headerText="#{msgs['@person.name.last']}">
+                <h:outputText value="#{voter.lastName}"/>
+            </p:column>
+
+            <p:column headerText="#{msgs['@person.name.first']}">
+                <h:outputText value="#{voter.firstName}"/>
+            </p:column>
+
+            <p:column headerText="#{msgs['@person.name.middle']}">
+                <h:outputText value="#{voter.middleName}"/>
+            </p:column>
+
+            <p:column headerText="#{msgs['@person.id']}">
+                <h:outputText value="#{voter.id}"/>
+            </p:column>
+
+            <p:column headerText="#{msgs['@person.municipality']}">
+                <h:outputText value="#{voter.mvArea.municipality.name}"/>
+            </p:column>
+
+            <p:column headerText="#{msgs['@person.postal.town']}">
+                <h:outputText value="#{voter.postTown}"/>
+            </p:column>
+
+            <p:column headerText="#{msgs['@person.postal.code.short']}">
+                <h:outputText value="#{voter.postalCode}"/>
+            </p:column>
+
+            <p:column headerText="#{msgs['@person.address']}">
+                <h:outputText value="#{voter.addressLine1}"/>
+            </p:column>
+        </p:dataTable>
+	</composite:implementation>
+
+</ui:component>

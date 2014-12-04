@@ -1,0 +1,32 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:f="http://java.sun.com/jsf/core"
+		contentType="text/html"
+		xmlns:counting="http://java.sun.com/jsf/composite/counting">
+
+	<counting:lateValidationCovers id="lateValidationCovers"
+								   disabled="#{!preliminaryCountController.isCountEditable()}"
+								   model="#{preliminaryCountController.lateValidationCoversModel}"/>
+	<counting:dailyMarkOffCounts id="dailyMarkOffCounts"
+								 disabled="#{!preliminaryCountController.isCountEditable()}"
+								 model="#{preliminaryCountController.dailyMarkOffCountsModel}"/>
+	<counting:ballotCounts id="ballotCounts"
+						   rendered="#{!preliminaryCountController.splitBallotCounts}"
+						   disabled="#{!preliminaryCountController.isCountEditable()}"
+						   model="#{preliminaryCountController.ballotCountsModel}"/>
+	<counting:ballotCountsWithSplit id="ballotCountsWithSplit"
+									rendered="#{preliminaryCountController.splitBallotCounts}"
+									disabled="#{!preliminaryCountController.isCountEditable()}"
+									model="#{preliminaryCountController.ballotCountsModel}"/>
+	<counting:markOffCounts id="markOffCounts"
+							disabled="#{!preliminaryCountController.isCountEditable()}"
+							model="#{preliminaryCountController.markOffCountsModel}"/>
+
+	<div class="row">
+		<div class="col-md-6">
+			<counting:comment id="comment" disabled="${!preliminaryCountController.isCountEditable()}" count="#{preliminaryCountController.count}"/>
+		</div>
+		<div class="col-md-6">
+			<counting:bottomButtons id="bottomButtons" countController="#{preliminaryCountController}"/>
+		</div>
+	</div>
+</f:view>

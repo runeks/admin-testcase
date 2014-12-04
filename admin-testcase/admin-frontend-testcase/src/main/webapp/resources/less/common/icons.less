@@ -1,0 +1,253 @@
+@resourcePath: '/javax.faces.resource/';
+
+@font-face {
+  font-family: 'icomoon';
+  src: url(~"@{resourcePath}icomoon.eot.xhtml?ln=fonts&s3c14r");
+  src: url(~"@{resourcePath}icomoon.eot.xhtml?ln=fonts&#iefixs3c14r") format('embedded-opentype'),
+  url(~"@{resourcePath}icomoon.woff.xhtml?ln=fonts&s3c14r") format('woff'),
+  url(~"@{resourcePath}icomoon.ttf.xhtml?ln=fonts&s3c14r") format('truetype'),
+  url(~"@{resourcePath}icomoon.svg.xhtml?ln=fonts&s3c14r#icomoon") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="eva-icon-"]:before, [class*=" eva-icon-"]:before {
+  font-family: 'icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.eva-icon-male:before {
+  content: "\e61e";
+}
+
+.eva-icon-female:before {
+  content: "\e61f";
+}
+
+.eva-icon-upload:before {
+  content: "\e617";
+}
+
+.eva-icon-arrow-first:before {
+  content: "\e615";
+}
+
+.eva-icon-arrow-last:before {
+  content: "\e624";
+}
+
+.eva-icon-arrow-next:before {
+  content: "\e61c";
+}
+
+.eva-icon-arrow-previous:before {
+  content: "\e646";
+}
+
+.eva-icon-logo:before {
+  content: "\e651";
+}
+
+.eva-icon-directional-sort:before {
+  content: "\e652";
+}
+
+.eva-icon-sort:before {
+  content: "\e653";
+}
+
+.eva-icon-home:before {
+  content: "\e600";
+}
+
+.eva-icon-paper:before {
+  content: "\e601";
+}
+
+.eva-icon-box:before {
+  content: "\e602";
+}
+
+.eva-icon-cog:before {
+  content: "\e603";
+}
+
+.eva-icon-pencil:before {
+  content: "\e604";
+}
+
+.eva-icon-file:before {
+  content: "\e605";
+}
+
+.eva-icon-print:before {
+  content: "\e606";
+}
+
+.eva-icon-download:before {
+  content: "\e607";
+}
+
+.eva-icon-user:before {
+  content: "\e608";
+}
+
+.eva-icon-search:before {
+  content: "\e609";
+}
+
+.eva-icon-bars:before {
+  content: "\e60a";
+}
+
+.eva-icon-signup:before {
+  content: "\e60b";
+}
+
+.eva-icon-warning:before {
+  content: "\e60c";
+}
+
+.eva-icon-cancel:before {
+  content: "\e60d";
+}
+
+.eva-icon-close:before {
+  content: "\e60e";
+}
+
+.eva-icon-checkmark:before {
+  content: "\e60f";
+}
+
+.eva-icon-plus:before {
+  content: "\e610";
+}
+
+.eva-icon-caret:before {
+  content: "\e611";
+}
+
+.eva-icon-arrow-right:before {
+  content: "\e612";
+}
+
+.eva-icon-arrow-up:before {
+  content: "\e613";
+}
+
+.eva-icon-arrow-down:before {
+  content: "\e614";
+}
+
+.eva-icon-table:before {
+  content: "\e616";
+}
+
+.eva-icon-notification:before {
+  content: "\e618";
+}
+
+.eva-icon-question:before {
+  content: "\e61a";
+}
+
+.eva-icon-info:before {
+  content: "\e619";
+}
+
+.eva-icon-error:before {
+  content: "\e61b";
+}
+
+.eva-icon-ellipsis:before {
+  content: "\e61d";
+}
+
+.eva-icon-ellipsis:before {
+  content: "\e61d";
+}
+
+.btn {
+
+  &[class*='eva-icon']:before,
+  [class*='eva-icon']:before {
+    color: @white;
+  }
+
+  &[disabled='disabled'] {
+    &[class*='eva-icon']:before,
+    [class*='eva-icon']:before {
+      color: @grey3;
+    }
+
+  }
+
+  //IMPORTANT since jquery ui moves icons with textindent, and this breaks icomoon implmentation.
+  .ui-icon[class*="eva-icon"] {
+    margin-top: -10px;
+    text-indent: 0 !important;
+  }
+
+  &.btn-xs {
+
+    .ui-icon[class*="eva-icon"] {
+      margin-top: -4px;
+      font-size: .7rem;
+    }
+  }
+
+  //  &.btn-sm {
+  //
+  //    .ui-icon[class*="eva-icon"] {
+  //      //      margin-top: -4px;
+  //      //      font-size: .7rem;
+  //    }
+  //  }
+}
+
+.ui-icon {
+  text-indent: 0 !important;
+}
+
+/** ICON COLORS **/
+.eva-icon-error:before {
+  color: #d9534f;
+}
+
+.eva-icon-warning:before {
+  color: #f0ad4e;
+}
+
+.eva-icon-info:before {
+  color: #5bc0de;
+}
+
+.eva-icon-checkmark:before {
+  color: #5cb85c;
+}
+
+.eva-icon-please-wait {
+
+  &:before {
+    content: "";
+  }
+
+  background-image: url('data:image/gif;base64,R0lGODlhEAAQAPIAAO7u7gAAALW1tT09PQAAAFtbW3l5eYiIiCH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==');
+  background-repeat: no-repeat;
+  height: 16px;
+  width: 16px;
+  margin-left: 0px;
+}
+
+
+

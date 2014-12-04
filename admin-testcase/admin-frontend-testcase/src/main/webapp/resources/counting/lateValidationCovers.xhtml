@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+	<composite:attribute name="model"
+						 type="no.valg.eva.admin.counting.presentation.view.LateValidationCoversModel" />
+	<composite:attribute name="disabled"
+						 type="boolean"
+						 default="false"
+						 required="false"/>
+</composite:interface>
+
+<composite:implementation>
+
+	<ui:fragment rendered="#{cc.attrs.model != null}">
+		<div class="row">
+			<div class="col-md-12">
+				<h4>#{msgs['@count.lateValidation']}</h4>
+				<p:dataTable value="#{cc.attrs.model}" var="row" id="lateValidationCoversModel"
+							 tableStyleClass="table table-striped" style="width: 50%;">
+					<p:column headerText="">
+						<h:outputText value="#{msgs[row.title]}"/>
+						<f:facet name="footer">
+							<h:outputText
+									styleClass="bold"
+									value="#{msgs['@common.total']}"/>
+						</f:facet>
+					</p:column>
+					<p:column headerText="#{msgs['@common.numberOf']}">
+						<h:inputText
+								id="lateValidationCoversModelCount"
+								value="#{row.count}"
+								size="4"
+								styleClass="form-control"
+								rendered="#{row.countInput}"
+								disabled="#{cc.attrs.disabled}">
+							<p:ajax event="keyup" delay="500" update="@(.onMarkOffChange)" />
+						</h:inputText>
+						<h:outputText value="#{row.count}" rendered="#{!row.countInput}"/>
+						<f:facet name="footer">
+							<h:outputText
+									id="lateValidationCoversTotal"
+									styleClass="bold onMarkOffChange"
+									value="#{cc.attrs.model.getTotalMarkOffCount()}"/>
+						</f:facet>
+					</p:column>
+				</p:dataTable>
+			</div>
+		</div>
+	</ui:fragment>
+
+</composite:implementation>
+</html>

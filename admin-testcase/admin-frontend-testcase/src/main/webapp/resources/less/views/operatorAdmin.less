@@ -1,0 +1,301 @@
+//global menu definitions. these are needed since 
+//these elements are rendered outside the #page-operator-admin scope
+
+.ui-widget-content.ui-menu {
+
+  background: @blue;
+
+  .ui-widget-header {
+    border: 0;
+    
+    h3 {
+      color: @white;
+    }
+  }
+  
+  .ui-menuitem-link {
+
+    .ui-menuitem-text,
+    .ui-menuitem-icon {
+      font-size: 1rem;
+      color: @white;
+    }
+
+    .ui-menuitem-icon {
+      margin-top:0;
+    }
+
+    &.ui-state-hover:not(.ui-menu-header),
+    &:hover:not(.ui-menu-header) {
+      background: @white !important;
+      .ui-menuitem-icon,
+      .ui-menuitem-text{
+        color: @blue;
+      }
+    }
+  }
+  
+  &.import-operators-menu,
+  &.export-operators-menu {
+	
+	.ui-menuitem:last-child {
+	  margin-bottom: 10px;
+	}
+
+	.ui-menuitem-text {
+	  word-break: normal;
+	  float: left;
+	  display: block;
+	  max-width: 85%;
+	  line-height: 13px;
+	}
+
+	.ui-menuitem-icon[class*='eva-icon'] {
+	  margin-right: 5px;
+	  margin-left: 15px;
+	}
+
+	.ui-menu-header {
+
+	  .ui-menuitem-text,
+	  .ui-menuitem-icon {
+		font-size: 1.2rem;
+	  }
+
+	  .ui-menuitem-icon {
+		margin-top: 5px;
+		margin-left: 0px;
+	  }
+
+	  .ui-menuitem-text {
+		margin-top: 0;
+		margin-left: -4px;
+		display: block;
+		line-height: 26px;
+		padding: 0 1em .3em 0.46em;
+	  }
+	}
+  }
+}
+
+#page-operator-admin {
+
+  .search-name,
+  .search-ssn {
+    margin-left: 33px;
+    margin-top: 25px;
+  }
+  
+  //header form and search bar
+  #mainForm {
+
+	.search-filter {
+	  position: relative;
+	  display: inline-block;
+      
+      .has-feedback {
+        display: inline-block;
+      }
+	}
+	
+	button {
+	  margin-right: 10px;
+	}
+
+	#searchField {
+	  .size(44px, 300px);
+	  .border-radius(0px);
+	  border: 1px solid @black;
+
+	  & + #clearNameSearchField {
+		top: 11px;
+        cursor: pointer;
+	  }
+	}
+  }
+
+  //ajax partial renders container
+  #content {
+	position: relative;
+	padding: 0;
+	margin: 0;
+
+	#content_content {
+	  padding: 10px 0 0 0;
+
+	  h2 {
+		margin-top: 10px;
+		margin-left: 10px;
+	  }
+
+	  .ui-panel-content {
+		&.ui-widget-content {
+		  overflow: hidden;
+		  
+		  .btn-group {
+			display: block;
+		  }
+		}
+	  }
+	}
+
+	.subpanel-header {
+	  height: 60px;
+	  background-color: #000;
+	}
+
+	.subpanel-form {
+	  border: 3px solid @blue;
+	  padding-top: 60px;
+
+	  label {
+		font-weight: normal;
+	  }
+	}
+
+	.ui-datatable {
+
+	  .ui-selectonemenu {
+		margin-right: 50px;
+		width: 175px !important;
+	  }
+
+	  .subTable {
+		table th,
+		table tr {
+		  background-color: transparent;
+		}
+	  }
+
+	  table {
+
+		thead {
+
+		  th {
+			border: none !important;
+		  }
+		}
+
+		tbody {
+		  tr {
+			&.operator-row {
+			  outline: 0;
+			  &:hover {
+				outline: 1px solid @blue;
+			  }
+			}
+		  }
+		}
+	  }
+	}
+
+	.form-group,
+	.btn-group {
+	  .btn-link {
+		padding: 12px 25px;
+	  }
+
+	  button {
+		margin-right: 10px;
+	  }
+	}
+  }
+
+  //search operator
+  .search-operator-form {
+	color: @black;
+
+	table tr td {
+	  border: none;
+	  padding: 0px 10px;
+	}
+
+	.ui-panelgrid {
+	  margin-top: 40px;
+	}
+
+	.ui-output-panel {
+	  padding-top: 20px;
+	}
+
+	.ui-radiobutton {
+	  margin-right: 20px;
+	  &.fnrRadioChoice {
+		margin-top: -4px;
+	  }
+
+	  &.nameRadioChoice {
+		margin-top: 10px;
+	  }
+	}
+
+	.form-group {
+
+	  .ui-inputtext {
+		width: 230px;
+	  }
+
+	  position: relative;
+	  .validation-error {
+		padding: 5px;
+		position: absolute;
+		top: 22px;
+		right: -220px;
+		color: @red;
+
+		&:before {
+		  padding-right: 5px;
+		}
+	  }
+	}
+  }
+
+  //edit operator
+  .operator-exists-form,
+  .edit-operator-form {
+
+	table tr td {
+	  vertical-align: top;
+	}
+
+	.operator-roles {
+
+	  .operator-role-list {
+		display: table;
+		.operator-role {
+		  border: 1px solid #ccc;
+		  background: #eee;
+		  margin-bottom: 10px;
+
+		  & > div {
+			display: table-cell;
+			width: auto;
+			padding: 10px
+		  }
+
+		  .area-name {
+			padding-left: 11px;
+		  }
+
+		  .role-name {
+			padding-right: 10px;
+		  }
+
+		  .delete-role a {
+			color: @red;
+			text-decoration: none;
+		  }
+		}
+	  }
+
+	}
+
+  }
+
+  //list operator
+  .list-operator-form {
+	.ui-datatable table tbody tr td {
+	  vertical-align: initial;
+	}
+  }
+}

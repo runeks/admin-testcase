@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<!-- 
+Component intended as a reusable view of daily markoffs used in a protocol count context 
+Prerequisites: The component must be inside a form to benefit from the form elements included. See protocolCount.xhtml for example usage.
+-->
+
+<composite:interface>
+</composite:interface>
+
+<composite:implementation>
+	<!-- DEV-NOTE: This needs to be placed inside this composite because of weird Ajax update behaviour -->
+	<p:dataTable value="#{protocolCountController.protocolBallotCounts}"
+				 var="count"
+				 id="protocolBallotCountsTable"
+				 tableStyleClass="table table-striped">
+		<p:column headerText="#{protocolCountController.protocolBallotCountsHeader}">
+			<h:outputLabel value="#{msgs[count.title]}" styleClass="bold"/>
+			<f:facet name="footer">
+				<h:outputLabel value="#{msgs['@count.votes.totalInPolls']}" styleClass="bold"/>
+			</f:facet>
+		</p:column>
+		<p:column headerText="#{msgs['@common.numberOf']}">
+			<p:inputText
+					value="#{count.value}"
+					size="4"
+					disabled="${!protocolCountController.isCountEditable()}">
+				<p:ajax event="keyup" delay="500" update="@(.ctxTotalBallotCount)" process="@form"/>
+			</p:inputText>
+			<f:facet name="footer">
+				<h:outputText
+						id="totalBallotCount"
+						styleClass="bold ctxTotalBallotCount"
+						value="#{protocolCountController.protocolCount.totalBallotCount}" />
+			</f:facet>
+		</p:column>
+	</p:dataTable>
+	<p:dataTable rendered="#{protocolCountController.protocolCount.ballotCountForOtherContests != null}" 
+				 value="#{protocolCountController.ballotCountForOtherContests}"
+				 var="count"
+				 id="ballotCountForOtherContestsTable"
+				 tableStyleClass="table table-striped table-no-header">
+		<p:column>
+			<h:outputLabel value="#{msgs['@config.boroughs.other']}" styleClass="bold"/>
+		</p:column>
+		<p:column>
+			<p:inputText
+					value="#{count.ballotCountForOtherContests}"
+					size="4"
+					disabled="${!protocolCountController.isCountEditable()}">
+				<p:ajax event="keyup" delay="500" update="@none" process="@form"/>
+			</p:inputText>
+		</p:column>
+	</p:dataTable>
+
+</composite:implementation>
+</html>

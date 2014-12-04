@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+        >
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title><ui:insert name="windowTitle">#{msgs['@menu.main_title']}</ui:insert></title>
+    <ui:insert name="head"/>
+    <h:outputScript name="javascript/deprecated/main.js"/>
+    <script language="javascript" type="text/javascript">
+        var ignoreStylesheets = ['paginator/paginator', 'datatable/datatable', 'messages/messages', 'panel/panel', 'ui/jquery-ui'];
+        var valiDateMessage = '#{msgs['@common.date.invalid']}';
+        var datePickerSettings = {
+            buttonImage: '#{resource['images:ixd/icon-calendar.png']}',
+            buttonText: '#{msgs['@common.date']}',
+            dateFormat: evote.convertToJQDateFormat('#{msgs['@common.date.date_pattern']}'),
+            dayNames: ['#{msgs['@common.date.weekday[1].name']}', '#{msgs['@common.date.weekday[2].name']}',
+                '#{msgs['@common.date.weekday[3].name']}', '#{msgs['@common.date.weekday[4].name']}',
+                '#{msgs['@common.date.weekday[5].name']}', '#{msgs['@common.date.weekday[6].name']}',
+                '#{msgs['@common.date.weekday[7].name']}'],
+            dayNamesMin: ['#{msgs['@common.date.weekday[1].min']}', '#{msgs['@common.date.weekday[2].min']}',
+                '#{msgs['@common.date.weekday[3].min']}', '#{msgs['@common.date.weekday[4].min']}',
+                '#{msgs['@common.date.weekday[5].min']}', '#{msgs['@common.date.weekday[6].min']}',
+                '#{msgs['@common.date.weekday[7].min']}'],
+            dayNamesShort: ['#{msgs['@common.date.weekday[1].short']}', '#{msgs['@common.date.weekday[2].short']}',
+                '#{msgs['@common.date.weekday[3].short']}', '#{msgs['@common.date.weekday[4].short']}',
+                '#{msgs['@common.date.weekday[5].short']}', '#{msgs['@common.date.weekday[6].short']}',
+                '#{msgs['@common.date.weekday[7].short']}'],
+            monthNames: ['#{msgs['@common.date.month[1].name']}', '#{msgs['@common.date.month[2].name']}',
+                '#{msgs['@common.date.month[3].name']}', '#{msgs['@common.date.month[4].name']}',
+                '#{msgs['@common.date.month[5].name']}', '#{msgs['@common.date.month[6].name']}',
+                '#{msgs['@common.date.month[7].name']}', '#{msgs['@common.date.month[8].name']}',
+                '#{msgs['@common.date.month[9].name']}', '#{msgs['@common.date.month[10].name']}',
+                '#{msgs['@common.date.month[11].name']}', '#{msgs['@common.date.month[12].name']}'],
+            monthNamesShort: ['#{msgs['@common.date.month[1].short']}', '#{msgs['@common.date.month[2].short']}',
+                '#{msgs['@common.date.month[3].short']}', '#{msgs['@common.date.month[4].short']}',
+                '#{msgs['@common.date.month[5].short']}', '#{msgs['@common.date.month[6].short']}',
+                '#{msgs['@common.date.month[7].short']}', '#{msgs['@common.date.month[8].short']}',
+                '#{msgs['@common.date.month[9].short']}', '#{msgs['@common.date.month[10].short']}',
+                '#{msgs['@common.date.month[11].short']}', '#{msgs['@common.date.month[12].short']}'],
+            firstDay: 1
+        }
+        var CSRFToken = '#{UserDataController.userData.csrfToken}';
+    </script>
+    <h:outputScript name="javascript/deprecated/CSRFInsert.js"/>
+    <h:outputScript name="javascript/deprecated/CSRFAjaxWrapper.js"/>
+
+
+</h:head>
+<h:body>
+    <f:facet name="last">
+        <h:outputStylesheet library="css" name="deprecated/ixd/reset.css"/>
+        <h:outputStylesheet library="css" name="deprecated/ixd/framework.css"/>
+        <h:outputStylesheet library="css" name="deprecated/ixd/content.css"/>
+        <h:outputStylesheet library="css" name="deprecated/ixd/forms.css"/>
+        <h:outputStylesheet library="css" name="deprecated/ixd/messages.css"/>
+        <h:outputStylesheet library="css" name="deprecated/ixd/steps.css"/>
+        <h:outputStylesheet library="css" name="deprecated/ixd/icons.css"/>
+        <h:outputStylesheet library="css" name="deprecated/ixd/paginator.css"/>
+        <h:outputStylesheet library="css" name="deprecated/ixd/paginatorReport.css"/>
+        <h:outputStylesheet library="css" name="deprecated/ixd/yui.css"/>
+        <h:outputStylesheet library="css" name="deprecated/site/custom.css"/>
+    </f:facet>
+    <!-- Sets date and time mask and pattern -->
+    <c:set var="dateMask" value="99.99.9999"/>
+    <c:set var="datePattern" value="#{msgs['@common.date.date_pattern']}"/>
+    <c:set var="timePattern" value="#{msgs['@common.date.time_pattern']}"/>
+
+    <!-- Sets disabled flag for election event -->
+    <c:set var="isElectionEventDisabled" value="#{electionEventController.currentElectionEventDisabled}"/>
+
+    <div class="page">
+        <div class="page-header">
+            <ui:insert name="header">
+                <ui:include src="/templates/headerDeprecated.xhtml"/>
+            </ui:insert>
+        </div>
+        <div class="content-frame">
+            <h1><ui:insert name="topinfoheader"/>&#160;</h1>
+
+            <div class="help">
+                <c:if test="${not empty helpId}">
+                    <h:form id="helpForm">
+                        <p:commandLink onclick="helpModal.show();" id="helpLink" styleClass="icon-link icon-help main-help-link">
+                            #{msgs['@help']}
+                        </p:commandLink>
+                    </h:form>
+                    <c:set var="helpHeader" value="#{helpId}.header"/>
+                    <c:set var="helpText" value="#{helpId}.text"/>
+                    <p:dialog header="#{msgs['@help']}: #{msgs[helpHeader]}" id="helpText" widgetVar="helpModal" modal="true" width="900" resizable="false">
+                        <h:outputText value="#{htmlMsgs[helpText]}" escape="false"/>
+                    </p:dialog>
+                </c:if>
+            </div>
+            <h:form id="menu">
+                <c:choose>
+                    <c:when test="#{empty menuType or menuType=='none'}">
+                        <div class="menu none"></div>
+                    </c:when>
+                    <c:when test="#{menuType=='sub'}">
+                        <div class="menu sub">
+                            <ui:insert name="pagemenu"/>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="menu">
+                            <ui:insert name="pagemenu"/>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </h:form>
+
+            <div class="inner">
+                <div class="content">
+                    <ui:insert name="content">(content here)</ui:insert>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ui:insert name="footer">
+        <ui:include src="/templates/footerDeprecated.xhtml"/>
+    </ui:insert>
+    <p:ajaxStatus styleClass="ajax-loader" style="display: none;">
+        <f:facet name="start">
+            <img src="#{resource['images:ixd/ajax-loader.gif']}" alt="#{msgs['@common.wait']}"/><br/>
+            #{msgs['@common.wait']}
+        </f:facet>
+        <f:facet name="complete">
+        </f:facet>
+    </p:ajaxStatus>
+    <h:outputScript name="javascript/deprecated/ixd/global.js"/>
+    <h:outputScript name="javascript/deprecated/ixd/global.waitButtons.js"/>
+    <script language="javascript" type="text/javascript">
+        var sessionTimeoutSettings = {
+            interval: 5, // Minimum number of minutes between server keepalive polls
+            timeout: 29, // Actual number of minutes before session timeout
+            padding: 2, // Session timeout padding, when to warn the user
+            url: '#{request.contextPath}/empty.xhtml', // Keepalive poll URL
+            message: '#{msgs['@common.sessionTimeOutNear']}', // Warning message
+            button: '#{msgs['@common.sessionTimeOutRemainLoggedIn']}' // Button label
+        };
+    </script>
+</h:body>
+</html>

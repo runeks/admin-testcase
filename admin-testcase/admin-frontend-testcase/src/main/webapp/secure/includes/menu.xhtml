@@ -1,0 +1,45 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:custom="http://java.sun.com/jsf/composite/custom/"
+        xmlns:evote="http://evote.no" contentType="text/html">
+
+    <ul class="menu">
+        <ui:fragment rendered="#{renderRootHeader}">
+			<li class="header #{menu.icon}">
+				<h:outputText value="#{msgs[menu.text]}"/>
+			</li>
+        </ui:fragment>
+        <ui:repeat var="subMenu" value="#{menu.children}">
+            <li class="sub-menu">
+                <p:dataList var="menuItem" value="#{subMenu.children}" type="unordered" itemType="none" styleClass="menu-column-item">
+                    <f:facet name="header"><h:outputText value="#{msgs[subMenu.text]}" rendered="#{subMenu.hasHeader()}"/></f:facet>
+                    <ui:fragment rendered="#{menuItem.centralConfirmDialog}">
+                        <p:commandLink
+                                value="#{msgs['@menu.config.central_overview']}"
+                                onclick="PF('centralConfirmDialog').show(); return false;"/>
+                    </ui:fragment>
+                    <ui:fragment rendered="#{menuItem.noOperatorPartyWidget}">
+                        <p:commandLink
+                                value="#{msgs['@menu.listProposal']}"
+                                onclick="PF('noOperatorPartyWidget').show()"/>
+                    </ui:fragment>
+                    <ui:fragment rendered="#{menuItem.reportLink}">
+                        <ui:param name="report" value="#{jasperReportLinksController.reportByName(menuItem.reportLinkName)}"/>
+                        <p:commandLink value="#{msgs[report.reportName]}"
+                                       title="#{msgs[report.reportDescription]}"
+                                       action="#{jasperReportLinksController.selectReportAndOpenParameterDialog(report)}"
+                                       rendered="#{not empty report}"/>
+                    </ui:fragment>
+                    <ui:fragment rendered="#{!menuItem.centralConfirmDialog and !menuItem.centralConfirmDialog and !menuItem.reportLink}">
+                        <a href="#{menuItem.url}">#{msgs[menuItem.text]}</a>
+                    </ui:fragment>
+                </p:dataList>
+            </li>
+        </ui:repeat>
+    </ul>
+    
+</f:view>

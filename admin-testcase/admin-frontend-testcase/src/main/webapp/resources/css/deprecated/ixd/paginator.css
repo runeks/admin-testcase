@@ -1,0 +1,77 @@
+/* DATATABLE PAGINATOR */
+
+.ui-paginator {
+	float: none;
+	overflow: hidden;
+	padding: 5px;
+	margin: 0 5px;
+	border: 1px solid #EAE8E2;
+	background: #FDFDFA url("#{resource['images:ixd/ui-dataTable-header-background-yellow.png']}") 0 100% repeat-x;
+	text-align: center;
+}
+.ui-paginator.ui-paginator-top {
+	margin-top: 5px;
+	border-bottom: 0 none;
+	-moz-border-radius: 5px 5px 0 0;
+	-khtml-border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+	border-radius: 5px 5px 0 0;
+}
+.ui-paginator.ui-paginator-bottom {
+	margin-bottom: 10px;
+	margin-top: -10px;
+	border-top: 0 none;
+	-moz-border-radius: 0 0 5px 5px;
+	-khtml-border-radius: 0 0 5px 5px;
+	-webkit-border-radius: 0 0 5px 5px;
+	border-radius: 0 0 5px 5px;
+	display: none;
+}
+
+
+
+.ui-paginator-page,
+.ui-paginator-first,
+.ui-paginator-prev,
+.ui-paginator-next,
+.ui-paginator-last {
+	border: 1px solid #EAE8E2;
+	background-color: #fff;
+	padding: 2px 5px;
+	display: inline-block;
+}
+.ui-paginator-first span,
+.ui-paginator-prev span,
+.ui-paginator-next span,
+.ui-paginator-last span {
+	display: block;
+	width: 13px;
+	overflow: hidden;
+}
+.ui-paginator-pages {
+	margin: 0 -1px;
+}
+.ui-paginator-page {
+	width: 16px;
+	line-height: 16px;
+	display: inline-block;
+	text-align: center;
+	margin: 0 1px;
+}
+.ui-paginator a {
+	text-decoration: none;
+}
+
+.ui-paginator-current-page {
+	border: 1px solid #fff;
+	background-color: #A39458;
+	color: #fff;
+	font-weight: bold;
+}
+
+.ui-state-active {
+	border: 1px solid #fff;
+	background-color: #A39458;
+	color: #fff;
+	font-weight: bold;
+}

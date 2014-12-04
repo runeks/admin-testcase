@@ -1,0 +1,12 @@
+# this file is required by the reporting module
+# the format is <mime type> <space separated file extensions>
+application/msword DOCX docx ODF odf
+application/pdf PDF pdf
+application/rtf RTF rtf
+application/vnd.ms-excel CSV csv XLSX xlsx
+application/vnd.ms-powerpoint PPTX pptx
+application/xml XML xml
+image/png png PNG
+text/html HTML html
+text/jrxml jrxml JRXML
+text/properties properties PROPERTIES

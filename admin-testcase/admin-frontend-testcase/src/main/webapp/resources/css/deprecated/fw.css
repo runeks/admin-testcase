@@ -1,0 +1,536 @@
+﻿/* framework start */
+html {
+	width: 100%;
+}
+
+body {
+	background-image: url("#{resource['images:gui/bg.gif']}");
+	width: 100%;
+}
+
+/* Use this whenever you want to clear floats (instead of inline style="clear: both") */
+div.clear {
+	clear: both;
+	visibility: hidden;
+}
+
+span.lbl {
+	font-weight: bold;
+}
+
+p {
+	margin: 0.5em 0em 1em 0em;
+}
+
+ul,ol {
+	margin: 0em;
+	padding: 0em;
+	line-height: 1.5em;
+}
+
+ul {
+	list-style-type: none;
+}
+
+ol {
+	list-style-type: decimal;
+}
+
+li {
+	margin: 0.1em 0.5em 0.2em 0.1em;
+	padding: 0.1em 0em 0.2em 1.2em;
+	background-repeat: no-repeat;
+	background-position: 0.1em 0.5em;
+}
+
+div#fwMain {
+	text-align: left;
+	border: solid 1px #999999;
+	margin: 0px auto 0px auto;
+	background-color: #ffffff;
+	width: 980px;
+	min-height: 131%;
+	overflow: visible;
+	padding-bottom: 0px;
+}
+
+div#fwCpy {
+	text-align: right;
+	width: 980px;
+	height: auto;
+	margin: 0px auto 0px auto;
+	padding: 2px 0px 2px 0px;
+	font-size: 0.8em;
+	color: #cccccc;
+	background-color: transparent;
+}
+
+div#fwMiddle {
+	height: 100%;
+	min-height: 750px; /*1280px; 750px - fixed content fix*/
+	width: 980px;
+	background-color: #ffffff;
+	margin: 0px auto 0px auto;
+	/*
+	float: none;
+	clear: none;
+	*/
+}
+
+div#fwUserData {
+	padding: 4px;
+	float: right;
+	/*	border-left: 1px solid #A29061;*/ /* background: #eaeaea; */
+	width: 400px;
+	margin-right: 20px;
+	position: relative;
+	top: 40px;
+	border: 1px solid #e0e0e0;
+}
+
+div#fwUserData a {
+	font-weight: bold;
+}
+
+div#fwUserData #logout,div#fwUserData #changeLocale {
+	float: right;
+	clear: right;
+}
+
+#changeLocale a {
+	font-weight: bold;
+}
+
+div#fwTop { /* for gammel masterLayout */
+	width: 980px;
+	background-color: #ffffff;
+	/* topbg2 overstyrer med skjermdump farger - ikke profildefinerte farger, men ser bedre ut*/
+	background-position: left top;
+	background-repeat: repeat-x;
+	background-attachment: scroll;
+	margin: 2px 0px;
+	/* !important; */
+}
+
+#fwTopGoldbar { /*	background-color: #A29061;*/
+	background-color: #a69765;
+	height: 30px;
+	margin: 0px 0px 0px 0px;
+}
+
+#fwOrangebar { /*	background-color: #F58237;*/
+	background-color: #ff6e00;
+	height: 30px;
+	margin: 10px 0px 0px 0px;
+}
+
+div#fwTopLeft {
+	width: 200px;
+	float: left;
+	clear: none;
+}
+
+div#fwTopLeft a {
+	border: none;
+	text-decoration: none;
+}
+
+div#fwTopLeft a img { /* gammel*/
+	border: none;
+	margin: 15px 15px;
+	width: 99px;
+	height: 48px;
+}
+
+div#fwTopMiddle {
+	width: 780px;
+	float: left;
+	clear: none;
+}
+
+div.fwTopMiddleMenuCmds {
+	margin: 0px 0px 0px 370px;
+	width: 75px;
+	height: 50px;
+	float: left;
+	clear: none;
+}
+
+div.fwTopMiddleMenuCmds input {
+	font-size: 1em;
+}
+
+div#fwLeft,div.fwLeft {
+	height: 100%;
+	border-right: solid 1px #cccccc;
+	margin-bottom: auto;
+	white-space: nowrap;
+	width: 200px;
+	float: left;
+	clear: left;
+	background-color: #ffffff;
+	background-image: url("#{resource['images:gui/valg_contbg.gif']}");
+	background-repeat: no-repeat;
+	background-position: bottom left;
+}
+
+div#fwLeftMenu,div.fwLeftMenu {
+	height: auto;
+	width: 195px;
+	margin: 0px 0px 0px 5px;
+	background-color: #ffffff;
+}
+
+div#fwCenter,div.fwCenter {
+	height: 100%;
+	width: 770px;
+	float: left;
+	clear: none; /*right;*/
+	vertical-align: top;
+	background-color: #ffffff;
+	margin-left: 5px;
+	border-left: solid 1px #cccccc;
+	/* position: static; */
+}
+
+div#fwCenterMiddle,div.fwCenterMiddle {
+	margin: 0px 10px;
+	height: auto;
+	width: auto;
+	background-color: #ffffff;
+	overflow: visible;
+	/* position: static; */
+}
+
+div#mainPageLink {
+	/*	background-image: url("#{resource['images:gui/home.png']}");*/
+	/*	background-repeat: no-repeat;*/
+	/*	background-position: left middle;*/
+	height: 30px;
+}
+
+div#mainPageLink a {
+	vertical-align: middle;
+	height: 30px;
+	line-height: 30px;
+	text-decoration: none;
+}
+
+div#mainPageLink img {
+	height: 30px;
+}
+
+div#fwCenterTopInfo {
+	min-height: 10px;
+	margin: 0px 0px 0px 0px;
+}
+
+div#fwTopInfoHeader {
+	margin: 20px 0px 0px 0px;
+	clear: both;
+}
+
+div#fwTopInfoHeader h1 {
+	line-height: 40px;
+	margin: 0em 0em 0.5em 0em;
+}
+
+#fwTopInfoStateInfo {
+	height: auto;
+	line-height: 1.2em;
+}
+
+/* full width stuff */
+#fwFull {
+	height: 100%;
+	width: 100%; /* 780px; */
+	float: left;
+	clear: none;
+	vertical-align: top;
+	background-color: #ffffff;
+}
+
+#fwMainContentForm {
+	background-color: transparent;
+}
+
+div#fwFullContent {
+	margin: 0px 10px;
+	height: auto;
+	width: auto;
+	background-color: #ffffff;
+	/*background-image: url(/admin/resources/images/gui/valg_contbg.gif);
+	background-repeat: no-repeat;
+	background-position: top right;*/
+	overflow: visible;
+}
+
+/* fullhomepage stuff */
+.fwMnuEntries {
+	height: 100%;
+	width: 100%;
+	margin-bottom: 40px;
+	background-color: transparent;
+}
+
+.fwMnuSubEntries {
+	height: 100%;
+	width: 100%;
+	clear: both;
+	display: none;
+	margin-bottom: 40px;
+	background-color: transparent;
+}
+
+.fwMnuEntry {
+	background-color: transparent;
+	background-image: url("#{resource['images:gui/homebtnbg.gif']}");
+	background-repeat: no-repeat;
+	background-position: top left;
+	margin: 20px;
+	float: left;
+	clear: none;
+	width: 200px;
+	height: 150px;
+	white-space: normal;
+	vertical-align: middle;
+	text-align: center;
+	cursor: pointer;
+}
+
+.fwMnuEntryInner {
+	background-color: transparent;
+	margin: 75px 20px auto 10px;
+	width: 170px;
+	height: 60px;
+	text-align: right;
+	font-size: 1.5em;
+	line-height: 1.1em;
+}
+
+.fwMenuEntriesHeader {
+	margin: 10px 20px 5px 20px;
+}
+
+.fwMenuEntriesState {
+	color: #999999;
+	margin: 20px;
+}
+
+.fwTmByRole {
+	
+}
+
+div#mainMenu {
+	border: 1px solid #e0e0e0;
+	float: left;
+	margin: 10px 2px 10px 10px;
+	width: 685px;
+}
+
+div#mainMenu h2 {
+	margin-bottom: 0 !important;
+}
+
+div#taskList {
+	border: 1px solid #e0e0e0;
+	float: left;
+	margin: 10px 10px 10px 2px;
+	width: 247px;
+}
+
+div#pageMenu {
+	margin-bottom: 20px;
+}
+
+div#pageMenu ul {
+	margin: 0 -10px 0 -10px;
+	border-top: 1px solid #777;
+	border-bottom: 1px solid #777;
+	padding: 0px 0 0px 0px;
+}
+
+div#pageMenu li {
+	margin: 0 -3px 0 0;
+	padding: 0;
+	display: inline-block;
+	padding: 0px 8px 0px 8px;
+	font-size: 103%;
+	line-height: 2em;
+	display: inline-block;
+}
+
+div#pageMenu li {
+	zoom: 1;
+	*display: inline;
+}
+
+div#pageMenu li.selected,div#pageMenu li:hover {
+	background-color: #e0e0e0;
+	cursor: pointer;
+}
+
+div#pageMenu li a {
+	text-decoration: none;
+	color: #444;
+}
+
+div#pageMenu li.selected a {
+	font-weight: bold;
+}
+
+div#pageMenu li+li {
+	border-left: 1px solid #999999;
+}
+
+
+/* Submenu */
+div#submenu {
+	margin-top: -20px;
+	margin-bottom: 20px;
+}
+
+div#submenu ul {
+	margin: 0 -10px 0 -10px;
+	border-bottom: 1px solid #777;
+	padding: 0px 0 0px 0px;
+}
+
+div#submenu li {
+	margin: 0 -3px 0 0;
+	padding: 0;
+	display: inline-block;
+	padding: 0px 8px 0px 8px;
+	font-size: 90%;
+	line-height: 2em;
+	display: inline-block;
+}
+
+div#submenu li {
+	zoom: 1;
+	*display: inline;
+}
+
+div#submenu li.selected,div#submenu li:hover {
+	background-color: #e0e0e0;
+	cursor: pointer;
+}
+
+div#submenu li a {
+	text-decoration: none;
+	color: #444;
+}
+
+div#submenu li.selected a {
+	font-weight: bold;
+}
+
+div#submenu li+li {
+	border-left: 1px solid #999999;
+}
+
+/* Various form elements */
+.buttons {
+	margin-top: 2em;
+}
+
+div.fwFormRow {
+	clear: both;
+	padding-top: 5px;
+}
+
+div.fwFormRow .fwFormLabel {
+	float: left;
+	width: 10em;
+	text-align: left;
+	line-height: 20px;
+}
+
+div.fwFormRow span.fwFormField {
+	float: left;
+	width: 30em;
+	text-align: left;
+	line-height: 20px;
+}
+
+.formReq {
+	text-align: left;
+	float: left;
+}
+
+/* framework end */
+/* Flyttet fra layoutDeprecated.xhtml, TODO: sjekk om dette trengs */
+/* just for mockup - move to stylesheet files! */
+fieldset {
+	width: 95%;
+	margin: 0px 10px 10px 10px;
+	border: solid 1px #cccccc;
+}
+
+legend {
+	font-size: 1.2em;
+	background-color: #f7f7f7;
+	border: solid 1px #cccccc;
+	padding: 5px;
+	width: 100%;
+}
+
+legend img {
+	cursor: pointer;
+}
+
+fieldset {
+	border-top: solid 0px #cccccc;
+	border-right: solid 1px #cccccc;
+	border-bottom: solid 1px #cccccc;
+	border-left: solid 1px #cccccc;
+}
+
+legend {
+	position: relative;
+	left: -8px;
+	top: -10px;
+	z-index: 1001;
+	vertical-align: middle;
+	font-size: 1.2em;
+	background-color: #f7f7f7;
+	border: solid 1px #ccccccc;
+	padding: 5px;
+	width: 902px;
+}
+
+legend img {
+	margin-top: 2px;
+}
+
+/* Help link */
+#helpForm {
+	height: 0px;
+}
+
+#helpForm\3A helpLink {
+	display: block;
+	float: right;
+	position: relative;
+	top: -1em;
+	margin-right: 15px;
+}
+
+#helpForm a {
+	text-decoration: none;
+	height: 20px;
+	line-height: 20px;
+}
+
+#helpForm img {
+	height: 20px;
+}
+
+#helpText h2 {
+	margin-bottom: 0;
+}
+
+.dontshow {
+	visibility: hidden;
+	display: none;
+}

@@ -1,0 +1,19 @@
+#page-reporting-unit {
+  
+  .form-group {
+    
+    label + input + span:not(:empty) {
+      &:before {
+        .setIcomoonFont();
+        content: "\e61b";
+        padding-right: 5px;
+      }
+      padding:5px;
+      display: inline-block;
+      color: @errorTextColor;
+    }
+    
+  }
+  
+  
+}

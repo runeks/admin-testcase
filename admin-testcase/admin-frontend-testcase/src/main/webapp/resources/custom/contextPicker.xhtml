@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:composite="http://java.sun.com/jsf/composite" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<composite:interface>
+    <composite:attribute name="allowRedirect"/>
+    <composite:attribute name="mvAreaSelectionLevel"/>
+    <composite:attribute name="mvAreaAllSelectable"/>
+    <composite:attribute name="mvElectionSelectionLevel"/>
+    <composite:attribute name="mvElectionAllSelectable"/>
+    <composite:attribute name="mvElectionElectionTypeFilter"/>
+    <composite:attribute name="backButton"/>
+    <composite:attribute name="includeAreasAboveMyLevelUpTo"/>
+    <!-- Enables and indicator to show status of each item in the picker -->
+    <composite:attribute name="enableIndicator" type="Boolean" default="false"/>
+    <!-- The controller method that evaluates what status the indicator will show.
+     The method must be named evalContextPickerStatusIndicator.
+     The method will be sent an mvArea or an mvElection and returns a boolean indicating status.
+     True will show a green ready sign, false will show a red X and null will show no indicator.
+     -->
+    <composite:attribute name="indicatorEvaluator" method-signature="java.lang.Boolean evalContextPickerStatusIndicator(no.evote.model.MvArea)"/>
+    <composite:attribute name="afterComplete" type="java.lang.String"/>
+    <composite:attribute name="actionController" type="no.evote.presentation.components.Action"/>
+    <composite:attribute name="renderMessages" type="Boolean" default="true"/>
+    <composite:attribute name="mvAreaFilters" type="java.util.List"/>
+
+</composite:interface>
+
+<composite:implementation>
+
+    <p:messages errorClass="errors" layout="table" showDetail="false" globalOnly="true" id="messages" rendered="#{cc.attrs.renderMessages}"/>
+    <h:panelGroup id="contextPicker" name="contextPicker" layout="block">
+        <!-- MvElection selection -->
+
+        <ui:fragment
+                rendered="#{!mvElectionPickerController.error and cc.attrs.mvElectionSelectionLevel != null and mvElectionPickerController.selectedMvElection == null}">
+            <c:choose>
+                <c:when test="#{cc.attrs.mvElectionAllSelectable == 'true'}">
+                    <c:set var="messageKey" value="@election.common.election_level"/>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="messageKey" value="@election_level[#{cc.attrs.mvElectionSelectionLevel}].name"/>
+                </c:otherwise>
+            </c:choose>
+            <p:panel header="#{msgs['@common.choose']}: #{msgs[messageKey]}">
+                <!-- MvElection tables -->
+                <div class="contextPicker-outer">
+                    <table style="width: 100%;">
+                        <tr>
+                            <c:forEach var="mvElectionPickerTable" items="#{mvElectionPickerController.mvElectionPickerTables}">
+                                <td class="contextPicker-outer">
+                                    <p:dataTable value="#{mvElectionPickerTable.mvElections}" var="mvElection"
+                                                 selectionMode="single" selection="#{mvElectionPickerTable.selectedMvElection}" rowKey="#{mvElection.pk}"
+                                                 emptyMessage="" id="mvElectionTable-level#{mvElectionPickerTable.level}" styleClass="contextPicker">
+
+                                        <p:ajax event="rowSelect" update=":#{p:component('contextPicker')}"/>
+                                        <p:ajax event="rowUnselect" update=":#{p:component('contextPicker')}"/>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <c:set var="messageKey" value="@election_level[#{mvElectionPickerTable.level}].name"/>
+                                                <h:outputText value="#{msgs[messageKey]}"/>
+                                            </f:facet>
+                                            <h:outputText value="#{mvElection}  "/>
+                                            <!-- The status indicator -->
+                                            <h:graphicImage alt="ok" styleClass="right" url="#{resource['images:ixd/icon-button-ok.png']}"
+                                                            rendered="#{cc.attrs.enableIndicator and mvElectionPickerController.evaluateIndicator(cc.attrs.indicatorEvaluator, mvElection) == true}"/>
+                                            <h:graphicImage alt="notok" styleClass="right" url="#{resource['images:ixd/icon-cross.png']}"
+                                                            rendered="#{cc.attrs.enableIndicator and mvElectionPickerController.evaluateIndicator(cc.attrs.indicatorEvaluator, mvElection) == false}"/>
+                                        </p:column>
+                                    </p:dataTable></td>
+                            </c:forEach>
+                        </tr>
+                        <tr>
+                            <!-- Button for selecting MvElection -->
+                            <c:forEach var="mvElectionPickerTable" items="#{mvElectionPickerController.mvElectionPickerTables}">
+                                <td align="center">
+                                    <p:commandButton ajax="false" styleClass="icon-button icon-next" disabled="#{mvElectionPickerTable.selectedMvElection == null}"
+                                                     value="#{msgs['@common.choose']}" id="mvElectionSelector-level#{mvElectionPickerTable.level}"
+                                                     rendered="#{mvElectionPickerTable.level == cc.attrs.mvElectionSelectionLevel or cc.attrs.mvElectionAllSelectable == 'true'}"
+                                                     action="#{mvElectionPickerController.select(mvElectionPickerTable.level)}"/>
+                                </td>
+                            </c:forEach>
+                        </tr>
+                    </table>
+                </div>
+                <ui:fragment rendered="cc.attrs.backButton == 'false'">
+                    <div style="float: left; width: 121px; text-align: center"><h:outputText value="&nbsp;"/>
+                        <h:commandButton rendered="#{mvElectionPickerController.backPage != null}" value="#{msgs['@common.back']}"
+                                         action="#{mvElectionPickerController.back}"/>
+                        <h:commandButton rendered="#{mvElectionPickerController.backPage == null}" value="#{msgs['@common.back']}"
+                                         onclick="history.go(-1);return false;"/>
+                    </div>
+                </ui:fragment>
+            </p:panel>
+        </ui:fragment>
+
+
+        <!-- MvArea selection -->
+        <ui:fragment
+                rendered="#{!mvAreaPickerController.error and (cc.attrs.mvAreaSelectionLevel != null and ((cc.attrs.mvElectionSelectionLevel != null and mvElectionPickerController.selectedMvElection != null) or cc.attrs.mvElectionSelectionLevel == null) and mvAreaPickerController.selectedMvArea == null)}">
+            <c:choose>
+                <c:when test="#{cc.attrs.mvAreaAllSelectable == 'true'}">
+                    <c:set var="messageKey" value="@area.common.area_level"/>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="messageKey" value="@area_level[#{cc.attrs.mvAreaSelectionLevel}].name"/>
+                </c:otherwise>
+            </c:choose>
+            <p:panel header="#{msgs['@common.choose']}: #{msgs[messageKey]}">
+                <!-- MvArea tables -->
+                <div class="contextPicker-outer">
+                    <table style="width: 100%;">
+                        <tr>
+                            <c:forEach var="mvAreaPickerTable" items="#{mvAreaPickerController.mvAreaPickerTables}" varStatus="status">
+                                <td class="contextPicker-outer">
+                                    <p:dataTable value="#{mvAreaPickerTable.mvAreas}" var="mvArea"
+                                                 selectionMode="single" selection="#{mvAreaPickerTable.selectedMvArea}" rowKey="#{mvArea.pk}"
+                                                 widgetVar="mvAreaPickerTable${status.index}" emptyMessage=""
+                                                 tableStyle="#{mvAreaPickerTable.mvAreas.size() == 1 and not status.last and not cc.attrs.mvAreaAllSelectable == 'true' ? 'display: none' : ''}"
+                                                 styleClass="contextPicker" id="mvAreaTable-level#{mvAreaPickerTable.level}">
+
+                                        <p:ajax event="rowSelect" update=":#{p:component('contextPicker')}"/>
+                                        <p:ajax event="rowUnselect" update=":#{p:component('contextPicker')}"/>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <c:set var="messageKey" value="@area_level[#{mvAreaPickerTable.level}].name"/>
+                                                <h:outputText value="Nr - #{msgs[messageKey]}"/>
+
+                                            </f:facet>
+                                            <h:outputText value="#{mvArea.id()} - #{mvArea.toString()}  "/>
+                                            <!-- The status indicator -->
+                                            <h:graphicImage styleClass="right" alt="ok" url="#{resource['images:ixd/icon-button-ok.png']}"
+                                                            rendered="#{cc.attrs.enableIndicator and mvAreaPickerController.evaluateIndicator(cc.attrs.indicatorEvaluator, mvArea) == true}"/>
+                                            <h:graphicImage styleClass="right" alt="notok" url="#{resource['images:ixd/icon-cross.png']}"
+                                                            rendered="#{cc.attrs.enableIndicator and mvAreaPickerController.evaluateIndicator(cc.attrs.indicatorEvaluator, mvArea) == false}"/>
+
+                                        </p:column>
+                                    </p:dataTable></td>
+                            </c:forEach>
+                        </tr>
+                        <tr>
+                            <!-- Button for selecting MvArea -->
+                            <c:forEach var="mvAreaPickerTable" items="#{mvAreaPickerController.mvAreaPickerTables}">
+                                <td align="right">
+                                    <p:commandButton ajax="false" styleClass="icon-button icon-next left-align" disabled="#{mvAreaPickerTable.selectedMvArea == null}"
+                                                     value="#{msgs['@common.choose']}" id="mvAreaSelector-level#{mvAreaPickerTable.level}"
+                                                     rendered="#{mvAreaPickerTable.level == cc.attrs.mvAreaSelectionLevel or cc.attrs.mvAreaAllSelectable == 'true'}"
+                                                     action="#{mvAreaPickerController.select(mvAreaPickerTable.level)}"/>
+                                </td>
+                            </c:forEach>
+                        </tr>
+                    </table>
+                </div>
+                <ui:fragment rendered="cc.attrs.backButton == 'false'">
+                    <div style="float: left; width: 121px; text-align: center"><h:outputText value="&nbsp;"/>
+                        <h:commandButton rendered="#{mvAreaPickerController.backPage != null}" value="#{msgs['@common.back']}" action="#{mvAreaPickerController.back}"/>
+                        <h:commandButton rendered="#{mvAreaPickerController.backPage == null}" value="#{msgs['@common.back']}" onclick="history.go(-1);return false;"/>
+                    </div>
+                </ui:fragment>
+            </p:panel>
+        </ui:fragment>
+    </h:panelGroup>
+</composite:implementation>
+
+</html>

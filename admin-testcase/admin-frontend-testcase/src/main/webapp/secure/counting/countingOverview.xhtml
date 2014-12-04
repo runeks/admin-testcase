@@ -1,0 +1,71 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:widget="http://java.sun.com/jsf/composite/widget/"
+        contentType="text/html">
+
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:param name="helpId" value="@help.overview"/>
+
+        <ui:define name="content">
+
+            <f:event listener="#{contextPickerController.forceInit}" type="preRenderView"/>
+            <f:event listener="#{contestOrElectionPickerController.initData}" type="preRenderView"/>
+            <f:event listener="#{countingOverviewController.initData}" type="preRenderView"/>
+
+            <div id="page-counting-overview" class="page">
+
+				<ui:fragment rendered="#{countingOverviewController.selectedMvArea ne null}">
+					<h1 class="page-title"> #{countingOverviewController.selectedMvArea} #{msgs[countingOverviewController.selectedMvArea.areaLevelString].toLowerCase()}</h1>
+					<h4> #{msgs['@count.overview.title']} </h4>
+				</ui:fragment>
+				<ui:fragment rendered="#{countingOverviewController.selectedMvArea eq null}">
+					<h1 class="page-title"> #{msgs['@count.overview.title']} </h1>
+				</ui:fragment>
+
+                <h:form id="countingOverview">
+
+                    <ui:fragment rendered="#{countingOverviewController.renderContextPicker}">
+
+                        <ui:fragment rendered="#{countingOverviewController.renderSelectTopLevel}">
+
+                            <h3>#{msgs['@common.choose']}: #{msgs['@area_level[0].name']}</h3>
+
+                            <p:commandButton
+                                    value="#{msgs['@common.choose']} #{msgs['@common.electionEvent']}"
+                                    process="@this"
+                                    styleClass="btn btn-primary"
+                                    update="form"
+                                    ajax="false"
+                                    action="#{mvAreaPickerController.selectTopLevel()}"/>
+
+                        </ui:fragment>
+
+                        <widget:contextPicker mvAreaSelectionLevel="3" mvAreaAllSelectable="true"/>
+
+                    </ui:fragment>
+                </h:form>
+                <ui:fragment rendered="#{countingOverviewController.renderWidget}">
+
+                    <h:form id="countingOverviewContestPickerForm">
+						<widget:contestPicker
+								id="countingContextPicker"
+								template="/secure/counting/templates/contestOverview.xhtml"
+								contestController="#{contestOrElectionPickerController}"
+								countingOverviewController="#{countingOverviewController}"
+								enableAjax="true"
+								enableCache="false"/>
+                    </h:form>
+
+                </ui:fragment>
+
+            </div>
+
+        </ui:define>
+
+    </ui:composition>
+
+</f:view>

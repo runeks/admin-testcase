@@ -1,0 +1,212 @@
+.ui-panel {
+    clear: both;
+    font-size: 10px;
+}
+
+.back {
+    position: relative;
+    top: 8px;
+}
+
+.ballots {
+    width: 220px;
+    float: left;
+    margin-right: 9px;
+}
+
+.ballots .ui-datatable .ui-datatable-data td {
+    border: none;
+}
+
+.ballots thead {
+    display: none !important;
+}
+
+.ballots table {
+    margin-top: 49px !important;
+    border: none;
+}
+
+.collatedCountResults {
+    float: left;
+    margin-right: 9px;
+    width: 165px;
+}
+
+.sum table {
+    margin-top: 17px !important;
+}
+
+.pink table tr td, .pink table tr th {
+    background-color: #FFDEF1 !important;
+}
+
+.collatedCountResults td, .ballots td {
+    height: 20px !important;
+    border: medium none !important;
+    line-height: 8px;
+}
+
+.collatedCountResults tr td {
+    text-align: right;
+    width: 40px;
+}
+
+.ui-datatable .ui-datatable-data td {
+    border-bottom: none;
+}
+
+.ui-datatable .ui-datatable-data tr {
+    border: none;
+    background: none repeat scroll 0 0 transparent;
+}
+
+td div {
+    font-size: 10px;
+}
+
+.collatedCountResults td div {
+    float: right;
+    padding-left: 0;
+    padding-right: 3px;
+    width: 44px;
+}
+
+.collatedCountResults th div {
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+}
+
+h5 {
+    text-align: center;
+    margin-bottom: 4px !important;
+    height: 25px;
+}
+
+.arrowBack {
+    background-image: url("#{resource['images:gui/arrow_back.png']}") !important;
+    margin-left: 260px !important;
+}
+
+.arrow {
+    margin-right: 0 !important;
+    border: medium none !important;
+    height: 38px;
+    width: 41px;
+    border: medium none !important;
+}
+
+.arrowforward {
+    background-image: url("#{resource['images:gui/arrow_forward.png']}") !important;
+    margin-left: 394px !important;
+}
+
+.settlementTable {
+    float: left;
+    margin-right: 10px;
+}
+
+.settlementTable table {
+    border: 1px #AAAAAA solid !important;
+}
+
+.settlementTable table tr td, .settlementTable table tr th {
+    border: none !important;
+}
+
+.settlementTable th {
+    background-image: none !important;
+    background-color: white !important;
+}
+
+.settlementTable th {
+    font-weight: bold !important;
+    font-size: 11px;
+}
+
+.affiliationTable {
+    margin-top: 29px;
+}
+
+.affiliationTable thead {
+    height: 19px
+}
+
+.settlementDiv {
+    float: left;
+}
+
+.settlementDiv h5 {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.number {
+    text-align: right;
+}
+
+.pink table tr.ui-state-highlight td {
+    background-color: #D8BCCA !important;
+}
+
+.pink table tr.ui-selected td {
+    background-color: #D8BCCA !important;
+    color: black;
+}
+
+.pink table tr.ui-state-highlight {
+    border: 1px solid #AAAAAA;
+}
+
+.pink table tr.ui-selected {
+    border: 1px solid #AAAAAA;
+}
+
+.candidateAnnouncement {
+    float: left;
+    margin-top: 7px;
+}
+
+h5.candidateList {
+    font-weight: bold;
+    text-align: left;
+    font-size: 14px;
+}
+
+div.ui-datatable table thead tr th {
+    line-height: 15px;
+}
+
+.ui-datatable table thead tr th, .ui-datatable table tbody tr td, .ui-datatable table tfoot tr td {
+    padding: 3px;
+}
+
+.ui-panel {
+    overflow: hidden;
+    padding: 1px;
+    margin: 0 10px 10px 10px;
+}
+
+.ui-panel .ui-panel-content {
+    padding: 0 !important;
+}
+
+.settlementTableNoMargin {
+    margin-right: 0 !important;
+}
+
+.collatedCountTable table tr.sumRow td {
+    background-color: #F3F3F3 !important;
+    font-weight: bold !important;
+}
+
+span.ballotRejection {
+    padding-left: 15px;
+}
+
+.settlementDiv table {
+    width: auto !important;
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui">
+
+<!-- NOTE: ballotCountsList must contain objects of type no.valg.eva.admin.counting.presentation.view.CompareBallotCountViewuntView -->
+<composite:interface>
+	<composite:attribute name="ballotCountList" type="no.valg.eva.admin.counting.presentation.view.CompareBallotCounts" required="true" />
+</composite:interface>
+
+<composite:implementation>
+	<p:dataTable value="#{cc.attrs.ballotCountList}" var="ballotCount" tableStyleClass="table table-striped">
+		<p:column headerText="#{msgs['@count.modified']}">
+			<h:outputText value="#{ballotCount.modifiedCount}" styleClass="#{ballotCount.styleClass}" rendered="#{ballotCount.modifiedCount != null}" />
+		</p:column>
+		<p:column headerText="#{msgs['@count.unmodified']}">
+			<h:outputText value="#{ballotCount.unmodifiedCount}" styleClass="#{ballotCount.styleClass}" rendered="#{ballotCount.unmodifiedCount != null}" />
+		</p:column>
+		<p:column headerText="#{msgs['@common.total']}">
+			<h:outputText value="#{ballotCount.count}" styleClass="#{ballotCount.styleClass}" rendered="#{ballotCount.count != null}" />
+		</p:column>
+		<p:column headerText="#{msgs['@common.change']}">
+			<h:outputText value="#{ballotCount.diff}" styleClass="#{ballotCount.styleClassForDiff}" rendered="#{ballotCount.diff != null}" />
+		</p:column>
+	</p:dataTable>
+</composite:implementation>
+</html>

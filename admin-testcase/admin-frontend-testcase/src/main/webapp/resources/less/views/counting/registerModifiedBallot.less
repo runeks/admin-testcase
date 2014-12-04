@@ -1,0 +1,42 @@
+#page-register-modified-ballot {
+  @direct-to-candidate-row-height: 50px;
+  .ui-autocomplete {
+    display: block;
+
+    input {
+      width: 100%;
+    }
+  }
+  .ui-datatable-scrollable-header-box {
+    margin-right: 0px !important;
+  }
+  #ballot-label {
+    font-size: 2em; 
+    margin-top: 14px;
+  }
+  .selected-candidate-row {
+    background-color: @blue !important;
+  }
+  #direct-to-candidate {
+    background: url("#{resource['images:gui/sign_post_arrow.png']}") no-repeat;
+    height: @direct-to-candidate-row-height;
+    font-size: 1.2em;
+    span {
+      top: 20px;
+      width: 232px;
+      padding-left:8px;
+      display: inline-block;
+    }
+    input {
+      height: 42px;
+      width: 42px;
+      text-align: center;
+    }
+  }
+  #place-holder {
+    height: @direct-to-candidate-row-height;
+  }
+  .right {
+    float: right;
+  }
+}

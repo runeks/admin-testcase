@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:custom="http://java.sun.com/jsf/composite/custom/">
+<h:body>
+
+	<ui:composition template="/templates/masterReportLayout.xhtml">
+
+		<ui:param name="menuType" value="sub" />
+
+		<ui:define name="topinfoheader">
+			<h:outputText value="#{msgs['@menu.report.heading']}" />
+		</ui:define>
+
+		<ui:define name="pagemenu">
+			<custom:reportingMenu menuSelection="report"
+				menuSubselection="#{menuSubselection}"
+				templateMenuAction="templateMenuAction" />
+		</ui:define>
+
+		<ui:define name="content">
+
+			<p:messages id="messages" />
+
+			<h:form id="reportForm" prependId="false">
+				<custom:reportingElectionPathSelectPanel />
+
+				<h:panelGrid columns="1">
+					<p:commandButton id="searchButton"
+						value="#{msgs['@common.search']}" ajax="false"
+						action="#{controller.doSearchReports}" styleClass="icon-button icon-search"/>
+				</h:panelGrid>
+
+				<c:if test="#{not empty controller.reportItems}">
+					<h:panelGrid columns="1">
+						<p:dataTable id="reportDataTable"
+							selection="#{controller.selectedReportList}"
+							value="#{controller.reportItems}" var="tmplt" border="1"
+							selectionMode="single" dynamic="true" paginator="true" rows="10"
+							emptyMessage="#{msgs['@pf.datatable.emptyMsg']}"
+							errorMessage="#{msgs['@pf.datatable.errMsg']}"
+							firstPageLinkLabel="#{msgs['@pf.datatable.first']}"
+							nextPageLinkLabel="#{msgs['@pf.datatable.next']}"
+							previousPageLinkLabel="#{msgs['@pf.datatable.prev']}"
+							lastPageLinkLabel="#{msgs['@pf.datatable.last']}"
+							paginatorPosition="bottom" update="actionButton">
+
+							<p:column sortBy="#{tmplt.templateName}" filterBy="#{tmplt.templateName}" width="180">
+								<f:facet name="header">
+									<h:outputText value="#{msgs['@reporting.template.name']}" />
+								</f:facet>
+								<h:outputText value="#{tmplt.templateName}" />
+							</p:column>
+
+							<p:column sortBy="#{tmplt.reports.get(0).reportName}" filterBy="#{tmplt.reports.get(0).reportName}" width="180">
+								<f:facet name="header">
+									<h:outputText value="#{msgs['@reporting.report.name']}" />
+								</f:facet>
+								<h:outputText value="#{tmplt.reports.get(0).reportName}" />
+							</p:column>
+
+							<p:column sortBy="#{tmplt.reports.get(0).format}" width="50">
+								<f:facet name="header">
+									<h:outputText value="#{msgs['@reporting.report.format']}" />
+								</f:facet>
+								<h:outputText value="#{tmplt.reports.get(0).format}" />
+							</p:column>
+
+							<p:column sortBy="#{tmplt.reports.get(0).validate}" width="50">
+								<f:facet name="header">
+									<h:outputText value="#{msgs['@reporting.report.validated']}" />
+								</f:facet>
+								<h:selectBooleanCheckbox
+									value="#{tmplt.reports.get(0).validate}"
+									readonly="#{tmplt.reports.get(0).validate or not canValidate}"
+									disabled="#{tmplt.reports.get(0).validate or not canValidate}" />
+							</p:column>
+
+							<c:if test="#{showExecutor}">
+								<p:column sortBy="#{tmplt.reports.get(0).executorName}"
+									width="130">
+									<f:facet name="header">
+										<h:outputText
+											value="#{msgs['@reporting.report.executor_name']}" />
+									</f:facet>
+									<h:outputText value="#{tmplt.reports.get(0).executorName}" />
+								</p:column>
+							</c:if>
+
+							<c:if test="#{showStatus}">
+								<p:column sortBy="#{tmplt.reports.get(0).state}" width="60">
+									<f:facet name="header">
+										<h:outputText
+											value="#{msgs['@reporting.report.execution_state']}" />
+									</f:facet>
+									<h:outputText value="#{msgs['@reporting.report_status.'.concat(tmplt.reports.get(0).state)]}" />
+								</p:column>
+							</c:if>
+
+							<c:if test="#{showTimestamp}">
+								<p:column sortBy="#{tmplt.reports.get(0).timeStamp}" width="140">
+									<f:facet name="header">
+										<h:outputText
+											value="#{msgs['@reporting.report.execution_date']}" />
+									</f:facet>
+									<h:outputText value="#{tmplt.reports.get(0).timeStamp}" />
+								</p:column>
+							</c:if>
+						</p:dataTable>
+
+						<!-- Button must define the concrete action -->
+						<ui:insert name="button"></ui:insert>
+					</h:panelGrid>
+				</c:if>
+
+				<!-- More content to insert in the body view -->
+				<ui:insert name="morecontent"></ui:insert>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

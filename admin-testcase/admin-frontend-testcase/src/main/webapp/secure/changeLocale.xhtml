@@ -1,0 +1,24 @@
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core" contentType="text/html"
+	xmlns:custom="http://java.sun.com/jsf/composite/custom/">
+
+	<ui:composition template="/templates/layoutDeprecated.xhtml">
+
+		<ui:param name="helpId" value="@help.changeLocale" />
+
+		<ui:define name="topinfoheader">#{msgs['@common.change_locale']}</ui:define>
+
+		<ui:define name="content">
+			<p:messages />
+			<h:form>
+				<p:panel>
+					<h:selectOneMenu id="selectLocale" value="#{changeLocaleController.currentLocale}" required="true">
+						<f:selectItems value="#{changeLocaleController.locales}" var="from" itemLabel="#{msgs[from.name]} (#{from.id})" />
+						<f:converter converterId="entityConverter" />
+					</h:selectOneMenu>
+					<h:commandButton action="index.xhtml?faces-redirect=true" value="#{msgs['@common.change_locale']}" />
+				</p:panel>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</f:view>

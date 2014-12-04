@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:evote="http://evote.no" xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<title></title>
+</h:head>
+<h:body>
+	<composite:interface>
+		<composite:attribute name="menuSubselection" />
+	</composite:interface>
+
+	<composite:implementation>
+		<evote:menu id="submenu">
+			<c:if
+				test="#{UserDataController.hasAccess('e.reporting.report.download')}">
+				<c:choose>
+					<c:when test="#{cc.attrs.menuSubselection == 'download'}">
+						<evote:menuitem selected="selected">
+							<h:commandLink
+								value="#{msgs['@reporting.report.submenu.download']}"
+								action="reportingReportDownload.xhtml?faces-redirect=true" />
+						</evote:menuitem>
+					</c:when>
+					<c:otherwise>
+						<evote:menuitem>
+							<h:commandLink
+								value="#{msgs['@reporting.report.submenu.download']}"
+								action="reportingReportDownload.xhtml?faces-redirect=true" />
+						</evote:menuitem>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+			<c:if
+				test="#{UserDataController.hasAccess('e.reporting.report.validate')}">
+				<c:choose>
+					<c:when test="#{cc.attrs.menuSubselection == 'validate'}">
+						<evote:menuitem selected="selected">
+							<h:commandLink
+								value="#{msgs['@reporting.report.submenu.validate']}"
+								action="reportingReportValidate.xhtml?faces-redirect=true" />
+						</evote:menuitem>
+					</c:when>
+					<c:otherwise>
+						<evote:menuitem>
+							<h:commandLink
+								value="#{msgs['@reporting.report.submenu.validate']}"
+								action="reportingReportValidate.xhtml?faces-redirect=true" />
+						</evote:menuitem>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+			<c:if
+				test="#{UserDataController.hasAccess('e.reporting.report.deactivate')}">
+				<c:choose>
+					<c:when test="#{cc.attrs.menuSubselection == 'deactivate'}">
+						<evote:menuitem selected="selected">
+							<h:commandLink
+								value="#{msgs['@reporting.report.submenu.deactivate']}"
+								action="reportingReportDeactivate.xhtml?faces-redirect=true" />
+						</evote:menuitem>
+					</c:when>
+					<c:otherwise>
+						<evote:menuitem>
+							<h:commandLink
+								value="#{msgs['@reporting.report.submenu.deactivate']}"
+								action="reportingReportDeactivate.xhtml?faces-redirect=true" />
+						</evote:menuitem>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+			<c:if
+				test="#{UserDataController.hasAccess('e.reporting.report.reactivate')}">
+				<c:choose>
+					<c:when test="#{cc.attrs.menuSubselection == 'reactivate'}">
+						<evote:menuitem selected="selected">
+							<h:commandLink
+								value="#{msgs['@reporting.report.submenu.reactivate']}"
+								action="reportingReportReactivate.xhtml?faces-redirect=true" />
+						</evote:menuitem>
+					</c:when>
+					<c:otherwise>
+						<evote:menuitem>
+							<h:commandLink
+								value="#{msgs['@reporting.report.submenu.reactivate']}"
+								action="reportingReportReactivate.xhtml?faces-redirect=true" />
+						</evote:menuitem>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+			<c:if
+				test="#{UserDataController.hasAccess('e.reporting.report.delete')}">
+				<c:choose>
+					<c:when test="#{cc.attrs.menuSubselection == 'delete'}">
+						<evote:menuitem selected="selected">
+							<h:commandLink
+								value="#{msgs['@reporting.report.submenu.delete']}"
+								action="reportingReportDelete.xhtml?faces-redirect=true" />
+						</evote:menuitem>
+					</c:when>
+					<c:otherwise>
+						<evote:menuitem>
+							<h:commandLink
+								value="#{msgs['@reporting.report.submenu.delete']}"
+								action="reportingReportDelete.xhtml?faces-redirect=true" />
+						</evote:menuitem>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+		</evote:menu>
+	</composite:implementation>
+</h:body>
+</html>

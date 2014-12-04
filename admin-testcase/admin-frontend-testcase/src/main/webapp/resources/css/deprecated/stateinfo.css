@@ -1,0 +1,12 @@
+div#fwTopInfoStateInfo {
+	text-align: right;
+	width: 30%;
+	float: right;
+	clear: right;
+	font-size: 1.1em;
+	height: auto;
+	min-height: 18px;
+	vertical-align: center;
+	padding-top: 5px;
+	/* border: solid 1px #990000; */
+}

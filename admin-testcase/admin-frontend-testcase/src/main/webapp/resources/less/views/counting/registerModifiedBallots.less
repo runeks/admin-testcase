@@ -1,0 +1,32 @@
+#page-register-corrected-ballots {
+
+  .page-title {
+    margin-bottom: 5px;
+  }
+  
+  .page-title + h3 {
+    margin-top: 0;
+  }
+
+  table {
+    & > thead {
+      & > tr {
+        & > th.ui-state-default {
+          text-align: center;
+          &.party-name-column {
+            text-align: left;
+          }
+        }
+      }
+    }
+    & > tbody {
+      tr {
+        td {
+          &:not(:first-child) {
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}

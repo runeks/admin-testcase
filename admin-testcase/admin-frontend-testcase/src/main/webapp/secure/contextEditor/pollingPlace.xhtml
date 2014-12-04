@@ -1,0 +1,437 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                contentType="text/html">
+
+<h:form id="level6Form" role="form">
+<ui:param name="helpId" value="@help.area.polling_place"/>
+<p:dialog
+        id="level6Dialog"
+        header="#{msgs['@common.redact']} #{msgs['@area_level[6].name']}"
+        widgetVar="editAreaLevel6Widget"
+        fixedCenter="true"
+        modal="true"
+        visible="false"
+        resizable="false"
+        width="900"
+		height="600">
+
+<h:panelGroup styleClass="row" layout="block">
+
+<div class="col-md-9 center-block">
+    <p:messages id="msg"/>
+</div>
+
+
+<!-- pollingdistrictName -->
+<h:panelGroup styleClass="form-group col-md-4" layout="block">
+    <h:outputLabel value="#{msgs['@area_level[5].name']}" for="pollingdistrictName"/>
+    <h:inputText
+            id="pollingdistrictName"
+            value="#{pollingPlaceController.currentMvArea.pollingDistrict.id} - #{pollingPlaceController.currentMvArea.pollingDistrict.name}"
+            styleClass="form-control"
+            readonly="true"
+            disabled="true"/>
+</h:panelGroup>
+
+<!-- pollingPlaceId -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+    <h:outputLabel value="#{msgs['@area_level[6].nummer']}:" for="pollingPlaceId"/>
+    <h:inputText
+            id="pollingPlaceId"
+            value="#{pollingPlaceController.currentPollingPlace.id}"
+            maxlength="4"
+            label="#{msgs['@area_level[6].nummer']}"
+            required="true"
+            styleClass="form-control"
+            disabled="#{isElectionEventDisabled or pollingPlaceController.readOnly}"/>
+</h:panelGroup>
+
+<!-- pollingPlaceName -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+    <h:outputLabel value="#{msgs['@pollingplace.name']}" for="pollingPlaceName"/>
+    <h:inputText
+            id="pollingPlaceName"
+            value="#{pollingPlaceController.currentPollingPlace.name}"
+            label="#{msgs['@common.name']}"
+            styleClass="form-control"
+            maxlength="50"
+            required="true"
+            disabled="#{isElectionEventDisabled or pollingPlaceController.readOnly}"/>
+</h:panelGroup>
+
+<!-- Address line 1 -->
+<h:panelGroup styleClass="form-group col-md-4" layout="block">
+    <h:outputLabel value="#{msgs['@common.address.address_line_1']}" for="addrLine1"/>
+    <h:inputText
+            id="addrLine1"
+            value="#{pollingPlaceController.currentPollingPlace.addressLine1}"
+            label="#{msgs['@common.address.address_line_1']}"
+            styleClass="form-control"
+            disabled="#{isElectionEventDisabled or pollingPlaceController.readOnly}"
+            maxlength="50"/>
+
+    <h:inputText
+            id="addrLine2"
+            value="#{pollingPlaceController.currentPollingPlace.addressLine2}"
+            label="#{msgs['@common.address.address_line_2']}"
+            styleClass="form-control"
+            disabled="#{isElectionEventDisabled or pollingPlaceController.readOnly}"
+            maxlength="50"/>
+
+    <h:inputText
+            id="addrLine3"
+            styleClass="form-control"
+            value="#{pollingPlaceController.currentPollingPlace.addressLine3}"
+            label="#{msgs['@common.address.address_line_3']}"
+            disabled="#{isElectionEventDisabled or pollingPlaceController.readOnly}"
+            maxlength="50"/>
+</h:panelGroup>
+
+<!-- Postal code -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+    <h:outputLabel value="#{msgs['@common.address.postal_code']}" for="zipcode"/>
+    <h:inputText
+            id="zipcode"
+            value="#{pollingPlaceController.currentPollingPlace.postalCode}"
+            label="#{msgs['@common.address.postal_code']}"
+            required="true"
+            styleClass="form-control"
+            disabled="#{isElectionEventDisabled or pollingPlaceController.readOnly}"
+            maxlength="4"/>
+</h:panelGroup>
+
+<!-- Post town -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+    <h:outputLabel value="#{msgs['@common.address.post_town']}" for="city"/>
+    <h:inputText
+            id="city"
+            value="#{pollingPlaceController.currentPollingPlace.postTown}"
+            label="#{msgs['@common.address.post_town']}"
+            required="true"
+            styleClass="form-control"
+            disabled="#{isElectionEventDisabled or pollingPlaceController.readOnly}"
+            maxlength="50"/>
+</h:panelGroup>
+
+<!-- GPS coordinates -->
+<h:panelGroup styleClass="form-group col-md-12" layout="block">
+    <h:outputLabel value="#{msgs['@common.address.gps']}" for="latlng"/>
+    <h:inputText
+            id="latlng"
+            value="#{pollingPlaceController.currentPollingPlace.gpsCoordinates}"
+            label="#{msgs['@common.address.gps']}"
+            styleClass="form-control"
+            disabled="#{isElectionEventDisabled or pollingPlaceController.readOnly}"
+            maxlength="50"/>
+</h:panelGroup>
+
+<!-- Info text -->
+<h:panelGroup styleClass="form-group col-md-12" layout="block">
+    <h:outputLabel value="#{msgs['@area.polling_place.infoText']}" for="description"/>
+    <h:inputTextarea
+            id="description"
+            value="#{pollingPlaceController.currentPollingPlace.infoText}"
+            label="#{msgs['@area.polling_place.infoText']}"
+            styleClass="form-control"
+            cols="50"
+            rows="5"
+            onkeyup="this.value = this.value.substring(0, 150);"
+            disabled="#{isElectionEventDisabled or pollingPlaceController.readOnly}"
+            maxlength="150"/>
+</h:panelGroup>
+
+<!-- Election day voting (or advance voting) -->
+<h:panelGroup styleClass="form-group col-md-12" layout="block">
+    <h:outputLabel value="#{msgs['@area.polling_place.type']}" for="pollingPlaceType"/>
+    <h:inputText
+            id="pollingPlaceType"
+            styleClass="form-control"
+            value="#{pollingPlaceController.currentPollingPlace.electionDayVoting ? msgs['@area.polling_place.type_election_day_voting'] : msgs['@area.polling_place.type_advance_voting']}"
+            readonly="true"
+            disabled="true"/>
+</h:panelGroup>
+
+<!-- Using polling stations -->
+<h:panelGroup id="param10" layout="block" styleClass="form-group col-md-12">
+    <h:panelGroup rendered="#{pollingPlaceController.canUsePollingStations(pollingPlaceController.currentPollingPlace)}">
+        <h:outputLabel value="#{msgs['@area.polling_place.usingPollingStations']}"/>
+        <h:selectOneRadio
+                value="#{pollingPlaceController.currentPollingPlace.usingPollingStations}"
+                label="#{msgs['@area.polling_place.usingPollingStations']}"
+                required="true"
+                styleClass="ui-radio-group ui-radio-group-inline"
+                disabled="${isElectionEventDisabled or pollingPlaceController.readOnly}">
+
+        <f:selectItem itemValue="true" itemLabel="#{msgs['@common.yes']}"/>
+            <f:selectItem itemValue="false" itemLabel="#{msgs['@common.no']}"/>
+        </h:selectOneRadio>
+    </h:panelGroup>
+</h:panelGroup>
+
+<!-- List of opening hours -->
+<h:panelGroup id="openingHoursPanel" styleClass="form-group col-md-12" layout="block">
+    <h:panelGroup rendered="#{pollingPlaceController.currentPollingPlace.electionDayVoting}">
+
+    <h:outputText
+                value="#{msgs['@area.polling_place.panelheader.opening_hours_list']}"
+                rendered="#{!pollingPlaceController.editMode and pollingPlaceController.currentPollingPlace.electionDayVoting}"/>
+        <p:dataTable id="listTable" var="electionDayEntry"
+                     value="#{pollingPlaceController.electionDayOpenHours}" border="1"
+                     rendered="#{!pollingPlaceController.editMode and pollingPlaceController.currentPollingPlace.electionDayVoting}"
+                     emptyMessage="#{msgs['@area.polling_place.opening_hours.no_entries']}">
+
+        <!-- Day -->
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText
+                            value="#{msgs['@area.polling_place.opening_hours.day']}"/>
+                </f:facet>
+                <h:outputText value="#{electionDayEntry.electionDay.date}">
+                    <f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+                </h:outputText>
+            </p:column>
+
+            <!--  Interval 1  -->
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText
+                            value="#{msgs['@area.polling_place.opening_hours.title']}"/>
+                </f:facet>
+                <h:outputText value="#{electionDayEntry.startTimestamp1}">
+                    <f:converter converterId="timeConverter"/>
+                </h:outputText>
+                <h:outputText value="-"/>
+                <h:outputText value="#{electionDayEntry.endTimestamp1}">
+                    <f:converter converterId="timeConverter"/>
+                </h:outputText>
+            </p:column>
+
+            <!-- Interval 2  -->
+            <p:column>
+                <f:facet name="header">
+                    <h:outputText
+                            value="#{msgs['@area.polling_place.opening_hours.title']}"/>
+                </f:facet>
+                <h:outputText value="#{electionDayEntry.startTimestamp2}">
+                    <f:converter converterId="timeConverter"/>
+                </h:outputText>
+                <h:outputText value="-"
+                              rendered="#{electionDayEntry.startTimestamp2 != null}"/>
+                <h:outputText value="#{electionDayEntry.endTimestamp2}">
+                    <f:converter converterId="timeConverter"/>
+                </h:outputText>
+            </p:column>
+
+        </p:dataTable>
+
+        <!-- List of editable opening hours -->
+		<p:dataTable
+				id="editTable"
+				var="electionDayEntry"
+				tableStyleClass="table table-striped"
+				value="#{pollingPlaceController.allElectionDaysOH}" border="1"
+				rendered="#{pollingPlaceController.editMode and pollingPlaceController.currentPollingPlace.electionDayVoting}"
+				emptyMessage="#{msgs['@area.polling_place.opening_hours.no_entries']}"
+				rowIndexVar="i"
+				binding="#{editOpeningHourTable}">
+
+		<!-- Checkbox-->
+			<p:column>
+				<h:selectBooleanCheckbox
+						id="checkDay"
+						value="#{electionDayEntry.selected}"
+						immediate="true"
+						count="#{pollingPlaceController.allElectionDaysOH.size()}">
+					<f:validator validatorId="atLeastOneValidator"/>
+					<p:ajax
+							update="day st1 startTimestamp1 end1 endTimestamp1 st2 startTimestamp2 end2 endTimestamp2"
+							event="click"
+							oncomplete="resetEditInputMasks(#{pollingPlaceController.allElectionDaysOH.size()});"/>
+				</h:selectBooleanCheckbox>
+			</p:column>
+
+
+            <!-- Day -->
+            <p:column id="day">
+                <f:facet name="header">
+                    <h:outputText
+                            value="#{msgs['@area.polling_place.opening_hours.day']}"/>
+                </f:facet>
+                <h:outputText value="#{electionDayEntry.electionDay.date}">
+                    <f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+                </h:outputText>
+            </p:column>
+
+            <!--  Start time interval 1  -->
+            <p:column id="st1">
+                <f:facet name="header">
+                    <h:outputText
+                            value="#{msgs['@area.polling_place.opening_hours.start_timestamp']} (#{msgs['@common.date.time_display_pattern']})"/>
+                </f:facet>
+                <p:inputMask value="#{electionDayEntry.startTimestamp1}"
+                             mask="#{msgs['@common.date.time_mask']}" id="startTimestamp1"
+                             disabled="#{!electionDayEntry.selected}" required="true"
+                             immediate="true"
+                             label="#{msgs['@area.polling_place.opening_hours.start_timestamp']}">
+                    <f:converter converterId="timeConverter"/>
+                </p:inputMask>
+            </p:column>
+
+            <!--  End time interval 1  -->
+            <p:column id="end1">
+                <f:facet name="header">
+                    <h:outputText
+                            value="#{msgs['@area.polling_place.opening_hours.end_timestamp']} (#{msgs['@common.date.time_display_pattern']})"/>
+                </f:facet>
+				<p:inputMask
+						id="endTimestamp1"
+						value="#{electionDayEntry.endTimestamp1}"
+						mask="#{msgs['@common.date.time_mask']}"
+						disabled="#{!electionDayEntry.selected}"
+						required="true"
+						label="#{msgs['@area.polling_place.opening_hours.end_timestamp']}">
+					<f:converter converterId="timeConverter"/>
+				</p:inputMask>
+            </p:column>
+
+            <!--  Start time interval 2  -->
+            <p:column id="st2">
+                <f:facet name="header">
+                    <h:outputText
+                            value="#{msgs['@area.polling_place.opening_hours.start_timestamp']} (#{msgs['@common.date.time_display_pattern']})"/>
+                </f:facet>
+				<p:inputMask
+						id="startTimestamp2"
+						value="#{electionDayEntry.startTimestamp2}"
+						mask="#{msgs['@common.date.time_mask']}"
+						disabled="#{!electionDayEntry.selected}"
+						label="#{msgs['@area.polling_place.opening_hours.start_timestamp']}">
+                    <f:converter converterId="timeConverter"/>
+                </p:inputMask>
+            </p:column>
+
+            <!--  End time interval 2  -->
+            <p:column id="end2">
+                <f:facet name="header">
+                    <h:outputText
+                            value="#{msgs['@area.polling_place.opening_hours.end_timestamp']} (#{msgs['@common.date.time_display_pattern']})"/>
+                </f:facet>
+                <p:inputMask
+						id="endTimestamp2"
+						value="#{electionDayEntry.endTimestamp2}"
+						mask="#{msgs['@common.date.time_mask']}"
+						disabled="#{!electionDayEntry.selected}"
+						label="#{msgs['@area.polling_place.opening_hours.end_timestamp']}">
+                    <f:converter converterId="timeConverter"/>
+                </p:inputMask>
+            </p:column>
+
+        </p:dataTable>
+        <br></br>
+        <p:commandLink
+                value="#{msgs['@area.polling_place.opening_hours.edit']}"
+                actionListener="#{pollingPlaceController.setEditMode(true)}"
+				ajax="true"
+                oncomplete="resetEditInputMasks(#{pollingPlaceController.allElectionDaysOH.size()});"
+                update="level6Form:openingHoursPanel level6Form:listTable level6Form:editTable"
+                disabled="#{isElectionEventDisabled or !UserDataController.hasAccess('w.configuration.area.polling_place') or pollingPlaceController.readOnly}"
+                rendered="#{!pollingPlaceController.editMode and pollingPlaceController.currentPollingPlace.electionDayVoting}" />
+    </h:panelGroup>
+</h:panelGroup>
+
+</h:panelGroup>
+
+<f:facet name="footer">
+	<p:commandButton
+			id="update"
+			actionListener="#{pollingPlaceController.doUpdatePollingPlace(pollingPlaceController.currentPollingPlace)}"
+			update=":level6Form:msg :hierarchyEditor"
+			oncomplete="editPollingPlaceDialogBox(xhr, status, args)"
+			value="#{msgs['@common.save']}"
+			disabled="#{isElectionEventDisabled or !UserDataController.hasAccess('w.configuration.area.polling_place') or pollingPlaceController.readOnly}"
+			icon="eva-icon-checkmark"
+			styleClass="btn btn-primary"/>
+
+	<p:commandButton
+			id="deleteButton"
+			onclick="PF('level6Confirmation').show()"
+			update=":level6DialogForm:dialogMessage"
+			value="#{msgs['@common.delete']}"
+			disabled="#{!pollingPlaceController.isCurrentRemovable or !UserDataController.hasAccess('w.configuration.area.polling_place') or pollingPlaceController.readOnly}"
+			icon="eva-icon-close"
+			styleClass="btn btn-danger"/>
+
+	<p:commandLink
+			id="backToAreaList"
+			onclick="PF('editAreaLevel6Widget').hide(); return false;"
+			value="#{msgs['@common.cancel']}"
+			styleClass="btn btn-link"/>
+
+</f:facet>
+</p:dialog>
+</h:form>
+
+<h:form id="level6DialogForm">
+    <p:confirmDialog
+            header="#{msgs['@common.delete']} #{msgs['@area_level[6].name']}"
+            severity="alert"
+            widgetVar="level6Confirmation"
+            modal="true">
+
+        <f:facet name="message">
+            <h:outputText id="dialogMessage"
+                          value="#{msgs.get('@common.delete.confirmation', msgs['@area_level[6].name'], pollingPlaceController.currentPollingPlace.name)}"/>
+        </f:facet>
+
+        <!-- Command buttons -->
+        <h:panelGroup styleClass="form-group form-actions col-md-7 center-block" layout="block">
+
+            <p:commandButton
+                    value="#{msgs['@common.yes']}"
+                    id="YesButton"
+                    immediate="true"
+					styleClass="btn btn-primary"
+                    update="@(.context-editor-form)"
+                    oncomplete="PF('editAreaLevel6Widget').hide();"
+                    action="#{pollingPlaceController.doDeletePollingPlace(pollingPlaceController.currentPollingPlace)}"
+                    onclick="PF('level6Confirmation').hide();"/>
+            <p:commandButton
+                    value="#{msgs['@common.no']}"
+					styleClass="btn"
+                    id="NoButton"
+                    onclick="PF('level6Confirmation').hide()"/>
+
+        </h:panelGroup>
+    </p:confirmDialog>
+</h:form>
+<script type="text/javascript">
+    //<![CDATA[
+    function editPollingPlaceDialogBox(xhr, status, args) {
+        if (args.editPollingPlaceHideDialog) {
+            PF('editAreaLevel6Widget').hide();
+        }
+    }
+    function resetEditInputMasks(numberOfOpeningDays) {
+        var tableClientId = "widget_#{editOpeningHourTable.clientId}_".replace(/:/g, "_");
+
+		function reInitializeMaskWidget(widgetVar) {
+			var widget = EVA.Application.getInstance().widget(widgetVar);
+			if(!widget) {
+				return;
+			}
+			widget.init(widget.cfg);
+		}
+		
+        for (var i = 0; i < numberOfOpeningDays; i++) {
+			reInitializeMaskWidget(tableClientId + i + "_startTimestamp1");
+			reInitializeMaskWidget(tableClientId + i + "_startTimestamp2");
+			reInitializeMaskWidget(tableClientId + i + "_endTimestamp1");
+			reInitializeMaskWidget(tableClientId + i + "_endTimestamp2");
+        }
+    }
+    //]]>
+</script>
+</ui:composition>

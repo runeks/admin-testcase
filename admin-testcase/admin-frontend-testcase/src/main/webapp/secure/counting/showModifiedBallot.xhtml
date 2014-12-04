@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:metadata>
+	<f:viewParam name="ballotCountRef" value="#{showModifiedBallotController.ballotCountRef}"/>
+</f:metadata>
+<f:view>
+	<ui:composition template="/templates/layout.xhtml">
+		<ui:param name="helpId" value="@help.count"/>
+		<ui:define name="topinfoheader">
+			<h:outputText value="#{msgs['@menu.counting.heading']}"/>
+		</ui:define>
+		<ui:define name="content">
+			<f:event type="preRenderView" listener="#{showModifiedBallotController.onPageUpdate}"/>
+			<div id="page-show-modified-ballot" class="page">
+				<div class="row">
+					<div class="col-md-12">
+						<h:panelGroup id="content" layout="block">
+							<h1>#{msgs['@ballot.short']} ##{showModifiedBallotController.currentModifiedBallot.serialNumber} | #{msgs[showModifiedBallotController.currentModifiedBallot.affiliation]}</h1>
+							<h:form role="form" styleClass="form-inline">
+								<p:panel styleClass="col-md-5">
+									<h1>#{msgs['@common.person.votes']}</h1>
+
+									<p:dataTable value="#{showModifiedBallotController.personVotes.wrappers}"
+												 var="personVote"
+												 scrollable="true"
+												 scrollHeight="510"
+												 scrollWidth="100%"
+												 tableStyleClass="table table-striped" emptyMessage="">
+										<p:column width="10">
+											<h:outputText value="#{personVote.key.displayOrder}"/>
+										</p:column>
+										<p:column width="10">
+											<h:selectBooleanCheckbox
+													value="#{personVote.value.value}"
+													styleClass="candidate_#{personVote.key.displayOrder}"
+													disabled="true"/>
+										</p:column>
+										<p:column style="width: 100%;">
+											<h:outputText value="#{personVote.key.name}"/>
+										</p:column>
+									</p:dataTable>
+								</p:panel>
+
+								<p:panel styleClass="col-md-7">
+									<h1>#{msgs['@common.person.writeIns']}</h1>
+
+									<div id="place-holder"/>
+									<p:dataTable value="#{showModifiedBallotController.currentModifiedBallot.writeIns}" 
+												 var="writeInCandidate"
+												 scrollable="true" 
+												 scrollHeight="500"
+												 emptyMessage="">
+										<p:column>
+											<h:outputText value="#{writeInCandidate.name} (#{msgs[writeInCandidate.partyName]})"/>
+										</p:column>
+									</p:dataTable>
+								</p:panel>
+
+								<h:panelGroup styleClass="col-md-12">
+									<div class="col-md-2"/>
+									<p:panel styleClass="col-md-2 center">
+										<p:commandButton value="#{msgs['@common.previous']}"
+														 action="#{showModifiedBallotController.gotoPreviousBallot()}"
+														 update=":content"
+														 styleClass="btn btn-primary"
+														 disabled="#{showModifiedBallotController.currentModifiedBallotNumber == 0}">
+											<f:param name="cid" value="#{showModifiedBallotController.conversation.id}"/>
+										</p:commandButton>
+									</p:panel>
+
+									<div class="col-md-4 center" id="ballot-label">
+										#{msgs['@ballot.short']} #{showModifiedBallotController.currentModifiedBallotNumber + 1} #{msgs['@common.of']}  #{showModifiedBallotController.maxIndexForNoOfModifiedBallots() + 1}
+									</div>
+									<p:panel styleClass="col-md-2 center">
+										<p:commandButton value="#{msgs['@common.next']}"
+														 action="#{showModifiedBallotController.gotoNextBallot()}"
+														 update=":content"
+														 styleClass="btn btn-primary"
+														 disabled="#{showModifiedBallotController.currentModifiedBallotNumber == showModifiedBallotController.maxIndexForNoOfModifiedBallots()}">
+											<f:param name="cid" value="#{showModifiedBallotController.conversation.id}"/>
+										</p:commandButton>
+									</p:panel>
+									<p:panel styleClass="col-md-2">
+										<p:commandButton value="#{msgs['@common.done']}"
+														 action="#{showModifiedBallotController.finished}"
+														 update=":content"
+														 styleClass="btn btn-primary right">
+										</p:commandButton>
+									</p:panel>
+								</h:panelGroup>
+							</h:form>
+						</h:panelGroup>
+					</div>
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</f:view>
+</html>

@@ -1,0 +1,65 @@
+.capitalize {
+  text-transform: capitalize;
+}
+
+.font-italic,
+.italic {
+  font-style: italic;
+}
+
+.font-bold,
+.bold,
+strong {
+  font-weight: bold;
+}
+
+.font-normal,
+.normal {
+  font-weight: normal;
+}
+
+.dontshow,
+.hidden {
+  display: none !important;
+}
+
+.clickpreventer {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.21);
+  z-index: 100000;
+}
+
+.line {
+  .size(6px, 100%);
+  
+  &.black {
+    background-color: @black !important;
+  }
+  
+  &.yellow {
+    background-color: @yellowBrown !important;
+  }
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+p[class*='bg-'] {
+  padding: 15px;
+  text-align: center;
+}
+
+.center {
+  text-align: center; 
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}

@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:custom="http://java.sun.com/jsf/composite/custom/">
+
+<h:head>
+	<title></title>
+</h:head>
+<h:body>
+
+	<composite:interface>
+		<composite:attribute name="renderDropdownAreaLevel" required="true" />
+		<composite:attribute name="renderDropdownSelectedAreaLevel"
+			required="true" />
+		<composite:attribute name="createAll" required="false" />
+	</composite:interface>
+
+	<composite:implementation>
+		<p:panel id="areaLevelPanel"
+			header="#{msgs['@area.common.area_level']}"
+			rendered="#{cc.attrs.renderDropdownAreaLevel == 'true'}">
+			<!-- Area level -->
+			<h:panelGrid columns="2" columnClasses="w20,inputs"
+				styleClass="formTable">
+				<div class="pgReqGreen">&#160;</div>
+				<h:selectOneListbox id="areaLevelId" size="1"
+					binding="#{mvAreaMultipleController.areaLevelListbox}">
+					<f:selectItem
+						itemLabel="#{msgs['@area.common.area_level.preselect']}" />
+					<f:selectItems value="#{mvAreaMultipleController.areaLevelItems}" />
+					<p:ajax update="areaSelectPanel" process="areaLevelId"
+						event="change"
+						listener="#{mvAreaMultipleController.changeAreaLevel}" />
+				</h:selectOneListbox>
+			</h:panelGrid>
+		</p:panel>
+
+		<c:set var="selectedAreaLevel"
+			value="#{mvAreaMultipleController.selectedAreaLevel}" />
+		<c:set var="selectedAreaLevelUpLevel"
+			value="#{mvAreaMultipleController.selectedAreaLevelUpLevel}" />
+		<c:choose>
+			<c:when test="#{cc.attrs.renderDropdownSelectedAreaLevel == 'true'}">
+				<c:set var="headerKey"
+					value="@area_level[#{selectedAreaLevel}].name" />
+			</c:when>
+			<c:otherwise>
+				<c:set var="headerKey"
+					value="@area_level[#{selectedAreaLevelUpLevel}].name" />
+			</c:otherwise>
+		</c:choose>
+		<c:set var="headerText"
+			value="#{msgs['@common.choose']} #{msgs[headerKey]}" />
+
+		<h:panelGrid id="areaSelectPanel">
+			<p:panel id="areaDataPanel" header="#{headerText}"
+				rendered="#{mvAreaMultipleController.selectedAreaLevel > 1 or (mvAreaMultipleController.selectedAreaLevel == 1 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}">
+				<!-- Country -->
+				<h:panelGrid id="country" columns="2" columnClasses="w20,inputs"
+					styleClass="formTable"
+					rendered="#{mvAreaMultipleController.selectedAreaLevel > 1 or (mvAreaMultipleController.selectedAreaLevel == 1 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}">
+					<h:outputText value="#{msgs['@area_level[1].name']}:" />
+					<h:panelGroup
+						styleClass="#{mvAreaMultipleController.selectedAreaLevel==1 ? 'text required updateNameId' : 'text required'}">
+						<h:selectOneListbox id="countryId" size="1"
+							binding="#{mvAreaMultipleController.countryListbox}">
+							<f:selectItem itemLabel="#{msgs['@area_level[1].preselect']}" />
+							<f:selectItems value="#{mvAreaMultipleController.countryItems}" />
+							<p:ajax
+								update="county municipality borough pollingDistrict pollingPlace"
+								process="countryId" event="change"
+								listener="#{mvAreaMultipleController.changeCountry}" />
+						</h:selectOneListbox>
+					</h:panelGroup>
+				</h:panelGrid>
+
+				<!-- County -->
+				<h:panelGrid id="county" columns="2" columnClasses="w20,inputs"
+					styleClass="formTable"
+					rendered="#{mvAreaMultipleController.selectedAreaLevel > 2 or (mvAreaMultipleController.selectedAreaLevel == 2 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}">
+					<h:outputText value="#{msgs['@area_level[2].name']}:" />
+					<h:panelGroup
+						styleClass="#{mvAreaMultipleController.selectedAreaLevel==2 ? 'text required updateNameId' : 'text required'}">
+						<h:selectOneListbox id="countyId" size="1"
+							binding="#{mvAreaMultipleController.countyListbox}">
+							<f:selectItem itemLabel="#{msgs['@area_level[2].preselect']}" />
+							<f:selectItems value="#{mvAreaMultipleController.countyItems}" />
+							<p:ajax
+								update="municipality borough pollingDistrict pollingPlace"
+								process="countyId" event="change"
+								listener="#{mvAreaMultipleController.changeCounty}" />
+						</h:selectOneListbox>
+					</h:panelGroup>
+				</h:panelGrid>
+
+				<!--  Municipality -->
+				<h:panelGrid id="municipality" columns="2"
+					columnClasses="w20,inputs" styleClass="formTable"
+					rendered="#{mvAreaMultipleController.selectedAreaLevel > 3 or (mvAreaMultipleController.selectedAreaLevel == 3 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}">
+					<h:outputText value="#{msgs['@area_level[3].name']}:" />
+					<h:panelGroup
+						styleClass="#{mvAreaMultipleController.selectedAreaLevel==3 ? 'text required updateNameId' : 'text required'}">
+						<h:selectOneListbox id="municipalityId" size="1"
+							binding="#{mvAreaMultipleController.municipalityListbox}">
+							<f:selectItem itemLabel="#{msgs['@area_level[3].preselect']}" />
+							<f:selectItems value="#{mvAreaMultipleController.municipalityItems}" />
+							<p:ajax
+								update="borough pollingDistrict pollingPlace"
+								process="municipalityId" event="change"
+								listener="#{mvAreaMultipleController.changeMunicipality}" />
+						</h:selectOneListbox>
+					</h:panelGroup>
+				</h:panelGrid>
+
+				<!-- Borough -->
+				<h:panelGrid id="borough" columns="2" columnClasses="w20,inputs"
+					styleClass="formTable"
+					rendered="#{mvAreaMultipleController.selectedAreaLevel > 4 or (mvAreaMultipleController.selectedAreaLevel == 4 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}">
+					<h:outputText value="#{msgs['@area_level[4].name']}:" />
+					<h:panelGroup
+						styleClass="#{mvAreaMultipleController.selectedAreaLevel==4 ? 'text required updateNameId' : 'text required'}">
+						<h:selectOneListbox id="boroughId" size="1"
+							binding="#{mvAreaMultipleController.boroughListbox}">
+							<f:selectItem itemLabel="#{msgs['@area_level[4].preselect']}" />
+							<f:selectItems value="#{mvAreaMultipleController.boroughItems}" />
+							<p:ajax update="pollingDistrict pollingPlace"
+								process="boroughId" event="change"
+								listener="#{mvAreaMultipleController.changeBorough}" />
+						</h:selectOneListbox>
+					</h:panelGroup>
+				</h:panelGrid>
+
+				<!-- Polling district -->
+				<h:panelGrid id="pollingDistrict" columns="2"
+					columnClasses="w20,inputs" styleClass="formTable"
+					rendered="#{mvAreaMultipleController.selectedAreaLevel > 5 or (mvAreaMultipleController.selectedAreaLevel == 5 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}">
+					<h:outputText value="#{msgs['@area_level[5].name']}:" />
+					<h:panelGroup
+						styleClass="#{mvAreaMultipleController.selectedAreaLevel==5 ? 'text required updateNameId' : 'text required'}">
+						<h:selectOneListbox id="pollingDistrictId" size="1"
+							binding="#{mvAreaMultipleController.pollingDistrictListbox}">
+							<f:selectItem itemLabel="#{msgs['@area_level[5].preselect']}" />
+							<f:selectItems value="#{mvAreaMultipleController.pollingDistrictItems}" />
+							<p:ajax update="pollingPlace" event="change"
+								process="pollingDistrictId"
+								listener="#{mvAreaMultipleController.changePollingDistrict}" />
+						</h:selectOneListbox>
+					</h:panelGroup>
+				</h:panelGrid>
+
+				<!-- Polling place -->
+				<h:panelGrid id="pollingPlace" columns="2"
+					columnClasses="w20,inputs" styleClass="formTable"
+					rendered="#{mvAreaMultipleController.selectedAreaLevel > 6 or (mvAreaMultipleController.selectedAreaLevel == 6 and cc.attrs.renderDropdownSelectedAreaLevel == 'true')}">
+					<h:outputText value="#{msgs['@area_level[6].name']}:" />
+					<h:panelGroup
+						styleClass="#{mvAreaMultipleController.selectedAreaLevel==6 ? 'text required updateNameId' : 'text required'}">
+						<h:selectOneListbox id="pollingPlaceId" size="1"
+							binding="#{mvAreaMultipleController.pollingPlaceListbox}">
+							<f:selectItem itemLabel="#{msgs['@area_level[6].preselect']}" />
+							<f:selectItems value="#{mvAreaMultipleController.pollingPlaceItems}" />
+						</h:selectOneListbox>
+					</h:panelGroup>
+				</h:panelGrid>
+
+				<h:panelGrid id="createAll" columns="2" columnClasses="w20,inputs"
+					styleClass="formTable" rendered="#{cc.attrs.createAll == 'true'}">
+					<h:outputText value="#{msgs['@area.common.selectAll']}" />
+					<h:selectBooleanCheckbox
+						value="#{mvAreaMultipleController.createAllForParentArea}" />
+				</h:panelGrid>
+
+			</p:panel>
+		</h:panelGrid>
+
+		<style type="text/css">
+.colTitle {
+	width: 100px;
+}
+</style>
+	</composite:implementation>
+
+</h:body>
+</html>

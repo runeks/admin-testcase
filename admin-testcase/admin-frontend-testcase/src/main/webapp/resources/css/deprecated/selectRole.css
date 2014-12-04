@@ -1,0 +1,10 @@
+@CHARSET "ISO-8859-1";
+
+.yui-skin-sam .yui-dt-liner {
+	font-size: 140%;
+	line-height: 1.6em;
+}
+
+.yui-dt table {
+	width: 100% !important;
+}

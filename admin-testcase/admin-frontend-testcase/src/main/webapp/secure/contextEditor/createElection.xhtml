@@ -1,0 +1,366 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:c="http://java.sun.com/jsp/jstl/core"
+				contentType="text/html">
+<h:form id="electionLevel2CreateForm">
+
+<ui:param name="helpId" value="@help.election.election"/>
+
+<p:dialog
+		header="#{msgs['@election.election.create.header']}"
+		widgetVar="createElectionLevel2Widget"
+		fixedCenter="true"
+		fitViewport="true"
+		modal="true"
+		visible="false"
+		resizable="false"
+		width="940"
+		height="600">
+
+<h:panelGroup id="createElectionContent" styleClass="row" layout="block">
+
+<div class="col-md-9 center-block">
+	<p:messages id="msg"/>
+</div>
+
+<ui:param name="isReferendum" value="#{electionController.referendum}"/>
+<ui:param name="isProportionalRepresentaion" value="#{electionController.proportionalRepresentation}"/>
+
+<!-- electionGroupName -->
+<h:panelGroup styleClass="form-group col-md-12" layout="block">
+	<h:outputLabel value="#{msgs['@election_level[1].name']}" for="electionGroupName"/>
+	<h:inputText
+			id="electionGroupName"
+			value="#{electionController.currentElection.electionGroup.name}"
+			styleClass="form-control"
+			disabled="true"
+			readonly="true"/>
+</h:panelGroup>
+
+<!-- electionId -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+	<h:outputLabel value="#{msgs['@common.id']}" for="electionId"/>
+	<h:inputText
+			value="#{electionController.currentElection.id}"
+			id="electionId"
+			maxlength="2"
+			label="#{msgs['@common.id']}"
+			disabled="#{isElectionEventDisabled or electionController.readOnly}"
+			required="true"
+			styleClass="form-control"/>
+	<h:message for="electionId" id="idError"/>
+</h:panelGroup>
+
+<!-- electionName -->
+<h:panelGroup styleClass="required form-group col-md-6" layout="block">
+	<h:outputLabel value="#{msgs['@common.name']}" for="electionName"/>
+	<h:inputText
+			value="#{electionController.currentElection.name}"
+			id="electionName"
+			label="#{msgs['@common.name']}"
+			styleClass="form-control"
+			maxlength="100"
+			required="true"
+			disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+	<h:message for="electionName" id="nameError"/>
+</h:panelGroup>
+
+<!-- electionLocale -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+	<h:outputLabel value="#{msgs['@common.locale']}" for="electionLocale"/>
+	<h:selectOneListbox
+			id="electionLocale"
+			label="#{msgs['@common.locale']}"
+			value="#{electionController.currentElection.locale}"
+			size="1"
+			required="true"
+			styleClass="form-control">
+		<f:selectItem itemLabel="#{msgs['@common.locale.preselect']}"/>
+		<f:selectItems value="#{LocaleController.localeMap}"/>
+		<f:converter converterId="localeConverter"/>
+	</h:selectOneListbox>
+	<h:message for="electionLocale" id="localeError"/>
+</h:panelGroup>
+
+<!-- electionAreaLevel -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+	<h:outputLabel value="#{msgs['@election.election.area_level']}" for="electionAreaLevel"/>
+	<h:selectOneListbox
+			id="electionAreaLevel"
+			label="#{msgs['@election.election.area_level']}"
+			value="#{electionController.selectedAreaLevel}"
+			size="1"
+			required="true"
+			styleClass="form-control">
+		<f:selectItems
+				value="#{areaLevelController.areaLevelList}"
+				var="areaLevel"
+				itemLabel="#{msgs[areaLevel.name]}"
+				itemValue="#{areaLevel.id}"/>
+	</h:selectOneListbox>
+	<h:message for="electionAreaLevel" id="areaLevelError"/>
+</h:panelGroup>
+
+<!-- Election type -->
+<h:panelGroup styleClass="required form-group col-md-4" layout="block">
+	<h:outputLabel value="#{msgs['@election.election.election_type']}" for="electionType"/>
+	<h:selectOneListbox
+			id="electionType"
+			label="#{msgs['@election.election.election_type']}"
+			value="#{electionController.currentElection.electionType}"
+			size="1"
+			required="true"
+			styleClass="form-control"
+			valueChangeListener="#{electionController.changeElectionType}">
+		<f:selectItem itemLabel="#{msgs['@election.election.election_type.preselect']}"/>
+		<f:selectItems value="#{ElectionTypeController.electionTypeMap}"/>
+		<f:converter converterId="electionTypeConverter"/>
+		<p:ajax
+				process="@this"
+				event="change"
+				update="dynamicElectionConfigurationOptions"/>
+	</h:selectOneListbox>
+	<h:message for="electionType" id="electionTypeError"/>
+</h:panelGroup>
+
+<!-- End date of birth, age limit for voter -->
+<h:panelGroup styleClass="required form-group col-md-12" layout="block">
+	<h:outputLabel value="#{msgs['@election.common.end_date_of_birth']}" for="electionAgeLimit"/>
+	<p:inputMask
+			id="electionAgeLimit"
+			styleClass="form-control datepicker"
+			value="#{electionController.currentElection.endDateOfBirth}"
+			mask="#{msgs['@common.date.date_mask']}"
+			converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+			label="#{msgs['@election.common.end_date_of_birth']}"
+			maxLength="10"
+			required="true"
+			disabled="#{isElectionEventDisabled or electionController.readOnly}">
+		<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+	</p:inputMask>
+	<h:outputText styleClass="help-block" value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+	<h:message for="electionAgeLimit" id="endDateOfBirthError"/>
+</h:panelGroup>
+
+<h:panelGroup id="dynamicElectionConfigurationOptions" layout="block">
+
+	<h:panelGroup styleClass="#{isProportionalRepresentaion ? 'col-md-6' : 'col-md-12'}" layout="block">
+
+		<!-- Auto generate contests -->
+		<h:panelGroup layout="block" styleClass="checkbox">
+			<h:outputLabel for="electionAutoGenerateContests">
+				<h:selectBooleanCheckbox
+						id="electionAutoGenerateContests"
+						value="#{electionController.autoGenerateContests}"
+						disabled="#{!electionController.currentElection.singleArea}"/>
+				#{msgs['@election.election.auto_generate']}
+			</h:outputLabel>
+		</h:panelGroup>
+
+		<!-- electionEventSingleArea -->
+		<h:panelGroup styleClass="checkbox">
+
+			<h:outputLabel for="electionEventSingleArea">
+				<h:selectBooleanCheckbox
+						id="electionEventSingleArea"
+						value="#{electionController.currentElection.singleArea}"
+						styleClass="ui-radio-group ui-radio-group-inline"
+						immediate="false"
+						valueChangeListener="#{electionController.valueChangeSingleArea}"
+						required="true">
+					<p:ajax update="electionLevel2CreateForm:electionAutoGenerateContests" process="@this" event="change"/>
+				</h:selectBooleanCheckbox>
+				#{msgs['@election.election.single_area']}
+			</h:outputLabel>
+
+			<h:message for="electionEventSingleArea" id="singleAreaError"/>
+		</h:panelGroup>
+
+		<c:if test="#{isProportionalRepresentaion}">
+
+			<!-- penultimateRecount -->
+			<h:panelGroup styleClass="checkbox" layout="block">
+
+				<h:outputLabel for="electionPenultimateRecount">
+					<h:selectBooleanCheckbox
+							id="electionPenultimateRecount"
+							value="#{electionController.currentElection.penultimateRecount}"
+							disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+					#{msgs['@election.election.penultimateRecount']}
+				</h:outputLabel>
+
+			</h:panelGroup>
+
+			<!-- Renumber -->
+			<h:panelGroup styleClass="checkbox" layout="block">
+
+				<h:outputLabel for="renumber">
+					<h:selectBooleanCheckbox
+							id="renumber"
+							value="#{electionController.currentElection.renumber}"
+							disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+					#{msgs['@election.election.rotation']}
+				</h:outputLabel>
+
+			</h:panelGroup>
+
+			<!-- Renumber Limit -->
+			<h:panelGroup styleClass="checkbox" layout="block">
+				<h:outputLabel for="renumberLimit">
+					<h:selectBooleanCheckbox
+							id="renumberLimit"
+							value="#{electionController.currentElection.renumberLimit}"
+							disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+					#{msgs['@election.election.renumberLimit']}
+				</h:outputLabel>
+			</h:panelGroup>
+		</c:if>
+	</h:panelGroup>
+
+	<h:panelGroup styleClass="col-md-6" layout="block" rendered="#{isProportionalRepresentaion}">
+
+		<!-- Writein ("slengere") -->
+		<h:panelGroup styleClass="checkbox" layout="block">
+			<h:outputLabel for="writein">
+				<h:selectBooleanCheckbox
+						id="writein"
+						value="#{electionController.currentElection.writein}"
+						disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+				#{msgs['@election.election.writein']}
+			</h:outputLabel>
+		</h:panelGroup>
+
+		<!-- Strikeout -->
+		<h:panelGroup styleClass="checkbox" layout="block">
+			<h:outputLabel for="strikeout">
+				<h:selectBooleanCheckbox
+						id="strikeout"
+						value="#{electionController.currentElection.strikeout}"
+						disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+				#{msgs['@election.election.strikeout']}
+			</h:outputLabel>
+		</h:panelGroup>
+
+		<!-- Personal ("personstemmer") -->
+		<h:panelGroup styleClass="checkbox" layout="block">
+			<h:outputLabel for="personalVotes">
+				<h:selectBooleanCheckbox
+						id="personalVotes"
+						value="#{electionController.currentElection.personal}"
+						disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+				#{msgs['@election.election.personal']}
+			</h:outputLabel>
+		</h:panelGroup>
+
+		<!-- candidatesInContestArea -->
+		<h:panelGroup styleClass="checkbox" layout="block">
+			<h:outputLabel for="candidatesInContestArea">
+				<h:selectBooleanCheckbox
+						id="candidatesInContestArea"
+						value="#{electionController.currentElection.candidatesInContestArea}"
+						disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+				#{msgs['@election.election.candidatesInContestArea']}
+			</h:outputLabel>
+		</h:panelGroup>
+	</h:panelGroup>
+
+	<h:panelGroup styleClass="col-md-6" rendered="#{isProportionalRepresentaion}" layout="block">
+
+		<div class="form-group pull-left">
+			<h:outputLabel value="#{msgs['@election.election.candidate_rank_vote_share_threshold']}" for="electionCandidateRankVoteShareThreshold"
+						   styleClass="pull-left full-width"/>
+				   <span class="has-feedback pull-left">
+					<p:inputText
+							id="electionCandidateRankVoteShareThreshold"
+							value="#{electionController.currentElection.candidateRankVoteShareThreshold}"
+							disabled="#{isElectionEventDisabled or electionController.readOnly}"
+							styleClass="form-control"
+							converter="percentageConverter"/>
+					<span class="form-control-feedback grey">%</span>
+				   </span>
+		</div>
+
+		<div class="form-group pull-left">
+			<h:outputLabel for="electionLevelingSeatsVoteShareThreshold" value="#{msgs['@election.election.leveling_seats_vote_share_threshold']}"
+						   styleClass="full-width"/>
+				   <span class="has-feedback pull-left">
+					<p:inputText
+							id="electionLevelingSeatsVoteShareThreshold"
+							styleClass="form-control"
+							value="#{electionController.currentElection.levelingSeatsVoteShareThreshold}"
+							disabled="#{isElectionEventDisabled or electionController.readOnly}"
+							converter="percentageConverter"/>
+					<span class="form-control-feedback grey">%</span>
+				   </span>
+		</div>
+
+		<div class="form-group">
+			<h:outputLabel value="#{msgs['@election.election.settlement_first_divisor']}" styleClass="full-width" for="electionSettlementFirstDivisor"/>
+			<p:spinner
+					id="electionSettlementFirstDivisor"
+					value="#{electionController.currentElection.settlementFirstDivisor}"
+					min="1"
+					max="2"
+					stepFactor="0.1"
+					disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+		</div>
+	</h:panelGroup>
+
+	<h:panelGroup styleClass="col-md-6" rendered="#{isProportionalRepresentaion}" layout="block">
+		<div class="form-group">
+			<h:outputLabel for="electionBaselineVoteFactor" value="#{msgs['@election.election.affiliation_vote_factor']}"/>
+			<h:inputText
+					id="electionBaselineVoteFactor"
+					value="#{electionController.currentElection.baselineVoteFactor}"
+					label="#{msgs['@election.election.affiliation_vote_factor']}"
+					styleClass="form-control"
+					maxlength="4"
+					required="false"
+					disabled="#{isElectionEventDisabled or electionController.readOnly}">
+				<f:converter converterId="bigDecimalConverter"/>
+			</h:inputText>
+			<h:message for="electionBaselineVoteFactor" id="affiliationVoteFactorError"/>
+		</div>
+
+		<div class="form-group">
+			<h:outputLabel value="#{msgs['@election.election.leveling_seats']}" for="electionLevelingSeats"/>
+			<h:inputText
+					id="electionLevelingSeats"
+					styleClass="form-control"
+					value="#{electionController.currentElection.levelingSeats}"
+					disabled="#{isElectionEventDisabled or electionController.readOnly}"/>
+		</div>
+	</h:panelGroup>
+</h:panelGroup>
+</h:panelGroup>
+<f:facet name="footer">
+	<p:commandButton
+			id="create"
+			actionListener="#{electionController.doCreateElection(electionController.currentElection)}"
+			oncomplete="createElectionDialogBox(xhr, status, args)"
+			update=":electionLevel2CreateForm:msg :hierarchyEditor"
+			value="#{msgs['@common.save']}"
+			disabled="#{!UserDataController.hasAccess('w.configuration.election.election')}"
+			styleClass="btn btn-primary"/>
+
+	<p:commandLink
+			id="backToElectionList"
+			onclick="PF('createElectionLevel2Widget').hide();"
+			value="#{msgs['@common.cancel']}"
+			styleClass="btn btn-link"/>
+</f:facet>
+</p:dialog>
+</h:form>
+<script type="text/javascript">
+	//<![CDATA[
+	function createElectionDialogBox(xhr, status, args) {
+		if (args.createElectionHideDialog) {
+			PF('createElectionLevel2Widget').hide();
+		}
+	}
+	//]]>
+</script>
+</ui:composition>

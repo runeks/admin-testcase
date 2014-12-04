@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+	<appender name="notSecureAppender" class="no.evote.logging.EvoteAppender">
+		<param name="Threshold" value="DEBUG" />
+		<param name="DatePattern" value="'.'dd-MM-yyyy'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-4r [%t] %-5p %c %x - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="ConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{dd MMM yyyy HH:mm:ss}] [%t] %-5p %25c - %m%n" />
+		</layout>
+	</appender>
+
+	<category name="org.opensaml.xml.XMLConfigurator">
+		<level value="WARN" />
+	</category>
+
+	<category name="org.hibernate">
+		<level value="WARN" />
+	</category>
+
+	<category name="org.jboss.seam">
+		<level value="WARN" />
+	</category>
+	
+	<category name="no.evote">
+		<level value="DEBUG" />
+	</category>
+
+	<category name="net.sf.ehcache.distribution.RMICachePeer">
+		<level value="INFO" />
+	</category>
+
+	<root>
+		<level value="DEBUG" />
+		<appender-ref ref="notSecureAppender" />		
+	</root>
+</log4j:configuration>

@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+	<composite:attribute name="compareCount" type="no.valg.eva.admin.counting.presentation.view.CompareCountsSelect" required="true" />
+	<composite:attribute name="ctrl" type="no.valg.eva.admin.counting.presentation.CompareCountsController" required="true" />
+</composite:interface>
+
+<composite:implementation>
+	
+		<p:panel styleClass="ballot-count-comment" header="#{msgs.get('@count.label.comments_to_final_count', cc.attrs.compareCount.finalCount.index)}" rendered="#{cc.attrs.compareCount.hasFinalCount()}">
+			<p:inputTextarea value="#{cc.attrs.compareCount.finalCount.comment}"
+							 styleClass="full-width"
+							 disabled="#{cc.attrs.compareCount.approveButton.disabled}"/>
+				<p:commandButton
+						actionListener="#{cc.attrs.compareCount.saveComment}"
+						value="#{msgs['@common.save']}"
+						disabled="#{cc.attrs.compareCount.approveButton.disabled}"
+						styleClass="btn btn-primary"
+						icon="eva-icon-download"
+						update="@form"
+						oncomplete="window.scrollTo(0,0);">
+				</p:commandButton>
+		</p:panel>
+	
+</composite:implementation>
+</html>

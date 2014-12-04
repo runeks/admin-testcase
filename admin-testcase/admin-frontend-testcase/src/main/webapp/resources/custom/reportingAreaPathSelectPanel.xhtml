@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title></title>
+</h:head>
+<h:body>
+	<composite:interface>
+	</composite:interface>
+
+	<composite:implementation>
+		<h:outputScript name="javascript/deprecated/reporting.js" />
+
+		<p:panel header="#{msgs['@area.common.path']}">
+
+			<!-- Country -->
+			<h:panelGrid id="country" columns="2" columnClasses="colTitle">
+				<h:outputText value="#{msgs['@area_level[1].name']}:" />
+				<h:selectOneListbox id="CO1" size="1" style="width:400px"
+					required="false" value="#{controller.country.selectedValue}"
+					disabled="#{controller.country.disabled}">
+					<f:selectItems value="#{controller.country.items}" />
+					<p:ajax global="false" update="CNT1 MUN1 BOR1 PD1 PP1"
+						process="CO1" event="change"
+						onstart="showPathLoadingBars('CNT1 MUN1 BOR1 PD1 PP1')"
+						oncomplete="hidePathLoadingBars('CNT1 MUN1 BOR1 PD1 PP1')"
+						listener="#{controller.rpcSelectedValueChanged}" />
+				</h:selectOneListbox>
+			</h:panelGrid>
+
+			<!-- County -->
+			<h:panelGrid id="county" columns="2" columnClasses="colTitle">
+				<h:outputText value="#{msgs['@area_level[2].name']}:" />
+				<h:panelGroup>
+					<div id="loadingCNT1Div" style="display: none">
+					<img
+						src="#{resource['images:pf/ajaxloading.gif']}" alt="ajaxloading" /></div>
+					<div id="selectCNT1Div" style="display: block">
+					<h:selectOneListbox
+						id="CNT1" size="1" style="width:400px" required="false"
+						value="#{controller.county.selectedValue}"
+						disabled="#{controller.county.disabled}">
+						<f:selectItems value="#{controller.county.items}" />
+						<p:ajax global="false" update="MUN1 BOR1 PD1 PP1" process="CNT1"
+							event="change" onstart="showPathLoadingBars('MUN1 BOR1 PD1 PP1')"
+							oncomplete="hidePathLoadingBars('MUN1 BOR1 PD1 PP1')"
+							listener="#{controller.rpcSelectedValueChanged}" />
+					</h:selectOneListbox></div>
+				</h:panelGroup>
+			</h:panelGrid>
+
+			<!-- Municipality -->
+			<h:panelGrid id="municipality" columns="2" columnClasses="colTitle">
+				<h:outputText value="#{msgs['@area_level[3].name']}:" />
+				<h:panelGroup>
+					<div id="loadingMUN1Div" style="display: none">
+					<img
+						src="#{resource['images:pf/ajaxloading.gif']}" alt="ajaxloading" /></div>
+					<div id="selectMUN1Div" style="display: block">
+					<h:selectOneListbox
+						id="MUN1" size="1" style="width:400px" required="false"
+						value="#{controller.municipality.selectedValue}"
+						disabled="#{controller.municipality.disabled}">
+						<f:selectItems value="#{controller.municipality.items}" />
+						<p:ajax global="false" update="BOR1 PD1 PP1" process="MUN1"
+							event="change" onstart="showPathLoadingBars('BOR1 PD1 PP1')"
+							oncomplete="hidePathLoadingBars('BOR1 PD1 PP1')"
+							listener="#{controller.rpcSelectedValueChanged}" />
+					</h:selectOneListbox></div>
+				</h:panelGroup>
+			</h:panelGrid>
+
+			<!-- Borough -->
+			<h:panelGrid id="borough" columns="2" columnClasses="colTitle">
+				<h:outputText value="#{msgs['@area_level[4].name']}:" />
+				<h:panelGroup>
+					<div id="loadingBOR1Div" style="display: none">
+					<img
+						src="#{resource['images:pf/ajaxloading.gif']}" alt="ajaxloading" /></div>
+					<div id="selectBOR1Div" style="display: block">
+					<h:selectOneListbox
+						id="BOR1" size="1" style="width:400px" required="false"
+						value="#{controller.borough.selectedValue}"
+						disabled="#{controller.borough.disabled}">
+						<f:selectItems value="#{controller.borough.items}" />
+						<p:ajax global="false" update="PD1 PP1" process="BOR1"
+							event="change" onstart="showPathLoadingBars('PD1 PP1')"
+							oncomplete="hidePathLoadingBars('PD1 PP1')"
+							listener="#{controller.rpcSelectedValueChanged}" />
+					</h:selectOneListbox></div>
+				</h:panelGroup>
+			</h:panelGrid>
+
+			<!-- Polling District -->
+			<h:panelGrid id="pollingDistrict" columns="2"
+				columnClasses="colTitle">
+				<h:outputText value="#{msgs['@area_level[5].name']}:" />
+				<h:panelGroup>
+					<div id="loadingPD1Div" style="display: none">
+					<img
+						src="#{resource['images:pf/ajaxloading.gif']}" alt="ajaxloading" /></div>
+					<div id="selectPD1Div" style="display: block">
+					<h:selectOneListbox
+						id="PD1" size="1" style="width:400px" required="false"
+						value="#{controller.pollingDistrict.selectedValue}"
+						disabled="#{controller.pollingDistrict.disabled}">
+						<f:selectItems value="#{controller.pollingDistrict.items}" />
+						<p:ajax global="false" update="PP1" process="PD1" event="change"
+							onstart="showPathLoadingBars('PP1')"
+							oncomplete="hidePathLoadingBars('PP1')"
+							listener="#{controller.rpcSelectedValueChanged}" />
+					</h:selectOneListbox></div>
+				</h:panelGroup>
+			</h:panelGrid>
+
+			<!-- Polling Place -->
+			<h:panelGrid id="pollingPlace" columns="2" columnClasses="colTitle">
+				<h:outputText value="#{msgs['@area_level[6].name']}:" />
+				<h:panelGroup>
+					<div id="loadingPP1Div" style="display: none">
+					<img
+						src="#{resource['images:pf/ajaxloading.gif']}" alt="ajaxloading" /></div>
+					<div id="selectPP1Div" style="display: block">
+					<h:selectOneListbox
+						id="PP1" size="1" style="width:400px" required="false"
+						value="#{controller.pollingPlace.selectedValue}"
+						disabled="#{controller.pollingPlace.disabled}">
+						<f:selectItems value="#{controller.pollingPlace.items}" />
+						<p:ajax global="false" process="PP1" event="change"
+							listener="#{controller.rpcSelectedValueChanged}" />
+					</h:selectOneListbox></div>
+				</h:panelGroup>
+			</h:panelGrid>
+
+		</p:panel>
+
+		<style type="text/css">
+.colTitle {
+	width: 135px;
+}
+</style>
+	</composite:implementation>
+
+</h:body>
+</html>

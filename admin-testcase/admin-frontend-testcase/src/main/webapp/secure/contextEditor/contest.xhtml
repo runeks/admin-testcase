@@ -1,0 +1,645 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:c="http://java.sun.com/jsp/jstl/core" contentType="text/html"
+				xmlns:custom="http://java.sun.com/jsf/composite/custom/">
+
+<h:form id="electionLevel3Form">
+<ui:param name="helpId" value="@help.election.contest"/>
+
+<p:dialog
+		id="editElectionLevel3Widget"
+		header="#{msgs['@common.redact']} #{msgs['@election_level[3].name']}"
+		widgetVar="editElectionLevel3Widget"
+		fixedCenter="true"
+		fitViewport="true"
+		modal="true"
+		visible="false"
+		resizable="false"
+		width="940"
+		height="600">
+<h:panelGroup styleClass="row" layout="block">
+
+<div class="col-md-9 center-block">
+	<p:messages id="msg"/>
+</div>
+
+
+<!-- Info -->
+<h:panelGroup styleClass="form-group col-md-12" layout="block">
+	<p class="bg-warning">
+		#{contestController.currentContest.election.singleArea ? msgs['@election.contest.create.info.single_area'] : msgs['@election.contest.create.info.not_single_area']}:
+		<abbr>#{contestController.areaLevelMessageKey}</abbr>
+	</p>
+</h:panelGroup>
+
+<!-- Election group -->
+<h:panelGroup styleClass="form-group col-md-6" layout="block">
+	<h:outputLabel value="#{msgs['@election_level[1].name']}:" for="electionGroup" styleClass="col-md-4"/>
+	<span id="electionGroup" class='label label-primary'>#{contestController.currentMvElection.electionGroup.name}</span>
+</h:panelGroup>
+
+<!-- Election -->
+<h:panelGroup styleClass="form-group col-md-6" layout="block">
+	<h:outputLabel value="#{msgs['@election_level[2].name']}:" for="electionName" styleClass="col-md-4"/>
+	<span id="electionName" class='label label-primary'>#{contestController.currentMvElection.election.name}</span>
+</h:panelGroup>
+
+<!-- contestId -->
+<h:panelGroup styleClass="form-group col-md-6" layout="block">
+	<h:outputLabel value="#{msgs['@common.id']}:" for="contestId" styleClass="col-md-4"/>
+	<h:outputText id="contestId" value="#{contestController.currentContest.id}" styleClass="label label-primary"/>
+	<h:message for="contestId" id="idError"/>
+</h:panelGroup>
+
+<!-- Status id="param14"  -->
+<h:panelGroup styleClass="form-group col-md-6" layout="block">
+	<h:outputLabel value="#{msgs['@common.status']}:" styleClass="col-md-4" for="configurationStatus"/>
+	<span id="configurationStatus" class='label label-primary'>#{msgs[contestController.contestStatus]}</span>
+</h:panelGroup>
+
+<!-- contestName -->
+<h:panelGroup styleClass="required form-group col-md-6" layout="block">
+	<h:panelGroup styleClass="col-md-4" layout="block">
+		<h:outputLabel for="contestName" value="#{msgs['@common.name']}"/>
+		<h:inputText
+				value="#{contestController.currentContest.name}"
+				id="contestName"
+				label="#{msgs['@common.name']}"
+				styleClass="form-control"
+				maxlength="100"
+				required="true"
+				disabled="#{contestController.currentContest.election.singleArea or isElectionEventDisabled or contestController.readOnly}"/>
+		<h:message for="contestName" id="nameError"/>
+	</h:panelGroup>
+</h:panelGroup>
+
+<!-- Locale -->
+<h:panelGroup styleClass="form-group col-md-6" layout="block">
+	<h:panelGroup styleClass="col-md-4" layout="block">
+		<h:outputLabel for="contestLocale" value="#{msgs['@common.locale']}" styleClass="required"/>
+		<h:selectOneListbox
+				id="contestLocale"
+				label="#{msgs['@common.locale']}"
+				value="#{contestController.currentContest.locale}"
+				size="1"
+				required="true"
+				styleClass="form-control">
+			<f:selectItem itemLabel="#{msgs['@common.locale.preselect']}"/>
+			<f:selectItems value="#{LocaleController.localeMap}"/>
+			<f:converter converterId="localeConverter"/>
+		</h:selectOneListbox>
+		<h:message for="contestLocale" id="localeError"/>
+	</h:panelGroup>
+</h:panelGroup>
+
+
+<!-- End date of birth, age limit for voter -->
+<c:if test="#{UserDataController.hasAccess('w.configuration.change_age_limit')}">
+	<h:panelGroup styleClass="form-group col-md-12" layout="block">
+		<h:panelGroup styleClass="form-group col-md-12" layout="block">
+			<h:outputLabel value="#{msgs['@election.common.end_date_of_birth']}" for="endDateOfBirth"/>
+
+			<p:inputMask immediate="true"
+						 value="#{contestController.currentContest.endDateOfBirth}"
+						 mask="#{msgs['@common.date.date_mask']}"
+						 converterMessage="#{msgs['@electoralRoll.validation.wrongFormatDate']}"
+						 id="endDateOfBirth"
+						 label="#{msgs['@election.common.end_date_of_birth']}"
+						 styleClass="form-control datepicker"
+						 maxLength="10"
+						 required="false"
+						 size="10"
+						 disabled="#{isElectionEventDisabled or contestController.readOnly}">
+				<f:convertDateTime pattern="#{msgs['@common.date.date_pattern']}"/>
+			</p:inputMask>
+			<h:outputText styleClass="help-block" value="#{msgs['@common.date.date_format']}: #{msgs['@common.date.date_display_pattern']}"/>
+			<h:message for="endDateOfBirth" id="endDateOfBirthError"/>
+		</h:panelGroup>
+	</h:panelGroup>
+</c:if>
+
+<h:panelGroup id="param21" styleClass="form-group col-md-12" rendered="#{!contestController.referendum}">
+
+	<h3>#{msgs['@election.contest.panelheader.date_and_rule_info']}</h3>
+
+
+	<!-- Number of positions -->
+	<h:panelGroup styleClass="form-group required col-md-6" layout="block">
+		<h:outputLabel value="#{msgs['@election.contest.number_of_positions']}" for="numberOfPositions"/>
+		<h:inputText
+				value="#{contestController.currentContest.numberOfPositions}"
+				id="numberOfPositions"
+				styleClass="form-control"
+				label="#{msgs['@election.contest.number_of_positions']}"
+				required="true"
+				disabled="#{isElectionEventDisabled or contestController.readOnly}"
+				maxlength="4"/>
+		<h:message for="numberOfPositions" id="numberOfPositionsError"/>
+	</h:panelGroup>
+
+	<!-- Max write in -->
+	<h:panelGroup styleClass="form-group col-md-6" layout="block">
+		<h:outputLabel value="#{msgs['@election.contest.max_write_in']}" for="maxWriteIn"/>
+		<h:inputText
+				id="maxWriteIn"
+				value="#{contestController.currentContest.maxWriteIn}"
+				label="#{msgs['@election.contest.max_write_in']}"
+				required="false"
+				styleClass="form-control"
+				disabled="#{isElectionEventDisabled or contestController.readOnly}"
+				maxlength="4"/>
+		<h:message for="maxWriteIn" id="maxWriteInError"/>
+	</h:panelGroup>
+
+	<!-- Minimum candidates -->
+	<h:panelGroup styleClass="form-group col-md-6">
+		<h:outputLabel value="#{msgs['@election.contest.min_candidates']}" for="minCandidates"/>
+		<h:inputText
+				id="minCandidates"
+				value="#{contestController.currentContest.minCandidates}"
+				label="#{msgs['@election.contest.min_candidates']}"
+				required="false"
+				styleClass="form-control"
+				disabled="#{isElectionEventDisabled or contestController.readOnly}"
+				maxlength="2"/>
+		<h:message for="minCandidates" id="minCandidatesError"/>
+	</h:panelGroup>
+
+	<!-- Maximum candidates -->
+	<h:panelGroup styleClass="form-group col-md-6">
+		<h:outputLabel value="#{msgs['@election.contest.max_candidates']}" for="maxCandidates"/>
+		<h:inputText
+				id="maxCandidates"
+				value="#{contestController.currentContest.maxCandidates}"
+				label="#{msgs['@election.contest.max_candidates']}"
+				required="false"
+				styleClass="form-control"
+				disabled="#{isElectionEventDisabled or contestController.readOnly}"
+				maxlength="2"/>
+		<h:message for="maxCandidates" id="maxCandidatesError"/>
+	</h:panelGroup>
+
+	<!-- Maximum length candidate name -->
+	<h:panelGroup styleClass="form-group col-md-6">
+		<h:outputLabel value="#{msgs['@listProposal.config.candidate.length']}" for="maxCandidateNameLength"/>
+		<h:inputText
+				id="maxCandidateNameLength"
+				value="#{contestController.currentContest.maxCandidateNameLength}"
+				size="4" label="#{msgs['@listProposal.config.candidate.length']}"
+				required="false"
+				styleClass="form-control"
+				disabled="#{isElectionEventDisabled or contestController.readOnly}"
+				maxlength="3"/>
+		<h:message for="maxCandidateNameLength" id="maxLengthNameError"/>
+	</h:panelGroup>
+
+	<!-- Minimum proposers new party-->
+	<h:panelGroup styleClass="form-group col-md-6">
+		<h:outputLabel value="#{msgs['@listProposal.config.proposer.min']}" for="minProposersNewParty"/>
+		<h:inputText
+				id="minProposersNewParty"
+				value="#{contestController.currentContest.minProposersNewParty}"
+				size="4"
+				label="#{msgs['@listProposal.config.proposer.min']}"
+				required="false"
+				styleClass="form-control"
+				disabled="#{isElectionEventDisabled or contestController.readOnly}"
+				maxlength="3"/>
+		<h:message for="minProposersNewParty" id="minProposersNewPartyError"/>
+	</h:panelGroup>
+
+	<!-- Minimum proposers old party-->
+	<h:panelGroup styleClass="form-group col-md-6">
+		<h:outputLabel value="#{msgs['@listProposal.config.proposer.min.reg']}" for="minProposersOldParty"/>
+		<h:inputText
+				id="minProposersOldParty"
+				value="#{contestController.currentContest.minProposersOldParty}"
+				size="4"
+				label="#{msgs['@listProposal.config.proposer.min.reg']}"
+				required="false"
+				styleClass="form-control"
+				disabled="#{isElectionEventDisabled or contestController.readOnly}"
+				maxlength="3"/>
+		<h:message for="minProposersOldParty" id="minProposersOldPartyError"/>
+	</h:panelGroup>
+
+	<!-- Max renumber-->
+	<h:panelGroup styleClass="form-group col-md-6">
+		<h:outputLabel for="maxRenumber" value="#{msgs['@election.contest.max_renumber']}"/>
+		<h:inputText
+				id="maxRenumber"
+				value="#{contestController.currentContest.maxRenumber}"
+				size="4"
+				maxlength="4"
+				styleClass="form-control"
+				label="#{msgs['@election.contest.max_renumber']}"
+				disabled="#{isElectionEventDisabled or not contestController.currentContest.election.renumberLimit or contestController.readOnly}"/>
+	</h:panelGroup>
+
+	<h:panelGroup styleClass="form-group col-md-12">
+		<!-- penultimateRecount -->
+		<h:outputLabel
+				value="#{msgs['@election.election.penultimateRecount']}"
+				for="param24"/>
+		<h:selectOneRadio
+				layout="lineDirection"
+				id="param24"
+				value="#{contestController.penultimateRecount}"
+				immediate="true"
+				styleClass="ui-radio-group ui-radio-group-inline"
+				valueChangeListener="#{contestController.changePenultimateRecount}"
+				disabled="#{isElectionEventDisabled or contestController.readOnly}">
+			<f:selectItem id="notSelected"
+						  itemLabel="#{msgs['@common.notSelected']} " itemValue="0"/>
+			<f:selectItem id="trueSelected"
+						  itemLabel="#{msgs['@common.yes']} " itemValue="1"/>
+			<f:selectItem id="falseSelected"
+						  itemLabel="#{msgs['@common.no']} " itemValue="2"/>
+		</h:selectOneRadio>
+
+	</h:panelGroup>
+</h:panelGroup>
+
+<!-- List of contest areas -->
+<h:panelGroup id="param23" styleClass="form-group col-md-12" rendered="#{!contestController.currentContest.election.singleArea}">
+
+	<h3>#{msgs['@election.contest.panelheader.contest_area_list']}</h3>
+
+	<p:dataTable
+			id="contestArea"
+			var="contestArea"
+			value="#{contestController.currentContestAreaList}" border="1"
+			paginator="false" rows="1000">
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="#{msgs['@area.common.area_level']}"/>
+			</f:facet>
+			<h:outputText
+					value="#{mvAreaMultipleController.areaLevelMap[contestArea.mvArea.areaLevel]}"/>
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="#{msgs['@area.common.area_id']}"/>
+			</f:facet>
+			<h:outputText value="#{contestArea.mvArea.electionEventId}"
+						  rendered="#{contestArea.mvArea.areaLevel == 0}"/>
+			<h:outputText value="#{contestArea.mvArea.countryId}"
+						  rendered="#{contestArea.mvArea.areaLevel == 1}"/>
+			<h:outputText value="#{contestArea.mvArea.countyId}"
+						  rendered="#{contestArea.mvArea.areaLevel == 2}"/>
+			<h:outputText value="#{contestArea.mvArea.municipalityId}"
+						  rendered="#{contestArea.mvArea.areaLevel == 3}"/>
+			<h:outputText value="#{contestArea.mvArea.boroughId}"
+						  rendered="#{contestArea.mvArea.areaLevel == 4}"/>
+			<h:outputText value="#{contestArea.mvArea.pollingDistrictId}"
+						  rendered="#{contestArea.mvArea.areaLevel == 5}"/>
+			<h:outputText value="#{contestArea.mvArea.pollingPlaceId}"
+						  rendered="#{contestArea.mvArea.areaLevel == 6}"/>
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText value="#{msgs['@area.common.area_name']}"/>
+			</f:facet>
+			<h:outputText value="#{contestArea.mvArea.electionEventName}"
+						  rendered="#{contestArea.mvArea.areaLevel == 0}"/>
+			<h:outputText value="#{contestArea.mvArea.countryName}"
+						  rendered="#{contestArea.mvArea.areaLevel == 1}"/>
+			<h:outputText value="#{contestArea.mvArea.countyName}"
+						  rendered="#{contestArea.mvArea.areaLevel == 2}"/>
+			<h:outputText value="#{contestArea.mvArea.municipalityName}"
+						  rendered="#{contestArea.mvArea.areaLevel == 3}"/>
+			<h:outputText value="#{contestArea.mvArea.boroughName}"
+						  rendered="#{contestArea.mvArea.areaLevel == 4}"/>
+			<h:outputText value="#{contestArea.mvArea.pollingDistrictName}"
+						  rendered="#{contestArea.mvArea.areaLevel == 5}"/>
+			<h:outputText value="#{contestArea.mvArea.pollingPlaceName}"
+						  rendered="#{contestArea.mvArea.areaLevel == 6}"/>
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText
+						value="#{msgs['@election.contest.contest_area.parent_area']}"/>
+			</f:facet>
+			<h:outputText
+					value="#{contestArea.parentArea ? msgs['@common.yes'] : msgs['@common.no']}"/>
+		</p:column>
+
+		<p:column>
+			<f:facet name="header">
+				<h:outputText
+						value="#{msgs['@election.contest.contest_area.child_area']}"/>
+			</f:facet>
+			<h:outputText
+					value="#{contestArea.childArea ? msgs['@common.yes'] : msgs['@common.no']}"/>
+		</p:column>
+
+		<p:column>
+			<p:commandLink oncomplete="PF('editDialog').show()"
+						   action="#{contestController.setSelectedContestArea(contestArea)}"
+						   update=":level3DialogForm:editDialogId :level3DialogForm:editDialogGrid"
+						   rendered="#{contestArea.mvArea.areaLevel == 3}"
+						   disabled="#{isElectionEventDisabled or contestController.readOnly}">
+				#{msgs['@common.redact']}
+			</p:commandLink>
+
+			<p:commandLink oncomplete="PF('deleteDialog').show()"
+						   action="#{contestController.setSelectedContestArea(contestArea)}"
+						   update=":level3DialogForm:deleteDialogId :level3DialogForm:deleteDialogGrid"
+						   disabled="#{isElectionEventDisabled or contestController.readOnly}">
+				#{msgs['@common.delete']}
+			</p:commandLink>
+		</p:column>
+
+	</p:dataTable>
+
+	<p:commandButton
+			value="#{msgs['@election.contest.details.button.contest_area_create']}"
+			disabled="#{isElectionEventDisabled or contestController.readOnly}"
+			styleClass="btn-sm btn-primary"
+			update="electionLevel3Form:msg electionLevel3Form:contestAreaDialog"
+			action="#{contestController.doGetCreateContestArea}"
+			oncomplete="PF('contestAreaDialog').show();"/>
+
+</h:panelGroup>
+</h:panelGroup>
+
+<f:facet name="footer">
+	<p:commandButton
+			actionListener="#{contestController.doUpdateContest(contestController.currentContest)}"
+			id="update"
+			update=":electionLevel3Form:msg :hierarchyEditor"
+			oncomplete="editContestDialogBox(xhr, status, args)"
+			value="#{msgs['@common.save']}"
+			disabled="#{isElectionEventDisabled or !UserDataController.hasAccess('w.configuration.election.contest') or contestController.readOnly}"
+			icon="eva-icon-checkmark"
+			styleClass="btn btn-primary"/>
+
+	<p:commandButton
+			id="deleteButton"
+			onclick="PF('level3Confirmation').show()"
+			update=":level3DialogForm:dialogMessage"
+			value="#{msgs['@common.delete']}"
+			disabled="#{!contestController.isCurrentRemovable or !UserDataController.hasAccess('w.configuration.election.contest') or contestController.readOnly}"
+			icon="eva-icon-close"
+			styleClass="btn btn-danger"/>
+
+	<p:commandButton
+			id="backToElectionList"
+			onclick="PF('editElectionLevel3Widget').hide(); return false;"
+			value="#{msgs['@common.cancel']}"
+			styleClass="btn btn-link"/>
+</f:facet>
+
+</p:dialog>
+
+
+<p:dialog
+		id="contestAreaDialog"
+		resizable="false"
+		fixedCenter="true"
+		fitViewport="true"
+		widgetVar="contestAreaDialog"
+		modal="true"
+		width="700"
+		header="#{msgs['@election.contest.contest_area.create.header']}"
+		onCloseUpdate="electionLevel3Form:contestArea">
+
+	<h:panelGroup styleClass="row" layout="block">
+
+		<div class="col-md-9 center-block">
+			<p:messages showDetail="false" id="msg_contest_area"/>
+		</div>
+
+		<!-- Area select panel -->
+		<h:panelGroup styleClass="form-group col-md-12" layout="block">
+			<custom:areaSelectPanelMultiple renderDropdownAreaLevel="false" renderDropdownSelectedAreaLevel="true" createAll="true"/>
+		</h:panelGroup>
+
+		<h:panelGroup styleClass="form-group col-md-12" layout="block">
+			<p:dataTable
+					id="contestAreaTable"
+					var="contestArea"
+					tableStyleClass="table table-striped"
+					value="#{contestAreaMultipleController.currentContestAreaList}"
+					border="1"
+					paginator="true"
+					rows="10">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs['@area.common.area_level']}"/>
+					</f:facet>
+					<h:outputText
+							value="#{mvAreaMultipleController.areaLevelMap[contestArea.mvArea.areaLevel]}"/>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs['@area.common.area_id']}"/>
+					</f:facet>
+					<h:outputText value="#{contestArea.mvArea.electionEventId}"
+								  rendered="#{contestArea.mvArea.areaLevel == 0}"/>
+					<h:outputText value="#{contestArea.mvArea.countryId}"
+								  rendered="#{contestArea.mvArea.areaLevel == 1}"/>
+					<h:outputText value="#{contestArea.mvArea.countyId}"
+								  rendered="#{contestArea.mvArea.areaLevel == 2}"/>
+					<h:outputText value="#{contestArea.mvArea.municipalityId}"
+								  rendered="#{contestArea.mvArea.areaLevel == 3}"/>
+					<h:outputText value="#{contestArea.mvArea.boroughId}"
+								  rendered="#{contestArea.mvArea.areaLevel == 4}"/>
+					<h:outputText value="#{contestArea.mvArea.pollingDistrictId}"
+								  rendered="#{contestArea.mvArea.areaLevel == 5}"/>
+					<h:outputText value="#{contestArea.mvArea.pollingPlaceId}"
+								  rendered="#{contestArea.mvArea.areaLevel == 6}"/>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgs['@area.common.area_name']}"/>
+					</f:facet>
+					<h:outputText value="#{contestArea.mvArea.electionEventName}"
+								  rendered="#{contestArea.mvArea.areaLevel == 0}"/>
+					<h:outputText value="#{contestArea.mvArea.countryName}"
+								  rendered="#{contestArea.mvArea.areaLevel == 1}"/>
+					<h:outputText value="#{contestArea.mvArea.countyName}"
+								  rendered="#{contestArea.mvArea.areaLevel == 2}"/>
+					<h:outputText value="#{contestArea.mvArea.municipalityName}"
+								  rendered="#{contestArea.mvArea.areaLevel == 3}"/>
+					<h:outputText value="#{contestArea.mvArea.boroughName}"
+								  rendered="#{contestArea.mvArea.areaLevel == 4}"/>
+					<h:outputText value="#{contestArea.mvArea.pollingDistrictName}"
+								  rendered="#{contestArea.mvArea.areaLevel == 5}"/>
+					<h:outputText value="#{contestArea.mvArea.pollingPlaceName}"
+								  rendered="#{contestArea.mvArea.areaLevel == 6}"/>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText
+								value="#{msgs['@election.contest.contest_area.parent_area']}"/>
+					</f:facet>
+					<h:outputText
+							value="#{contestArea.parentArea ? msgs['@common.yes'] : msgs['@common.no']}"/>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText
+								value="#{msgs['@election.contest.contest_area.child_area']}"/>
+					</f:facet>
+					<h:outputText
+							value="#{contestArea.childArea ? msgs['@common.yes'] : msgs['@common.no']}"/>
+				</p:column>
+
+			</p:dataTable>
+		</h:panelGroup>
+	</h:panelGroup>
+
+	<f:facet name="footer">
+		<p:commandButton
+				id="create"
+				actionListener="#{contestAreaMultipleController.doCreateContestArea}"
+				update="electionLevel3Form:msg_contest_area electionLevel3Form:contestAreaTable"
+				value="#{msgs['@election.contest.contest_area.create.button.create']}"
+				disabled="#{isElectionEventDisabled}"
+				icon="eva-icon-checkmark"
+				styleClass="btn-sm btn-primary"/>
+
+		<p:commandLink
+				id="backToContest"
+				styleClass="btn btn-link"
+				onclick="PF('contestAreaDialog').hide();"
+				value="#{msgs['@election.contest.contest_area.create.button.back_to_contest_details']}"/>
+	</f:facet>
+</p:dialog>
+
+
+</h:form>
+
+
+<h:form id="level3DialogForm">
+
+	<p:dialog header="#{msgs['@common.redact']}" widgetVar="editDialog"
+			  id="editDialogId" resizable="false" fixedCenter="true" fitViewport="true" modal="true">
+
+		<h:panelGrid id="editDialogGrid">
+			<h:outputText
+					value="#{msgs['@area.common.area_name']}: #{contestController.selectedContestArea.mvArea}"/>
+
+			<h:panelGrid columns="2">
+
+				<h:outputLabel
+						value="#{msgs['@election.contest.contest_area.parent_area']}:"/>
+				<h:selectOneRadio
+						value="#{contestController.selectedContestArea.parentArea}"
+						id="parentArea">
+					<f:selectItem id="parentAreaYes"
+								  itemLabel="#{msgs['@common.yes']} " itemValue="true"/>
+					<f:selectItem id="parentAreaNo" itemLabel="#{msgs['@common.no']} "
+								  itemValue="false"/>
+				</h:selectOneRadio>
+
+				<h:outputLabel
+						value="#{msgs['@election.contest.contest_area.child_area']}:"/>
+				<h:selectOneRadio
+						value="#{contestController.selectedContestArea.childArea}"
+						id="childArea">
+					<f:selectItem id="childAreaYes"
+								  itemLabel="#{msgs['@common.yes']} " itemValue="true"/>
+					<f:selectItem id="childAreaNo" itemLabel="#{msgs['@common.no']} "
+								  itemValue="false"/>
+				</h:selectOneRadio>
+
+			</h:panelGrid>
+
+		</h:panelGrid>
+
+		<f:facet name="footer">
+			<!-- Command buttons -->
+			<p:commandButton id="cancelEdit" immediate="true"
+							 value="#{msgs['@common.cancel']}"
+							 styleClass="icon-button icon-cancel" onclick="PF('editDialog').hide();"/>
+			<p:commandButton
+					action="#{contestController.updateContestArea}"
+					id="updateContestArea" value="#{msgs['@common.save']}"
+					update=":electionLevel3Form:msg :electionLevel3Form:contestArea"
+					onclick="PF('editDialog').hide();" styleClass="icon-button icon-ok"/>
+
+		</f:facet>
+
+	</p:dialog>
+
+
+	<p:confirmDialog message="#{msgs['@delete.contest_area.confirmText']}"
+					 header="#{msgs['@common.delete']}" severity="alert"
+					 id="deleteDialogId" widgetVar="deleteDialog" fixedCenter="true"
+					 modal="true" visible="false" resizable="false">
+
+		<f:facet name="message">
+			<h:outputText value="#{msgs['@area.common.area_name']}: #{contestController.selectedContestArea.mvArea}"/>
+		</f:facet>
+		
+		<p:commandButton
+				value="#{msgs['@common.yes']}" 
+				immediate="true"
+				icon="eva-icon-notification"
+				styleClass="btn btn-danger"
+				update=":electionLevel3Form:msg :electionLevel3Form:contestArea"
+				actionListener="#{contestController.deleteSelectedContestArea}"
+				oncomplete="PF('deleteDialog').hide()"/>
+		
+		
+		<p:commandButton id="cancelDelete" immediate="true"
+						 value="#{msgs['@common.cancel']}"
+						 icon="eva-icon-notification"
+						 styleClass="btn btn-danger"
+						 onclick="PF('deleteDialog').hide();"/>
+
+	</p:confirmDialog>
+
+
+	<p:confirmDialog
+			header="#{msgs['@common.delete']} #{msgs['@election_level[3].name']}"
+			severity="alert" widgetVar="level3Confirmation" modal="true">
+		<f:facet name="message">
+			<h:outputText id="dialogMessage" value="#{msgs.get('@common.delete.confirmation', msgs['@election_level[3].name'], contestController.currentContest.name)}"/>
+		</f:facet>
+
+
+		<p:commandButton
+				value="#{msgs['@common.yes']}"
+				id="YesButton"
+				immediate="true"
+				icon="eva-icon-notification"
+				styleClass="btn btn-danger"
+				update="@(#contextPicker)"
+				oncomplete="PF('editElectionLevel3Widget').hide();"
+				action="#{contestController.doDeleteContest(contestController.currentContest.pk)}"
+				onclick="PF('level3Confirmation').hide();"/>
+
+		<p:commandButton
+				styleClass="btn btn-primary"
+				value="#{msgs['@common.no']}"
+				id="NoButton"
+				onclick="PF('level3Confirmation').hide()"
+				update="level3DialogForm:NoButton"/>
+	</p:confirmDialog>
+
+</h:form>
+<script type="text/javascript">
+	//<![CDATA[
+	function editContestDialogBox(xhr, status, args) {
+		if (args.editContestHideDialog) {
+			PF('editElectionLevel3Widget').hide();
+		}
+	}
+	//]]>
+</script>
+</ui:composition>

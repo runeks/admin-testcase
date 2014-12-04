@@ -1,0 +1,171 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                contentType="text/html">
+
+    <h:form id="level3CreateForm">
+        <ui:param name="helpId" value="@help.area.municipality"/>
+        <p:dialog
+                header="#{msgs['@area.municipality.create.header']}"
+                widgetVar="createAreaLevel3Widget"
+                fixedCenter="true"
+                modal="true"
+                visible="false"
+                resizable="false"
+                width="640">
+            <h:panelGroup styleClass="row" layout="block">
+                <div class="col-md-9 center-block">
+                    <p:messages id="msg"/>
+                </div>
+
+                <!-- County -->
+                <h:panelGroup styleClass="form-group col-md-6" layout="block">
+                    <h:outputLabel value="#{msgs['@area_level[2].name']}" for="countyName"/>
+                    <h:inputText
+                            id="countyName"
+                            value="#{municipalityController.parentMvArea.county.name}"
+                            readonly="true"
+                            disabled="true"
+                            styleClass="form-control"
+                            />
+                </h:panelGroup>
+
+                <!-- municipalityId -->
+                <h:panelGroup styleClass="required form-group col-md-6" layout="block">
+                    <h:outputLabel value="#{msgs['@area_level[3].nummer']}" for="municipalityId"/>
+                    <h:inputText
+                            value="#{municipalityController.newMunicipality.id}"
+                            id="municipalityId"
+                            required="true"
+                            label="#{msgs['@area_level[3].nummer']}"
+                            styleClass="form-control"
+                            maxlength="4"/>
+                </h:panelGroup>
+
+                <!-- Name -->
+                <h:panelGroup styleClass="required form-group col-md-6" layout="block">
+                    <h:outputLabel value="#{msgs['@common.name']}" for="municipalityName"/>
+                    <h:inputText
+                            value="#{municipalityController.newMunicipality.name}"
+                            label="#{msgs['@common.name']}"
+                            id="municipalityName"
+                            styleClass="form-control"
+                            maxlength="50"
+                            required="true"/>
+                </h:panelGroup>
+
+                <!-- municipality Locale -->
+                <h:panelGroup styleClass="required form-group col-md-6" layout="block">
+                    <h:outputLabel value="#{msgs['@common.locale']}" for="locale"/>
+                    <h:selectOneListbox
+                            id="locale"
+                            label="#{msgs['@common.locale']}"
+                            value="#{municipalityController.newMunicipalityLocale}"
+                            size="1"
+                            required="true"
+                            styleClass="form-control">
+                        <f:selectItem itemLabel="#{msgs['@common.locale.preselect']}"/>
+                        <f:selectItems value="#{LocaleController.localeMap}"/>
+                        <f:converter converterId="localeConverter"/>
+                    </h:selectOneListbox>
+                </h:panelGroup>
+
+                <!-- municipality Voting type -->
+                <h:panelGroup id="votingTypeWrapper" styleClass="required form-group col-md-12" layout="block">
+                    <h:outputLabel value="#{msgs['@election.election_group.voting_type']}" for="votingType"/>
+                    <h:selectOneRadio
+                            value="#{municipalityController.votingType}"
+                            id="votingType"
+                            label="#{msgs['@election.election_group.voting_type']}"
+                            valueChangeListener="#{municipalityController.changeVotingType}"
+                            immediate="false"
+                            required="true"
+                            styleClass="ui-radio-group ui-radio-group-inline"
+                            disabled="#{isElectionEventDisabled or municipalityController.readOnly}">
+                        <f:selectItem
+                                itemLabel="#{msgs['@election.election_group.voting_type_select.paper']}"
+                                itemValue="1"/>
+                        <f:selectItem
+                                itemDisabled="#{municipalityController.allowOnlyPaperForMunicipality()}"
+                                itemLabel="#{msgs['@election.election_group.voting_type_select.electronic']}"
+                                itemValue="2"/>
+                        <f:selectItem
+                                itemDisabled="#{municipalityController.allowOnlyPaperForMunicipality()}"
+                                itemLabel="#{msgs['@election.election_group.voting_type_select.paper_and_electronic']}"
+                                itemValue="3"/>
+                    </h:selectOneRadio>
+                </h:panelGroup>
+
+                <!-- Electronic or manual voter markoff -->
+                <h:panelGroup styleClass="required form-group col-md-12" layout="block">
+                    <div class="checkbox">
+                        <label for="voterType">
+                            <h:selectBooleanCheckbox
+                                    value="#{municipalityController.newMunicipality.electronicMarkoffs}"
+                                    id="voterType"
+                                    required="true"
+                                    styleClass="form-control"
+                                    onclick="jQuery(PrimeFaces.escapeClientId('level3CreateForm:updateRadioButtons')).click()"
+                                    valueChangeListener="#{municipalityController.electronicMarkoffsChangedForNewMunicipality}"/>
+
+                            #{msgs['@voter.markoff.hasElectronic']}
+                        </label>
+                    </div>
+                    <!-- Advance vote in ballot box -->
+                    <div class="checkbox">
+                        <label for="paramAdvanceInBallot">
+                            <h:selectBooleanCheckbox
+                                    value="#{municipalityController.newMunicipality.advanceVoteInBallotBox}"
+                                    id="paramAdvanceInBallot"
+                                    required="true"
+                                    styleClass="form-control"
+                                    disabled="#{isElectionEventDisabled or municipalityController.readOnly}"/>
+                            #{msgs['@election.election_group.advance_vote_in_ballot_box']}
+                        </label>
+                    </div>
+                    <!-- Allowed to use technical polling districts -->
+                    <div class="checkbox">
+                        <label for="technicalPollingDistrictsAllowed">
+                            <h:selectBooleanCheckbox
+                                    value="#{municipalityController.newMunicipality.technicalPollingDistrictsAllowed}"
+                                    id="technicalPollingDistrictsAllowed"
+                                    styleClass="form-control"
+                                    disabled="#{isElectionEventDisabled or municipalityController.readOnly}"/>
+                            #{msgs['@area.municipality.technicalPollingDistrictsAllowed']}
+                        </label>
+                    </div>
+                </h:panelGroup>
+
+                <p:commandButton style="display: none"
+                                 update="level3CreateForm:votingTypeWrapper" id="updateRadioButtons"
+                                 widgetVar="updateRadioButtons"/>
+            </h:panelGroup>
+
+			<f:facet name="footer">
+				<p:commandButton id="create"
+								 actionListener="#{municipalityController.doCreateMunicipality(municipalityController.newMunicipality)}"
+								 oncomplete="createMunicipalityDialogBox(xhr, status, args)"
+								 update=":level3CreateForm:msg :hierarchyEditor"
+								 value="#{msgs['@area.municipality.create.button.create']}"
+								 styleClass="btn btn-primary"/>
+
+				<p:commandLink id="backToAreaList"
+							   onclick="PF('createAreaLevel3Widget').hide(); return false;"
+							   value="#{msgs['@common.cancel']}"
+							   styleClass="btn btn-link"/>
+			</f:facet>
+
+        </p:dialog>
+    </h:form>
+    <script type="text/javascript">
+        //<![CDATA[
+        function createMunicipalityDialogBox(xhr, status, args) {
+            if (args.createMunicipalityHideDialog) {
+                PF('createAreaLevel3Widget').hide();
+            }
+        }
+        //]]>
+    </script>
+</ui:composition>

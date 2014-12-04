@@ -1,0 +1,58 @@
+a,a:visited {
+	color: #004183;
+}
+
+a:link { /*color: #9595C1;*/
+	
+}
+
+.topAlignColumns {
+	vertical-align: top;
+}
+
+/* Needs to be here for auto complete component of prime faces */
+.yui-skin-sam .yui-ac {
+	width: 150px;
+	top: -10px;
+}
+
+/* Dialog */
+.yui-skin-sam .yui-panel .bd {
+	background: #FFFFFF;
+	border-color: #000000;
+	height: 150px;
+	width: 550px
+}
+
+/* TabView */
+.yui-skin-sam .yui-navset .yui-nav {
+	border-color: #000000;
+}
+
+.yui-skin-sam .yui-navset .yui-nav a {
+	background: #C6C6C6;
+}
+
+.yui-skin-sam .yui-navset .yui-nav .selected a,.yui-skin-sam .yui-navset .yui-nav .selected a:focus,.yui-skin-sam .yui-navset .yui-nav .selected a:hover
+	{
+	background: #FFFFFF;
+	color: #000000;
+}
+
+.yui-skin-sam .yui-navset .yui-content {
+	background: #FFFFFF;
+}
+
+/* DataTable */
+.yui-skin-sam .yui-dt table {
+	border-collapse: collapse;
+	font-size: 85%;
+}
+ 
+.choosable {
+	color:red; 
+	cursor: pointer;
+}
+.choosable:hover {
+	text-decoration: underline;
+}

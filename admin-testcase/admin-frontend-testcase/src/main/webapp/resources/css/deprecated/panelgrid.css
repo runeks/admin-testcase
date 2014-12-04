@@ -1,0 +1,38 @@
+﻿/* JSF Panelgrid */
+.pgColDefault {
+	
+}
+
+.pgColDefaultLeft {
+	width: 130px;
+}
+
+.pgColDefaultRight {
+	width: 500px;
+}
+
+.pgColReq {
+	width: 8px;
+	height: 20px;
+	text-align: left;
+}
+
+.pgColReq,.pgReqGreen,.pgReqWhite {
+	width: 6px;
+	height: 20px;
+	margin-right: 2px;
+}
+
+.pgReqGreen {
+	background-color: #00cc00;
+	color: #990000;
+}
+
+.pgReqWhite {
+	background-color: #ffffff;
+	color: #000000;
+}
+
+.pgCyanBG {
+	background-color: #ccffff;
+}

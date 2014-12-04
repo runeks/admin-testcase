@@ -1,0 +1,186 @@
+/**
+ * Base
+ */
+@import 'common/mixins';
+@import 'common/variables';
+@import 'common/jquery-ui-theme';
+/**
+ * Common
+ */
+@import 'common/layout';
+@import 'common/general';
+@import 'common/icons';
+@import 'common/page';
+@import 'common/tables';
+@import 'common/pageHeader';
+@import 'common/pageFooter';
+@import 'common/ajaxLoader';
+@import 'common/sessionTimeout';
+@import 'common/systemMessage';
+@import 'common/dialogs';
+@import 'common/formElements';
+@import 'common/helpers';
+@import 'common/tabs';
+@import 'common/panel';
+@import 'common/fileUpload';
+@import 'common/breadCrumb';
+
+/**
+ * Views
+ */
+@import 'views/welcome';
+@import 'views/selectRole';
+@import 'views/myPage';
+@import 'views/operatorAdmin';
+@import 'views/listReportCountCategories';
+@import 'views/listProposal/chooseEditListProposal';
+@import 'views/listProposal/editListProposal';
+@import 'views/configuration/localAreaConfigutation';
+@import 'views/configuration/localElectionConfigutation';
+@import 'views/configuration/listAreas';
+@import 'views/configuration/listElections';
+@import 'views/configuration/pollingStationConf';
+@import 'views/counting/counting';
+@import 'views/counting/countingOverview';
+@import 'views/counting/registerModifiedBallot';
+@import 'views/counting/registerModifiedBallots';
+@import 'views/counting/showModifiedBallot';
+@import 'views/scanningLoginSelectElectionEvent';
+@import 'views/reportingUnit';
+@import 'views/reporting/jasperReportLinks';
+@import 'views/createOfficer';
+
+/**
+ * Widgets
+ */
+@import 'widgets/contextPicker';
+@import 'widgets/editListProposalDialogForm';
+
+
+.modal-open {
+  overflow-y: hidden!important;
+}
+
+
+
+/* LEFTOVERS TO BE REFACTORED */
+@media (min-width: 1300px) {
+  .container {
+	width: 1241px;
+	padding: 0px;
+  }
+}
+
+.tableWithHeaderWidgets .ui-datatable-header {
+  padding-left: 0px;
+  padding-right: 5px;
+  text-align: left;
+}
+
+.tableWithHeaderWidgets .ui-datatable-header .ui-widget {
+  margin-right: 10px;
+}
+
+div.fw_row {
+  float: none;
+  clear: both;;
+  overflow: hidden;
+}
+
+td.align-right input, input.align-right {
+  text-align: right;
+}
+
+div.help {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+}
+
+div.help a {
+  font-size: 13px;
+}
+
+/* INFO BUBBLE */
+
+.info-text {
+  text-indent: -99999px;
+  overflow: hidden;
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: transparent url("#{resource['images:ixd/icon-info-bubble.png']}") 50% 50% no-repeat;
+  margin-left: 3px;
+}
+
+.info-bubble {
+  position: absolute;
+  border: 1px solid #346795;
+  background-color: #E6EFF7;
+  padding: 5px 5px 5px 5px;
+  font-size: 12px;
+  color: #346795;
+  z-index: 99999;
+}
+
+.info-bubble.left {
+  -moz-border-radius: 5px 5px 0 5px;
+  -khtml-border-radius: 5px 5px 0 5px;
+  -webkit-border-radius: 5px 5px 0 5px;
+  border-radius: 5px 5px 0 5px;
+}
+
+.info-bubble.right {
+  -moz-border-radius: 5px 5px 5px 0;
+  -khtml-border-radius: 5px 5px 5px 0;
+  -webkit-border-radius: 5px 5px 5px 0;
+  border-radius: 5px 5px 5px 0;
+}
+
+.no-break {
+  white-space: nowrap;
+}
+
+.tools {
+
+  li {
+    float: left;
+    display: block;
+    margin: 0 10px 0 0;
+    padding: 0 0 0 10px;
+    vertical-align: middle;
+    border-left: 1px dotted #ccc;
+    line-height: 30px;
+    
+    &:first-child {
+      border-left: 0 none;
+      padding-left: 0;
+    }
+
+    &:last-child {
+      border-right: 0 none;
+      padding: 0;
+      margin-right: 0;
+    }
+  }
+  
+  &.right {
+    li {
+      margin: 0 0 0 10px;
+      padding: 0 10px 0 0;
+      border-right: 1px dotted #ccc;
+      border-left: 0 none;
+
+      &:first-child {
+        border-right: 0 none;
+        padding-right: 0;
+      }
+      
+      &:last-child {
+        border-left: 0 none;
+        padding: 0;
+        margin-left: 0;
+      }
+    }    
+  }  
+}

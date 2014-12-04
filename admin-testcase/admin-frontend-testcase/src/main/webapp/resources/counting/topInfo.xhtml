@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:h="http://java.sun.com/jsf/html">
+
+<composite:interface>
+	<composite:attribute name="topInfoProvider"
+						 type="no.valg.eva.admin.counting.presentation.TopInfoProvider"
+						 required="true"/>
+</composite:interface>
+
+<composite:implementation>
+
+	<h1 class="page-title">
+		<h:outputText value="#{cc.attrs.topInfoProvider.municipalityName} #{msgs['@area_level[3].name'].toLowerCase()}"/>
+		<h:outputText value=" | #{cc.attrs.topInfoProvider.electionName}"/>
+		<h:outputText value=" | #{cc.attrs.topInfoProvider.displayAreaName}"/>
+	</h1>
+
+	<h4>
+		<h:outputText value="#{msgs[cc.attrs.topInfoProvider.categoryName]}"/>
+	</h4>
+
+</composite:implementation>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+		>
+
+<composite:interface>
+	<composite:attribute name="count"
+						 type="no.valg.eva.admin.common.counting.model.ProtocolCount"
+						 required="true"/>
+	<composite:attribute name="style"
+						 type="java.lang.String"
+						 required="false"/>
+	<composite:attribute name="disabled" type="boolean" default="false" required="false"/>
+</composite:interface>
+
+<composite:implementation>
+	<p:panelGrid styleClass="protocolEnvelopes">
+		
+		<p:row rendered="#{cc.attrs.count.specialCovers != null}">
+			
+			<p:column>
+				<h:outputLabel value="#{msgs['@count.votes.nrOfSpecialCover']}"/>
+			</p:column>
+			
+			<p:column>
+				<p:inputText 
+						value="#{cc.attrs.count.specialCovers}" 
+						size="4"
+						styleClass="right"
+						disabled="#{cc.attrs.disabled}"/>
+			</p:column>
+			
+		</p:row>
+
+		<p:row rendered="#{cc.attrs.count.emergencySpecialCovers != null}">
+			
+			<p:column>
+				<h:outputLabel value="#{msgs['@count.votes.nrOfEmergencyEnvelopes']}" styleClass="bold"/>
+			</p:column>
+			
+			<p:column>
+				<p:inputText
+						value="#{cc.attrs.count.emergencySpecialCovers}"
+						size="4"
+						styleClass="right"
+						disabled="#{cc.attrs.disabled}"/>
+			</p:column>
+			
+		</p:row>
+
+		<p:row rendered="#{cc.attrs.count.foreignSpecialCovers != null}">
+			
+			<p:column>
+				<h:outputLabel value="#{msgs['@count.votes.nrOfForeignInSpecialCover']}"/>
+			</p:column>
+			
+			<p:column>
+				<p:inputText
+						value="#{cc.attrs.count.foreignSpecialCovers}"
+						size="4"
+						styleClass="right"
+						disabled="#{cc.attrs.disabled}"/>
+			</p:column>
+			
+		</p:row>
+	</p:panelGrid>
+</composite:implementation>
+</html>

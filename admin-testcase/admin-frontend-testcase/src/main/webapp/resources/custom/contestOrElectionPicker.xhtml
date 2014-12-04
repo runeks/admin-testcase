@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<composite:interface>
+    <composite:attribute name="mvArea" type="no.evote.model.MvArea" />
+</composite:interface>
+
+<composite:implementation>
+
+    <h:outputText value="#{contestOrElectionPickerController.loadData(cc.attrs.mvArea)}" />
+    
+    <ui:fragment rendered="#{contestOrElectionPickerController.contests.size() > 1}">
+		<p:panel header="#{msgs['@count.start.choose']} #{msgs['@election_level[3].name']}">
+			<h:panelGrid columns="1" styleClass="formTable" columnClasses="inputs">
+				<h:panelGroup styleClass="text">
+					<h:selectOneMenu id="contests" value="#{contestOrElectionPickerController.path}">
+						<f:selectItems var="contest" value="#{contestOrElectionPickerController.contests}" itemLabel="#{contest.electionName} #{contest.contestName}"
+									   itemValue="#{contest.electionPath.path()}" />
+					</h:selectOneMenu>
+				</h:panelGroup>
+			</h:panelGrid>
+			<div class="bottom-buttons">
+				<ul class="right">
+					<li>
+						<p:commandButton action="#{contestOrElectionPickerController.doSelect}" value="#{msgs['@count.start.choose']}" ajax="false" process="@this" styleClass="icon-button icon-next left-align" />
+					</li>
+				</ul>
+			</div>
+		</p:panel>
+    </ui:fragment>
+	
+</composite:implementation>
+
+</html>

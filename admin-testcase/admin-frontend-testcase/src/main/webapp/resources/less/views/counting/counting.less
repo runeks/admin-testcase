@@ -1,0 +1,165 @@
+#page-counting {
+
+  .ui-datatable {
+    table {
+      table-layout: initial;
+      tr {
+        height: 56px;
+      }
+    }
+  }
+
+  & > h1 + h4 {
+    margin-top: -15px;
+  }
+
+  .diff-pos, .diff-zero {
+    color: @green;
+  }
+
+  .diff-neg {
+    color: @red;
+  }
+
+  .onBallotCountChange {
+    .ui-panel-content {
+      padding: 0;
+    }
+  }
+
+  .ballot-count-comment {
+    padding: 0;
+    .ui-panel-titlebar {
+      padding: 0;
+      padding-bottom: 5px;
+      .ui-panel-title {
+        font-size: @fontNormal;
+        font-weight: bold;
+      }
+    }
+
+    .ui-panel-content {
+      padding: 0;
+      textarea {
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  @countsGutter: 2px;
+  .ballot-counts {
+    padding-left: @countsGutter;
+
+    .col-md-12 {
+      padding-right: @countsGutter;
+    }
+  }
+
+  .compare-ballot-counts {
+    padding-left: @countsGutter;
+  }
+
+  .compare-ballot-counts {
+    .ballot-count {
+
+      &:first-child {
+        padding-right: @countsGutter;
+      }
+
+      &:last-child {
+        padding-left: @countsGutter;
+        padding-right: @countsGutter;
+      }
+    }
+  }
+
+  .ui-datatable-tablewrapper {
+    .table-no-header thead {
+      display: none;
+    }
+    tfoot tr {
+      border: none;
+      border-bottom: 1px solid #d3d3d3;
+      td {
+        text-align: left;
+        font-weight: bold;
+        border: none;
+      }
+    }
+  }
+
+  .tab-compare {
+    .msg-row {
+      position: absolute;
+      .finalcounts-msg {
+        position: relative;
+        z-index: 1;
+        color: red;
+        font-weight: bold;
+
+        &.no-finalcounts-msg {
+          top: 170px;
+          left: 270px;
+        }
+        &.one-finalcount-msg {
+          top: 160px;
+          left: 50px;
+        }
+      }
+    }
+
+    .table-header {
+      height: 100px;
+
+      &.base {
+        text-align: right;
+        button {
+          margin-top: 50px;
+        }
+      }
+      &.compare {
+
+        & > .row {
+          min-height: 60px;
+        }
+
+        border: solid;
+        border-bottom: none;
+        padding: 10px;
+        background: #d3d3d3;
+        .ballot-count-label {
+          font-size: 1.5rem;
+        }
+
+        &.approved {
+          background: @green;
+        }
+      }
+    }
+    .table-footer {
+      .ui-panel-title {
+        font-size: 14px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  /** 
+  * Urnetellings tab
+  */
+  .tab-P, .tab-PF {
+    .protocolEnvelopes {
+      background: #d3d3d3;
+      border: 1px solid;
+    }
+  }
+  
+  .ui-tabs {
+    .ui-tabs-panel {
+      & > div {
+        padding-top:40px;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,124 @@
+.ui-tabs {
+
+  ul[role="tablist"] {
+    position: relative;
+    float: left;
+    width: 100%;
+    overflow: hidden;
+
+    &:after {
+      border-bottom: 2px solid @blue;
+      visibility: visible;
+      position: absolute;
+      bottom: 0;
+      content: '';
+      left: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    li[role="tab"] {
+
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      z-index: 20;
+      background-color: @blue;
+      display: block;
+      top: 9px;
+      border: 2px solid @blue;
+      height: 45px;
+      margin-left: 10px;
+      
+      a {
+        outline: none;
+      }
+
+      &:first-child {
+        margin-left: 32px;
+      }
+
+      &:hover {
+        background-color: darken(@blue, 5%);
+
+        &:before {
+          border-color: darken(@blue, 5%);
+        }
+      }
+
+      &:after,
+      &:before {
+        z-index: -1;
+      }
+
+      &:before {
+        .border-radius(0);
+        .rotate(41deg);
+        position: absolute;
+        content: "";
+        left: -22px;
+        top: -2px;
+//        width: 35px;
+        height: 0;
+        background: transparent;
+        border-style: solid;
+        border-color: @blue;
+        border-width: 21px 8px 44px 6px;
+        width: 30px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        border-bottom-left-radius: 8px;
+      }
+
+      a {
+        z-index: 20;
+        padding: 0;
+        margin: 10px 15px 10px 10px;
+        color: @white;
+      }
+
+      &.ui-state-active {
+
+        top:1px;
+        height: 50px;
+        
+        a {
+          margin: 15px 10px 15px 5px;
+        }
+        
+        &:before {
+          background-color: transparent;
+        }
+        &:after {
+          position: absolute;
+          content: "";
+          left: -39px;
+          top: 0px;
+          background: transparent;
+          border-style: solid;
+          border-width: 0 0 48px 41px;
+          width: 76px;
+          height: 48px;
+          border-color: transparent transparent @white transparent;
+          .border-radius(60% 0 0 0);
+        }
+
+        padding: 0;
+        z-index: 50;
+        background-color: @white;
+        border-bottom: 2px solid @white;
+
+        a {
+          color: @black;
+        }
+      }
+    }
+  }
+  
+  .ui-tabs-panel {
+    float: left;
+    width: 100%;
+  }
+}
+
+

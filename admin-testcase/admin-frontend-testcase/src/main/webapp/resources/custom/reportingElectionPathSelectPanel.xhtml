@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+	<title></title>
+</h:head>
+<h:body>
+	<composite:interface>
+	</composite:interface>
+
+	<composite:implementation>
+		<h:outputScript name="javascript/deprecated/reporting.js" />
+
+		<p:panel header="#{msgs['@election.common.path']}">
+
+			<!-- Election event -->
+			<h:panelGrid id="electionEvent" columns="2" columnClasses="colTitle">
+				<h:outputText value="#{msgs['@election_level[0].name']}:" />
+				<h:selectOneListbox id="EE1" size="1" style="width:400px"
+					required="false" value="#{controller.electionEvent.selectedValue}"
+					disabled="#{controller.electionEvent.disabled}">
+					<f:selectItems value="#{controller.electionEvent.items}" />
+				</h:selectOneListbox>
+			</h:panelGrid>
+
+			<!-- Election group -->
+			<h:panelGrid id="electionGroup" columns="2" columnClasses="colTitle">
+				<h:outputText value="#{msgs['@election_level[1].name']}:" />
+				<h:selectOneListbox id="EG1" size="1" style="width:400px"
+					required="false" value="#{controller.electionGroup.selectedValue}"
+					disabled="#{controller.electionGroup.disabled}">
+					<f:selectItems value="#{controller.electionGroup.items}" />
+					<p:ajax global="false" update="EL1 CT1 :messages" process="EG1"
+						event="change" onstart="showPathLoadingBars('EL1 CT1')"
+						oncomplete="hidePathLoadingBars('EL1 CT1')"
+						listener="#{controller.rpcSelectedValueChanged}" />
+				</h:selectOneListbox>
+			</h:panelGrid>
+
+			<!-- Election -->
+			<h:panelGrid id="election" columns="2" columnClasses="colTitle">
+				<h:outputText value="#{msgs['@election_level[2].name']}:" />
+				<h:panelGroup>
+					<div id="loadingEL1Div" style="display: none"><img
+						src="#{resource['images:pf/ajaxloading.gif']}" alt="ajaxloading" /></div>
+					<div id="selectEL1Div" style="display: block"><h:selectOneListbox
+						id="EL1" size="1" style="width:400px" required="false"
+						value="#{controller.election.selectedValue}"
+						disabled="#{controller.election.disabled}">
+						<f:selectItems value="#{controller.election.items}" />
+						<p:ajax global="false" update="CT1 :messages" process="EL1"
+							event="change" onstart="showPathLoadingBars('CT1')"
+							oncomplete="hidePathLoadingBars('CT1')"
+							listener="#{controller.rpcSelectedValueChanged}" />
+					</h:selectOneListbox></div>
+				</h:panelGroup>
+			</h:panelGrid>
+
+			<!-- Contest -->
+			<h:panelGrid id="contest" columns="2" columnClasses="colTitle">
+				<h:outputText value="#{msgs['@election_level[3].name']}:" />
+				<h:panelGroup>
+					<div id="loadingCT1Div" style="display: none"><img
+						src="#{resource['images:pf/ajaxloading.gif']}" alt="ajaxloading" /></div>
+					<div id="selectCT1Div" style="display: block"><h:selectOneListbox
+						id="CT1" size="1" style="width:400px" required="false"
+						value="#{controller.contest.selectedValue}"
+						disabled="#{controller.contest.disabled}">
+						<f:selectItems value="#{controller.contest.items}" />
+						<p:ajax global="false" update=":messages" event="change"
+							process="CT1"
+							listener="#{controller.rpcSelectedValueChanged}" />
+					</h:selectOneListbox></div>
+				</h:panelGroup>
+			</h:panelGrid>
+		</p:panel>
+
+		<style type="text/css">
+.colTitle {
+	width: 135px;
+}
+</style>
+	</composite:implementation>
+
+</h:body>
+</html>

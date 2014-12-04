@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+
+<faces-config version="2.1" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd">
+	<application>
+		<locale-config>
+			<supported-locale>nn-NO</supported-locale>
+			<supported-locale>nb-NO</supported-locale>
+			<supported-locale>en-GB</supported-locale>
+			<supported-locale>sv-SE</supported-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>no.evote.i18n.DbResourceBundle</base-name>
+			<var>msgs</var>
+		</resource-bundle>
+ 		<el-resolver>no.evote.presentation.resolver.EvoteEnumResolver</el-resolver>
+        <resource-handler>no.evote.presentation.resources.CustomResourceHandler</resource-handler>
+        <action-listener>org.primefaces.application.DialogActionListener</action-listener>
+        <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+        <view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+    </application>
+
+	<component>
+		<component-type>no.evote.presentation.components.Panel</component-type>
+		<component-class>no.evote.presentation.components.FormGrid</component-class>
+	</component>
+	<render-kit>
+		<renderer>
+			<component-family>javax.faces.Panel</component-family>
+			<renderer-type>no.evote.presentation.components.DivForm</renderer-type>
+			<renderer-class>no.evote.presentation.components.DivFormRenderer</renderer-class>
+		</renderer>
+	</render-kit>
+	<factory>
+		<exception-handler-factory>no.evote.presentation.exceptions.CustomExceptionHandlerFactory</exception-handler-factory>
+	</factory>
+
+</faces-config>

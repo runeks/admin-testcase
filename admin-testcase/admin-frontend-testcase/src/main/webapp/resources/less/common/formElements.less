@@ -1,0 +1,228 @@
+/**
+ * Text input
+ */
+
+.form-control {
+  .border-radius(0);
+  .size(25px, auto);
+}
+
+select.form-control {
+  .border-radius(0);
+  .size(auto, auto);
+
+}
+
+.required:not(.form-group):after {
+  padding-left: 5px;
+  color: @errorTextColor;
+  content: "*";
+}
+
+.form-actions {
+  margin-top: 30px;
+  .btn {
+    margin-right: 10px;
+  }
+}
+
+.form-group {
+  label {
+    font-weight: 400;
+  }
+
+  &.required {
+    & > label:after {
+      padding-left: 5px;
+      color: @errorTextColor;
+      content: "*";
+    }
+  }
+
+  .help-block {
+    font-size: @fontSmall;
+  }
+}
+
+/**
+ * Radio input
+ */
+.ui-radiobutton,
+.ui-radiobutton.ui-state-default {
+  border-radius: 10px;
+  border: 1px solid @black;
+  background: @white;
+  display: block;
+
+  .ui-radiobutton-box {
+    .square(14px);
+    line-height: 16px;
+    padding: 0;
+    margin: 0;
+    &.ui-state-active {
+      .square(14px);
+      background: @black;
+    }
+  }
+}
+
+/**
+ * Dropdown styles
+ */
+.ui-selectonemenu,
+.ui-selectonemenu.ui-state-default {
+  #gradient > .vertical(@white, @grey);
+  .border-radius(2px);
+  height: 22px;
+  text-align: left;
+  color: @black;
+
+  .ui-selectonemenu-trigger {
+    #gradient > .vertical(@white, @grey);
+    width: 19px;
+    color: @black;
+    border: none;
+
+    .ui-icon-triangle-1-s {
+      width: 2px;
+      border-left: 5px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 5px solid @black;
+      margin-top: 8px;
+      margin-left: 1px;
+    }
+  }
+}
+
+.ui-selectonemenu-panel {
+  position: absolute;
+  height: auto;
+  background-color: lighten(@grey, 30%);
+}
+
+.ui-selectionmenu-label {
+  background: @white;
+}
+
+/**
+ * Button styles
+ */
+a,
+button {
+
+  outline: none;
+  &:active {
+    outline: none;
+  }
+  
+  &.btn-primary {
+
+    background-color: @blue;
+    border-color: @blue;
+
+    &.ui-state-default,
+    &:focus,
+    &.ui-state-active,
+    &:hover {
+      background-color: @blue;
+      border-color: @blue;
+    }
+  }
+  
+  &.btn-success {
+    background-color: @green;
+    border-color: @green;
+
+    &.ui-state-default,
+    &:focus,
+    &.ui-state-active,
+    &:hover {
+      background-color: @green;
+      border-color: @green;
+    }
+  }
+
+  &.btn-danger {
+
+    &.ui-state-default,
+    &:focus,
+    &.ui-state-active,
+    &:hover {
+      background-color: #d9534f;
+      border-color: #d43f3a;
+    }
+  }
+
+  &.ui-button-text-icon-left {
+    .ui-button-text {
+      padding: 0.3em 0.1em 0.3em 1.25em;
+    }
+  }
+  
+  
+}
+
+.btn,
+.btn-lg,
+.btn-xs,
+.btn-sm {
+
+  &:not(a) {
+    font-size: @fontButtonNormal;
+  }
+
+  text-decoration: none;
+  .border-radius(0);
+  border: none;
+  
+  &[disabled="disabled"] {
+    background-color: @grey2 !important;
+    color: @grey3;
+  }
+}
+
+
+.btn-xs {
+  font-size: 0.85em!important;
+}
+
+.ui-menu {
+  width: 20em;
+}
+
+.ui-menuitem-text {
+  color: @white;
+  font-size: 14px;
+}
+
+.input-group-addon {
+  padding: 4px 12px;
+}
+
+.ui-radio-group {
+  &.ui-radio-group-inline {
+    * {
+      display: inline;
+    }
+  }
+
+  label {
+    padding-left: 3px;
+    padding-right: 10px;
+  }
+}
+
+.form-control-feedback {
+  top: 0px;
+  right: 0px;
+  height: 25px;
+  line-height: 24px;
+
+  &.grey {
+    background-color: #eee;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #dedede;
+  }
+}

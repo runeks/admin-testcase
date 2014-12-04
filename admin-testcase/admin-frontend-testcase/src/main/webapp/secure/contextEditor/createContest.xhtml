@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:widget="http://java.sun.com/jsf/composite/widget/"
+                contentType="text/html">
+
+    <h:form id="electionLevel3CreateForm">
+        <ui:param name="helpId" value="@help.election.contest"/>
+
+        <p:dialog
+                id="createElectionLevel3WidgetId"
+                widgetVar="createElectionLevel3Widget"
+                fixedCenter="true"
+                fitViewport="true" 
+                header="#{msgs['@election.contest.create.header']}"
+                modal="true"
+                visible="false"
+                resizable="false"
+                width="940"
+				height="600">
+
+
+            <h:panelGroup styleClass="row" layout="block">
+
+                <div class="col-md-9 center-block">
+                    <p:messages id="msg"/>
+                </div>
+
+                <h:panelGroup styleClass="form-group col-md-12" layout="block">
+                    <p class="bg-warning">
+                        #{contestController.currentContest.election.singleArea ? msgs['@election.contest.create.info.single_area'] : msgs['@election.contest.create.info.not_single_area']}:
+                        <abbr>#{contestController.areaLevelMessageKey}</abbr>
+                    </p>
+                </h:panelGroup>
+
+                <!-- Election group -->
+                <h:panelGroup styleClass="form-group col-md-12" layout="block">
+                    <h:outputLabel value="#{msgs['@election_level[1].name']}:" for="electionGroup" styleClass="col-md-2"/>
+                    <span id="electionGroup" class='label label-primary'>#{contestController.parentMvElection.electionGroup.name}</span>
+                </h:panelGroup>
+
+                <!-- Election -->
+                <h:panelGroup styleClass="form-group col-md-12" layout="block">
+                    <h:outputLabel value="#{msgs['@election_level[2].name']}:" for="electionName" styleClass="col-md-2"/>
+                    <span id="electionName" class='label label-primary'>#{contestController.parentMvElection.election.name}</span>
+                </h:panelGroup>
+                
+                <!-- Area select panel -->
+                <h:panelGroup styleClass="required form-group col-md-12" layout="block">
+                    <widget:areaSelectPanel renderDropdownAreaLevel="false" renderDropdownSelectedAreaLevel="true" id="areaSelectWidget"/>
+                </h:panelGroup>
+
+                <!-- contestId -->
+                <h:panelGroup styleClass="form-group col-md-12" layout="block">
+                    <h:outputLabel value="#{msgs['@common.id']}" for="contestId" styleClass="col-md-2"/>
+                    <h:outputText id="contestId" value="#{mvAreaController.selectedAreaId}" styleClass="label label-primary" />
+                    <h:message for="contestId" id="idError"/>
+                </h:panelGroup>
+
+                <!-- contestName -->
+                <h:panelGroup styleClass="form-group col-md-12" layout="block">
+                    <h:outputLabel for="contestName" value="#{msgs['@common.name']}" styleClass="col-md-2"/>
+                    <h:outputText id="contestName" value="#{mvAreaController.selectedAreaName}" styleClass="label label-primary" />
+                    <h:message for="contestName" id="nameError"/>
+                </h:panelGroup>
+
+                <!-- Locale -->
+                <h:panelGroup styleClass="form-group col-md-12" layout="block">
+                    <h:panelGroup styleClass="col-md-4" layout="block">
+                        <h:outputLabel for="contestLocale" value="#{msgs['@common.locale']}" styleClass="required"/>
+                        <h:selectOneListbox
+                                id="contestLocale"
+                                label="#{msgs['@common.locale']}"
+                                value="#{contestController.currentContest.locale}"
+                                size="1"
+                                required="true"
+                                styleClass="form-control">
+                            <f:selectItem itemLabel="#{msgs['@common.locale.preselect']}"/>
+                            <f:selectItems value="#{LocaleController.localeMap}"/>
+                            <f:converter converterId="localeConverter"/>
+                        </h:selectOneListbox>
+                        <h:message for="contestLocale" id="localeError"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:panelGroup>
+			
+			<f:facet name="footer">
+				<p:commandButton
+						id="create"
+						actionListener="#{contestController.doCreateContest(contestController.currentContest)}"
+						oncomplete="createContestDialogBox(xhr, status, args)"
+						update=":electionLevel3CreateForm:msg :hierarchyEditor"
+						value="#{msgs['@common.save']}"
+						disabled="#{!UserDataController.hasAccess('w.configuration.election.contest')}"
+						icon="eva-icon-checkmark"
+						styleClass="btn btn-primary"/>
+
+				<p:commandLink
+						id="backToElectionList"
+						onclick="PF('createElectionLevel3Widget').hide(); return false;"
+						value="#{msgs['@common.cancel']}"
+						styleClass="btn btn-link"/>
+
+			</f:facet>
+        </p:dialog>
+    </h:form>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        function createContestDialogBox(xhr, status, args) {
+            if (args.createContestHideDialog) {
+                PF('createElectionLevel3Widget').hide();
+            }
+        }
+        //]]>
+    </script>
+</ui:composition>

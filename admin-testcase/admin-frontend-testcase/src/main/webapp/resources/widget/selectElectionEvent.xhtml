@@ -1,0 +1,47 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+			  xmlns:p="http://primefaces.org/ui"
+			  xmlns:ui="http://java.sun.com/jsf/facelets"
+			  xmlns:composite="http://java.sun.com/jsf/composite"
+			  xmlns:f="http://java.sun.com/jsf/core"
+			  xmlns:h="http://java.sun.com/jsf/html"
+		>
+
+	<composite:interface>
+		<composite:attribute name="nextPage"/>
+	</composite:interface>
+
+	<composite:implementation>
+		<div class="context-level">
+
+			<p:dataTable id="selectElectionEventTable"
+						 value="#{selectElectionEventController.electionEvents}"
+						 var="electionEvent"
+						 selectionMode="single"
+						 selection="#{selectElectionEventController.selectedElectionEvent}"
+						 rowKey="#{electionEvent.pk}"
+						 emptyMessage="">
+				<p:ajax event="rowSelect" update="@parent:selectElectionEventButton"/>
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Valghendelse"/>
+					</f:facet>
+					<h:outputText value="#{electionEvent.name}"/>
+				</p:column>
+			</p:dataTable>
+
+			<p:commandButton
+					id="selectElectionEventButton"
+					ajax="false"
+					styleClass="btn btn-primary col-md-6"
+					disabled="#{selectElectionEventController.selectedElectionEvent == null}"
+					value="#{msgs['@select_election_event.continue']}"
+					action="#{selectElectionEventController.select()}"
+					icon="eva-icon-caret"
+					onclick="PF('buttonBlocker').show()"/>
+
+			<p:blockUI block="selectElectionEventButton" widgetVar="buttonBlocker"/>
+
+		</div>
+	</composite:implementation>
+
+</ui:component>

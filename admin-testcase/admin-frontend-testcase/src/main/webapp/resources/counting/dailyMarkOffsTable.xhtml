@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<!-- 
+	Component intended as a reusable view of a single daily markoffs table used in a protocol count context 
+	Prerequisites: The component must be inside a form to benefit from the form elements included. See protocolCount.xhtml for example usage.
+	-->
+
+<composite:interface>
+	<composite:attribute name="dailyMarkOffCounts"
+						 type="no.valg.eva.admin.common.counting.model.DailyMarkOffCounts"
+						 required="true"/>
+	<composite:attribute name="caption"
+						 type="String"
+						 required="true"/>
+	<composite:attribute name="editable"
+						 type="boolean"
+						 required="true"/>
+	<composite:attribute name="disabled"
+						 type="Boolean"
+						 required="true"/>
+</composite:interface>
+
+<composite:implementation>
+	<p:dataTable value="#{cc.attrs.dailyMarkOffCounts}" var="dailyMarkOffCount" id="dailyMarkOffCounts" tableStyleClass="table table-striped">
+		<p:column headerText="#{cc.attrs.caption}">
+			<h:outputText value="#{dailyMarkOffCount.date}"/>
+			<f:facet name="footer">
+				<h:outputLabel value="#{msgs['@count.votes.total']}" styleClass="bold"/>
+			</f:facet>
+		</p:column>
+		<p:column headerText="#{msgs['@common.numberOf']}">
+			<p:inputText
+					value="#{dailyMarkOffCount.markOffCount}"
+					rendered="#{cc.attrs.editable}"
+					size="4"
+					disabled="#{cc.attrs.disabled}">
+				<p:ajax event="keyup" delay="500" update="@(.ctxTotalMarkOffCount)" process="@form"/>
+			</p:inputText>
+			<h:outputText value="#{dailyMarkOffCount.markOffCount}" rendered="#{!cc.attrs.editable}"/>
+			<f:facet name="footer">
+				<h:outputText value="#{cc.attrs.dailyMarkOffCounts.getMarkOffCount()}" styleClass="bold ctxTotalMarkOffCount" id="totalMarkOffCount"/>
+			</f:facet>
+		</p:column>
+	</p:dataTable>
+</composite:implementation>
+</html>

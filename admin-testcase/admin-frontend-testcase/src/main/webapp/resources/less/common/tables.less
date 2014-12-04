@@ -1,0 +1,84 @@
+.table,
+table {
+  border-collapse: collapse;
+
+  &.table-bordered > thead > tr > th {
+    color: #fff;
+
+  }
+
+  & > thead {
+
+    & > tr.ui-widget-header,
+    & > tr {
+      height: 45px;
+
+      & > th,
+      & > th.ui-state-default {
+        text-align: left;
+        font-weight: 400;
+        font-style: normal;
+        background: @theadBackgroundColor;
+        color: @white;
+        border: none;
+        vertical-align: middle;
+
+        &.ui-state-hover {
+          background: lighten(@theadBackgroundColor, 15%) !important;
+        }
+
+        span {
+          color: @white;
+        }
+      }
+    }
+  }
+
+  tbody {
+
+    .ui-datatable-selectable {
+      &.ui-state-highlight {
+        border: none;
+        outline: 1px solid @blue;
+
+        a {
+          color: @anchorTextColor;
+        }
+      }
+    }
+
+    tr.ui-widget-content,
+    tr {
+      height: 55px;
+      border-width: 0px;
+
+      td {
+        border-width: 0px;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+&.hide-table-header {
+  thead {
+    display: none;
+  }
+}
+
+.ui-datatable tbody td {
+  overflow: visible;
+}
+
+body > .ui-datatable.ui-widget.ui-sortable-helper {
+  tr {
+    border: none;
+    outline: 1px solid @blue;
+    background-color: @statusBackgroundColor;
+
+    a {
+      color: @anchorTextColor;
+    }
+  }
+}
+

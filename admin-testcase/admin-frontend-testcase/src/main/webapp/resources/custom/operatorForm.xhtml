@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:custom="http://java.sun.com/jsf/composite/custom/">
+
+<h:head>
+	<title></title>
+</h:head>
+<h:body>
+
+	<composite:interface>
+		<composite:attribute name="FormMode" required="true" />
+	</composite:interface>
+
+	<composite:implementation>
+		<p:messages />
+		<c:if test="#{cc.attrs.FormMode == 'VIEW'}">
+			<h:messages errorClass="errors" layout="table" globalOnly="true" />
+
+			<h:panelGrid columns="2">
+				<h:outputText value="#{msgs['@person.id']} " />
+				<h:outputText value="#{operatorController.currentOperator.id}"
+					id="id" label="#{msgs['@person.id']}" />
+				<h:outputText value="#{msgs['@person.name.first']} " />
+				<h:outputText
+					value="#{operatorController.currentOperator.firstName}"
+					id="firstName" label="#{msgs['@person.name.first']}" />
+				<h:outputText value="#{msgs['@person.name.middle']} " />
+				<h:outputText
+					value="#{operatorController.currentOperator.middleName}"
+					id="middleName" label="#{msgs['@person.name.middle']}" />
+				<h:outputText value="#{msgs['@person.name.last']} " />
+				<h:outputText value="#{operatorController.currentOperator.lastName}"
+					id="lastName" label="#{msgs['@person.name.last']}" />
+				<h:outputText value="#{msgs['@common.address.address_line_1']} " />
+				<h:outputText
+					value="#{operatorController.currentOperator.addressLine1}"
+					id="addressLine1" label="#{msgs['@common.address.address_line_1']}" />
+				<h:outputText value="#{msgs['@common.address.address_line_2']} " />
+				<h:outputText
+					value="#{operatorController.currentOperator.addressLine2}"
+					id="addressLine2" label="#{msgs['@common.address.address_line_2']}" />
+				<h:outputText value="#{msgs['@common.address.address_line_3']} " />
+				<h:outputText
+					value="#{operatorController.currentOperator.addressLine3}"
+					id="addressLine3" label="#{msgs['@common.address.address_line_3']}" />
+				<h:outputText value="#{msgs['@person.postal.code.short']} " />
+				<h:outputText
+					value="#{operatorController.currentOperator.postalCode}"
+					id="postalCode" label="#{msgs['@person.postal.code.short']}" />
+				<h:outputText value="#{msgs['@person.postal.town']} " />
+				<h:outputText value="#{operatorController.currentOperator.postTown}"
+					id="postTown" label="#{msgs['@person.postal.town']}" />
+				<h:outputText value="#{msgs['@person.email']} " />
+				<h:outputText value="#{operatorController.currentOperator.email}"
+					id="email" label="#{msgs['@person.email']}" />
+				<h:outputText value="#{msgs['@person.tlf.short']} " />
+				<h:outputText
+					value="#{operatorController.currentOperator.telephoneNumber}"
+					id="telephoneNumber" label="#{msgs['@person.tlf.short']}" />
+				<h:outputText value="#{msgs['@listProposal.partyAffiliation']} " />
+			 	<h:outputText value="#{msgs[operatorController.currentOperator.party.name]}"
+					id="party" label="#{msgs['@listProposal.partyAffiliation']}" />
+
+			</h:panelGrid>
+		</c:if>
+
+		<c:if
+			test="#{cc.attrs.FormMode == 'EDIT' || cc.attrs.FormMode == 'NEW'}">
+
+			<h:panelGrid columns="2">
+				<h:outputText value="#{msgs['@person.id']} " />
+				<h:inputText value="${operatorController.currentOperator.id}"
+					id="id" label="#{msgs['@person.id']}" maxlength="11" />
+				<h:outputText value="#{msgs['@person.name.first']} " />
+				<h:inputText value="${operatorController.currentOperator.firstName}"
+					id="firstName" label="#{msgs['@person.name.first']}" />
+				<h:outputText value="#{msgs['@person.name.middle']} " />
+				<h:inputText
+					value="${operatorController.currentOperator.middleName}"
+					id="middleName" label="#{msgs['@person.name.middle']}" />
+				<h:outputText value="#{msgs['@person.name.last']} " />
+				<h:inputText value="${operatorController.currentOperator.lastName}"
+					id="lastName" label="#{msgs['@person.name.last']} " />
+				<h:outputText value="#{msgs['@person.address']} 1 " />
+				<h:inputText
+					value="${operatorController.currentOperator.addressLine1}"
+					id="addressLine1" label="#{msgs['@person.address']} 1" />
+				<h:outputText value="#{msgs['@person.address']} 2 " />
+				<h:inputText
+					value="${operatorController.currentOperator.addressLine2}"
+					id="addressLine2" label="#{msgs['@person.address']} 2" />
+				<h:outputText value="#{msgs['@person.address']} 3 " />
+				<h:inputText
+					value="${operatorController.currentOperator.addressLine3}"
+					id="addressLine3" label="#{msgs['@person.address']} 3" />
+				<h:outputText value="#{msgs['@person.postal.code.short']} " />
+				<h:inputText
+					value="${operatorController.currentOperator.postalCode}"
+					id="postalCode" label="#{msgs['@person.postal.code.short']}" />
+				<h:outputText value="#{msgs['@person.postal.town']} " />
+				<h:inputText value="${operatorController.currentOperator.postTown}"
+					id="postTown" label="#{msgs['@person.postal.town']}" />
+				<h:outputText value="#{msgs['@person.email']} " />
+				<h:inputText value="${operatorController.currentOperator.email}"
+					id="email" label="#{msgs['@person.email']}" />
+				<h:outputText value="#{msgs['@person.tlf.short']} " />
+				<h:inputText
+					value="${operatorController.currentOperator.telephoneNumber}"
+					id="telephoneNumber" label="#{msgs['@person.tlf.short']} " />
+				<h:outputText value="#{msgs['@listProposal.partyAffiliation']} " />
+				<p:autoComplete value="#{operatorController.currentOperator.party}" 
+                            completeMethod="#{operatorController.completeParties}" 
+                            var="party" itemLabel="#{msgs[party.name]} - #{party.id}" 
+                            itemValue="#{party}" converter="partyConverter" />
+			</h:panelGrid>
+		</c:if>
+	</composite:implementation>
+
+</h:body>
+</html>

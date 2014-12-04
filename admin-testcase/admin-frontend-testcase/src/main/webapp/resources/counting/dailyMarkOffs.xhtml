@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:counting="http://java.sun.com/jsf/composite/counting">
+
+<!-- 
+Component intended as a reusable view of daily markoffs used in a protocol count context 
+Prerequisites: The component must be inside a form to benefit from the form elements included. See protocolCount.xhtml for example usage.
+-->
+
+<composite:interface>
+	<composite:attribute name="protocolCount"
+						 type="no.valg.eva.admin.common.counting.model.ProtocolCount"
+						 required="true"/>
+	<composite:attribute name="counts"
+						 type="no.valg.eva.admin.common.counting.model.Counts"
+						 required="true"/>
+	<composite:attribute name="disabled"
+						 type="boolean"
+						 default="false"
+						 required="false"/>
+</composite:interface>
+
+<composite:implementation>
+	<!-- DEV-NOTE: These needs to be placed inside this composite because of weird Ajax update behaviour -->
+	<counting:dailyMarkOffsTable id="dailyMarkOffsTable"
+								 caption="#{(cc.attrs.protocolCount.includeBallotCountFromOtherContests ? msgs['@area_level[4].name'].concat(' ').concat(cc.attrs.counts.contestName).concat(' - ') : '').concat(msgs['@count.votes.ordinaryCroostedInElectoralRoll'])}"
+								 dailyMarkOffCounts="#{cc.attrs.protocolCount.dailyMarkOffCounts}"
+								 editable="#{not cc.attrs.protocolCount.electronicMarkOffs}"
+								 disabled="#{cc.attrs.disabled}"/>
+
+	<!-- Added for markoffs for other contests -->
+	<!-- Note: The label in the include below is hardcoded to assume "Bydelsvalg" when ballotCountForOtherContests is set. Needs to be changed if this functionality is generalized -->
+	<counting:dailyMarkOffsTable id="dailyMarkOffsTableForOtherContests"
+								 rendered="#{cc.attrs.protocolCount.includeMarkOffsFromOtherContests}"
+								 caption="#{msgs['@config.boroughs.other']}"
+								 dailyMarkOffCounts="#{cc.attrs.protocolCount.dailyMarkOffCountsForOtherContests}"
+								 editable="#{not cc.attrs.protocolCount.electronicMarkOffs}"
+								 disabled="#{cc.attrs.disabled}"/>
+
+</composite:implementation>
+</html>

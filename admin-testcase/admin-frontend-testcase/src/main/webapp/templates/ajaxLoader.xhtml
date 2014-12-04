@@ -1,0 +1,34 @@
+<f:view xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns="http://www.w3.org/1999/xhtml"
+        contentType="text/html">
+    
+    <ui:composition>
+
+        <p:dialog 
+                id="error" 
+                widgetVar="errorDialog" 
+                modal="true" 
+                draggable="true" 
+                closable="true"
+                position="center center"
+                fitViewport="true" 
+                resizable="true" 
+                header="Feil!"/>
+
+        <p:dialog
+                id="loader"
+                widgetVar="loaderDialog"
+                modal="true"
+                styleClass="loader loader-global"
+                draggable="false"
+                closable="false"
+                resizable="false"
+                showHeader="false">
+            <img src="#{resource['images:ajax-loader.gif']}" alt="Wait"/>
+        </p:dialog>
+
+        <p:ajaxStatus onstart="EVA.Application.getInstance().showLoader();" oncomplete="EVA.Application.getInstance().hideLoader();" />
+    </ui:composition>
+</f:view>

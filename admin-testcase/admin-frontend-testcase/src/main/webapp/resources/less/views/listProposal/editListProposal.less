@@ -1,0 +1,117 @@
+#page-edit-list-proposal {
+
+  .page-title {
+    margin-bottom: 5px;
+  }
+
+  
+  div[id$='proposerTab'],
+  div[id$='candidateTab'] {
+
+    .tools li {
+      float: right;
+    }
+
+    table {
+
+      width: 100%;
+
+      th {
+
+        &.draggable {
+          width: 40px;
+          font-size: 2rem;
+
+          .ui-column-title {
+            height: 30px;
+            width: 25px;
+            float: left;
+          }
+        }
+
+        &.displayOrder {
+          width: 25px;
+          font-size: 1.3rem;
+        }
+
+        &.firstname {
+
+        }
+
+        &.middlename {
+
+        }
+
+        &.surname {
+
+        }
+
+        &.birthdate {
+          width: 165px;
+        }
+
+        &.inRoll {
+
+        }
+
+        &.gender {
+          width: 60px;
+        }
+        
+        &.list-actions {
+          width: 250px;
+        }
+
+      }
+
+      td[role="gridcell"] {
+
+        .eva-icon-sort {
+          padding-left: 6px;
+          color: @blue;
+        }
+      }
+    }
+  }
+
+  .proposer-list-meta,
+  .candidate-list-meta {
+    padding-top: 26px;
+    margin-bottom: 15px;
+    
+    label {
+      width: 100%;
+    }
+
+    span {
+      display: inline-block;
+      width: 100%;
+      font-size: 1.5rem;
+      margin-right: 10px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .list-proposal-actions {
+
+    .affiliation-votes {
+      position: relative;
+      label {
+        position: absolute;
+        top: 13px;
+        left: 10px;
+        z-index: 99;
+      }
+    }
+
+    .ui-spinner {
+      height: 43px;
+      input {
+        height: 43px;
+      }
+    }
+  }
+}

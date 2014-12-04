@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link type="text/css" rel="stylesheet" href="/javax.faces.resource/deprecated/ixd/reset.css.xhtml?ln=css" />
+<link type="text/css" rel="stylesheet" href="/javax.faces.resource/deprecated/ixd/framework.css.xhtml?ln=css" />
+<link type="text/css" rel="stylesheet" href="/javax.faces.resource/deprecated/ixd/content.css.xhtml?ln=css" />
+<link type="text/css" rel="stylesheet" href="/javax.faces.resource/deprecated/ixd/yui.css.xhtml?ln=css" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>%title</title>
+<script type="text/javascript" src="/javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		var stacktrace = jQuery("#stacktrace").html();
+		if (!(stacktrace == "" || stacktrace.match(/stacktrace$/) != null)) {
+			jQuery("#toggleStacktrace").show();
+		}
+	});
+</script>
+
+</head>
+<body>
+
+	<div class="page">
+		<div class="page-header">
+			<a href="/secure/index.xhtml" class="logo"><img src="/javax.faces.resource/ixd/logo.png.xhtml?ln=images" width="195" height="100" alt="Logo" /> </a>
+
+			<div class="right home">
+				<a href="/secure/index.xhtml">Min side / My page</a>
+			</div>
+		</div>
+		<div class="content-frame">
+			<h1>%title</h1>
+			<div class="help"></div>
+
+			<div class="menu none"></div>
+			<div class="inner">
+				<div class="content">
+					<div class="ui-panel ui-widget ui-widget-content ui-corner-all">
+						<div class="ui-panel-content ui-widget-content">
+							%message
+							<div id="toggleStacktrace" style="display: none">
+								<br /> <a href="#" onclick="jQuery('#stacktrace').toggle()">Klikk for å vise detaljer / Click to show details</a><br /> <br />
+								<pre id="stacktrace" style="display: none">%stacktrace</pre>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div class="page-footer">
+		<div class="content">
+			<div class="left">
+				<a href="http://www.evalg.no" target="_blank">www.evalg.no</a>
+			</div>
+			<div class="center">Kommunal- og regionaldepartementet, Akersgata 59, Pb. 8112 Dep, 0032 Oslo</div>
+		</div>
+	</div>
+
+</body>
+</html>

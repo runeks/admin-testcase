@@ -1,0 +1,56 @@
+/* SYSTEM MESSAGES */
+.system-message {
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  div {
+	.border-radius(@borderRadiusSmall);
+	overflow: hidden;
+	padding: 10px;
+	margin-bottom: 10px;
+  }
+  .icon {
+	.size(32px, auto);
+	float: left;
+	margin-left: 10px;
+	text-align: center;
+	padding: 0;
+  }
+  ul {
+	.border-radius(@borderRadiusSmall);
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	float: left;
+	li {
+	  margin: 0;
+	  padding: 0;
+	  list-style-type: none;
+	  line-height: 18px;
+	  font-weight: bold;
+	}
+  }
+  .single {
+	ul {
+	  li {
+		line-height: 30px;
+	  }
+	}
+  }
+
+  .status {
+	border: 1px solid @statusBorderColor;
+	background-color: @statusBackgroundColor;
+	color: @statusTextColor;
+  }
+  .warning {
+	border: 1px solid @warningBorderColor;
+	background-color: @warningBackgroundColor;
+	color: @warningTextColor;
+  }
+  .error {
+	border: 1px solid @errorBorderColor;
+	background-color: @errorBackgroundColor;
+	color: @errorTextColor;
+  }
+}

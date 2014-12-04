@@ -1,0 +1,55 @@
+#page-choose-edit-list-proposal {
+
+  .page-title {
+    margin-bottom: 5px;
+  }
+  
+  div[id$='affiliationTable'] {
+
+    table {
+
+      width: 100%;
+
+      th {
+
+        &.draggable {
+          width: 25px;
+          font-size: 2rem;
+
+          .ui-column-title {
+            height: 30px;
+            width: 25px;
+            float: left;
+          }
+        }
+
+        &.displayOrder {
+          width: 25px;
+          font-size: 1.3rem;
+        }
+
+        &.partyName {
+          width: 250px;
+        }
+
+        &.partyId {
+          width: 100px;
+        }
+
+        &.status {
+          width: 100px;
+        }
+      }
+
+      td[role="gridcell"] {
+
+        .eva-icon-sort {
+          padding-left: 6px;
+          color: @blue;
+        }
+      }
+    }
+
+  }
+
+}

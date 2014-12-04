@@ -1,0 +1,23 @@
+<ehcache>
+
+	<defaultCache maxElementsInMemory="1000" eternal="false"
+		overflowToDisk="false" diskPersistent="false"
+		diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU"
+		copyOnRead="true" copyOnWrite="true" timeToLiveSeconds="60" />
+
+	<cache name="entityCache" maxElementsInMemory="1000" eternal="false"
+		overflowToDisk="false" diskPersistent="false"
+		diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU"
+		copyOnRead="true" copyOnWrite="true" timeToLiveSeconds="60" />
+
+	<cache name="textCache" maxElementsInMemory="1000" eternal="false"
+		overflowToDisk="false" diskPersistent="false"
+		diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU"
+		copyOnRead="true" copyOnWrite="true" timeToLiveSeconds="60" />
+
+	<cache name="serviceInvocationCache" maxElementsInMemory="1000"
+		eternal="false" overflowToDisk="false" diskPersistent="false"
+		diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU"
+		copyOnRead="true" copyOnWrite="true" timeToLiveSeconds="600" />
+
+</ehcache>

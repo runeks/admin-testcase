@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<composite:interface>
+    <composite:attribute name="id"/>
+    <composite:attribute name="list"/>
+    <composite:attribute name="label"/>
+    <composite:attribute name="required" type="java.lang.Boolean" default="#{false}"/>
+</composite:interface>
+
+<composite:implementation>
+    <div class="form-group">
+
+        <ui:fragment rendered="#{cc.attrs.list.size() > 0}">
+
+            <ui:fragment rendered="#{cc.attrs.required}">
+                <span class="eva-icon-error"></span>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{!cc.attrs.required}">
+                <span class="eva-icon-warning"></span>
+            </ui:fragment>
+
+        </ui:fragment>
+
+        <ui:fragment rendered="#{cc.attrs.list.size() == 0}">
+            <span class="eva-icon-checkmark"></span>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{cc.attrs.list.size() == 0}">
+            <label class="dashed-border-left">#{cc.attrs.label}</label>
+        </ui:fragment>
+        
+        <ui:fragment rendered="#{cc.attrs.list.size() > 0}">
+
+            <a class="dashed-border-left btn btn-link" onclick="PF('#{cc.attrs.id}Modal').show(); return false;" href="#">
+                #{cc.attrs.label}
+            </a>
+            
+            <p:dialog
+                    styleClass="scrollable"
+                    header="#{cc.attrs.label}"
+                    modal="true"
+                    widgetVar="#{cc.attrs.id}Modal"
+                    height="500"
+                    width="700">
+
+                <h:dataTable 
+                        value="#{cc.attrs.list}" 
+                        var="elem"
+                        styleClass="table table-striped col-md-12">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        <h:outputText value="#{elem.id}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">#{msgs['@menu.common.name']}</f:facet>
+                        <h:outputText value="#{elem.name}"/>
+                    </h:column>
+                </h:dataTable>
+
+            </p:dialog>
+        </ui:fragment>
+
+        <h:outputText value="#{cc.attrs.list.size()}" styleClass="badge"/>
+
+    </div>
+</composite:implementation>
+</html>

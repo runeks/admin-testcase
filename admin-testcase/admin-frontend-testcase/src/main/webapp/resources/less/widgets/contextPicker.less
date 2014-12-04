@@ -1,0 +1,89 @@
+.context-level {
+
+  float: left;
+  padding-right: 10px;
+
+  .ui-datatable-tablewrapper {
+
+	.ui-widget-content .ui-state-highlight a {
+	  color: @anchorTextColor;
+	}
+
+	table {
+	  width: 195px;
+
+	  thead {
+		th {
+		  span {
+			display: inline-block;
+			width:100%;
+			text-align: center;
+		  }
+		}
+	  }
+
+	  tbody {
+        border-top-width: 0px;
+        border-left-width: 1px;
+        border-right-width: 1px;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: #cecece;
+		
+		overflow-y: scroll;
+		height: 300px;
+		float: left;
+		width: 100%;
+		overflow-x: hidden;
+
+		td {
+		  padding: 4px 4px;
+		  width: 193px;
+
+		  div {
+			float: left;
+			padding: 3px;
+			&.context-actions {
+			  width: 15% !important;
+			  a {
+				pointer-events: auto;
+				text-decoration: none;
+				display: block;
+				margin-top: 5px;
+			  }
+			}
+
+			&.context-meta {
+              pointer-events:none;
+			  width: 139px;
+			  .context-name,
+			  .context-id {
+				clear: left;
+			  }
+              
+              .context-name {
+                word-break: break-word;
+              }
+			}
+		  }
+		}
+
+        .ui-datatable-selectable.ui-state-highlight {
+          border: 0;
+          outline: 0;
+          background: #007ca6;
+          color: @white;
+          
+          [class*='eva-icon']:before{
+            color:@white;
+          }
+        }
+	  }
+	}
+  }
+
+  .create-context button,
+  .create-context a {
+	width: 195px;
+  }
+}

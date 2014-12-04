@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+	  xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<composite:interface>
+    <composite:attribute name="provider" type="no.valg.eva.admin.frontend.common.picker.PickerPanelProvider" required="true"/>
+</composite:interface>
+
+<composite:implementation>
+
+    <h:panelGroup id="contextPicker" layout="block">
+		<ui:fragment rendered="#{cc.attrs.provider.pickerPanelRendered}">
+        <h2>#{msgs['@common.choose']} #{msgs[cc.attrs.provider.headerName].toLowerCase()}</h2>
+
+            <ui:repeat value="#{cc.attrs.provider.pickerTables}" var="pickerTable" varStatus="status">
+
+				<c:set value="#{contextPickerController2.getAjaxUpdateSelector(status.index + 1, fn:length(cc.attrs.provider.pickerTables))}" var="ajaxUpdateSelector" />
+				
+                <h:panelGroup styleClass="context-level" layout="block">
+                    <p:dataTable value="#{pickerTable.dataRows}"
+                                 var="dataRow"
+                                 selectionMode="single"
+                                 selection="#{pickerTable.selectedDataRow}"
+                                 rowKey="#{dataRow.key}"
+                                 emptyMessage=""
+							styleClass="contextPicker contextLevel#{status.index+1}">
+						<p:ajax event="rowSelect" listener="#{pickerTable.onRowSelect}" update="#{ajaxUpdateSelector}"/>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs[pickerTable.headerName]}"/>
+                            </f:facet>
+							<h:outputText value="#{msgs[dataRow.value]}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <h:panelGroup layout="block" styleClass="btn-group create-context" rendered="#{pickerTable.buttonRendered}">
+                        <p:commandButton
+                                ajax="false"
+								styleClass="btn btn-primary col-md-12 selectContext#{status.index+1}"
+                                disabled="#{pickerTable.buttonDisabled}"
+                                value="#{msgs['@common.choose']}"
+                                action="#{contextPickerController2.select(cc.attrs.provider.id)}"/>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </ui:repeat>
+        </ui:fragment>
+    </h:panelGroup>
+</composite:implementation>
+</html>

@@ -1,0 +1,63 @@
+/*One not referendum */
+.panel_r_false_t_false {
+	padding-left: 508px !important;
+	width: 377px;
+}
+
+/*Two not referendum */
+.panel_r_false_t_true {
+	padding-left: 332px !important;
+	width: 552px;
+}
+
+/*One referendum */
+.panel_r_true_t_false {
+	padding-left: 607px !important;
+	width: 248px;
+}
+
+/*Two referendum */
+.panel_r_true_t_true {
+	padding-left: 382px !important;
+	width: 473px;
+}
+.panel {
+	float: left;
+	clear: both;
+}
+.panel ul li {
+	float: left;
+	margin-right: 10px;
+    width: 260px;
+    border: none;
+}
+
+div.ui-datatable table tbody.ui-datatable-data tr td.approvedtrue {
+	background:none !important;
+	background-color: #E4EFF2 !important;
+	
+}
+div.ui-datatable table tbody.ui-datatable-data td.faux-header.approvedtrue {
+	background:none !important;
+	background-color: #E4EFF2 !important;
+}
+
+.ui-message-info,.ui-message-error,.ui-message-warn,.ui-message-fatal {
+	padding: 15px 10px !important;
+}
+
+.ui-message-info-summary,.ui-message-error-summary,.ui-message-warn-summary,.ui-message-fatal-summary {
+	padding-bottom: 5px;
+	padding-left: 25px;
+	padding-top: 2px;
+	display: block;
+}
+
+.overview-column {
+	width: 75px;
+	overflow: hidden;
+}
+ul.ui-tabs-nav li a:focus {
+	outline:none;
+}
+

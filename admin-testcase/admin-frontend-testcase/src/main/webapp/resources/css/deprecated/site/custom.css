@@ -1,0 +1,10 @@
+/*
+ * Empty file the can be used for custom CSS. Any changes here should not be stored in SVN trunk.
+ *
+ */
+ 
+ 
+tr.ui-selected, tr.ui-selected td, tr.ui-state-highlight, tr.ui-state-highlight td {
+	background-color: #eee !important;
+}
+ 

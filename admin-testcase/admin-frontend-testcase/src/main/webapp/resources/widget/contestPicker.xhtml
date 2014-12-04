@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:composite="http://java.sun.com/jsf/composite"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<composite:interface>
+    <composite:attribute name="enableAjax" type="java.lang.String" required="false" default="false"/>
+    <composite:attribute name="enableCache" type="java.lang.String" required="false" default="false"/>
+    <composite:attribute name="template" type="java.lang.String" required="true"/>
+    <composite:attribute name="contestController" type="no.evote.presentation.ContestOrElectionPickerController" required="true"/>
+    <composite:attribute name="countingOverviewController" type="no.evote.presentation.CountingOverviewController" required="true"/>
+</composite:interface>
+
+<composite:implementation>
+
+    <p:messages errorClass="errors" layout="table" showDetail="false" globalOnly="true" id="messages"/>
+
+    <p:tabView
+            id="tabView"
+            activeIndex="#{cc.attrs.contestController.activeContest}"
+            value="#{cc.attrs.contestController.getContests()}"
+            dynamic="#{cc.attrs.enableAjax}"
+            cache="#{cc.attrs.enableCache}"
+            var="contestItem">
+
+        <ui:param name="electionPath" value="#{contestItem.electionPath.path()}" />
+        
+        <p:tab title="#{cc.attrs.contestController.getElectionLevelName(contestItem)}">
+			<h:outputText value="#{cc.attrs.contestController.setPath(electionPath)}"/>
+            <h:outputText value="#{cc.attrs.countingOverviewController.initData()}"/>
+			<ui:include src="#{cc.attrs.template}">
+                <ui:param name="contestPickerController" value="#{cc.attrs.contestController}"/>
+                <ui:param name="countingOverviewController" value="#{cc.attrs.countingOverviewController}"/>
+            </ui:include>
+        </p:tab>
+
+    </p:tabView>
+
+</composite:implementation>
+
+</html>

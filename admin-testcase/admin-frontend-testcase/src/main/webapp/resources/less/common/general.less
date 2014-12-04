@@ -1,0 +1,125 @@
+html,
+body {
+  font-style: normal;
+  font-weight: 400;
+  text-align: left;
+  overflow-x: hidden;
+  line-height: normal;
+}
+
+/**
+ * Header tags and classes
+ */
+.h1, .h2, .h3,
+h1, h2, h3 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.h4, .h5, .h6,
+h4, h5, h6 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.h1,
+h1 {
+  font-size: 2.571rem;
+}
+
+.h2,
+h2 {
+  font-size: 2.143rem;
+}
+
+.h3,
+h3 {
+  font-size: 1.714rem;
+}
+
+.h4,
+h4 {
+  font-size: 1.286rem;
+}
+
+.h5,
+h5 {
+  font-size: 1rem;
+}
+
+.h6,
+h6 {
+  font-size: 0.8571rem;
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+.dropdown {
+
+  .dropdown-menu {
+    .border-radius(0);
+    
+    li:hover {
+      background-color: lighten(@theadBorderColor, 45%);
+    }
+  }
+
+  & > a {
+    text-decoration: none;
+  }
+
+}
+
+a {
+  color: @anchorTextColor;
+  text-decoration: underline;
+  cursor: pointer;
+  outline: none !important;
+
+  &:hover,
+  &:active {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+ul {
+  list-style-type: none;
+}
+
+.pull-none {
+  float: none !important;
+}
+
+#logo {
+  font-size: @fontExtraLarge;
+  padding-top: 14px;
+  padding-left: 0px;
+  float: left;
+  color: @black;
+  text-decoration: none;
+  outline: none;
+  &:hover {
+    outline: none;
+    text-decoration: none;
+    color: @black;
+  }
+}
+
+.dashed-border-left:before {
+  content: '';
+  padding-right: 20px;
+  border-left-width: 1px;
+  border-left-style: dotted;
+  border-left-color: #000;
+}
+
+.dashed-border-right:after {
+  content: '';
+  padding-left: 20px;
+  border-right-width: 1px;
+  border-right-style: dotted;
+  border-right-color: #000;
+}

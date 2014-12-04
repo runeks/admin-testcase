@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0"
+		 xmlns="http://java.sun.com/xml/ns/javaee"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name>eVote Administration</display-name>
+
+	<!-- Context parameters -->
+	<!--<context-param>-->
+	<!--<param-name>com.sun.faces.forceLoadConfiguration</param-name>-->
+	<!--<param-value>true</param-value>-->
+	<!--</context-param>-->
+	<!--<context-param>-->
+	<!--<param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>-->
+	<!--<param-value>true</param-value>-->
+	<!--</context-param>-->
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>none</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.UPLOADER</param-name>
+		<param-value>auto</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.PROJECT_STAGE</param-name>
+		<param-value>Development</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>server</param-value>
+	</context-param>
+	<context-param>
+		<!-- Disable autocomplete attribute on javax.faces.ViewState (required, 
+			but fixed with JavaScript) -->
+		<param-name>com.sun.faces.autoCompleteOffOnViewState</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<!-- Filters -->
+	<filter>
+		<filter-name>WelcomePageFilter</filter-name>
+		<filter-class>no.evote.presentation.util.filters.WelcomePageFilter</filter-class>
+	</filter>
+	<filter>
+	<filter-name>SamlAssertionFilter</filter-name>
+		<filter-class>no.valg.eva.admin.frontend.security.SamlAssertionFilter</filter-class>
+	</filter>
+
+	<filter>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+		<init-param>
+			<param-name>thresholdSize</param-name>
+			<param-value>51200</param-value>
+		</init-param>
+		<init-param>
+			<param-name>uploadDirectory</param-name>
+			<param-value>/tmp</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>ForceLocaleFilter</filter-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>ForceLocaleFilter</filter-name>
+		<filter-class>no.evote.presentation.util.filters.ForceLocaleFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>IEModeFilter</filter-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>IEModeFilter</filter-name>
+		<filter-class>no.evote.presentation.util.filters.IEModeFilter</filter-class>
+	</filter>
+
+	<filter>
+		<filter-name>CSRFFilter</filter-name>
+		<filter-class>no.evote.service.security.CSRFFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>SelectRoleFilter</filter-name>
+		<filter-class>no.evote.service.security.SelectRoleFilter</filter-class>
+	</filter>
+
+	<!-- Filter mappings -->
+	<filter-mapping>
+		<filter-name>WelcomePageFilter</filter-name>
+		<url-pattern>/welcome.xhtml</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SamlAssertionFilter</filter-name>
+		<url-pattern>/secure/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>ASYNC</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>CSRFFilter</filter-name>
+		<url-pattern>*.xhtml</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SelectRoleFilter</filter-name>
+		<url-pattern>/secure/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>ERROR</dispatcher>
+	</filter-mapping>
+
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<multipart-config>
+			<location></location>
+		</multipart-config>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>javax.ws.rs.core.Application</servlet-name>
+		<url-pattern>/secure/resource/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Misc. configuration -->
+	<session-config>
+		<session-timeout>1</session-timeout>
+		<cookie-config>
+			<!-- Makes session cookies unavailable in JavaScript -->
+			<http-only>true</http-only>
+			<!-- Restrict to HTTPS -->
+			<secure>true</secure>
+			<path>/</path>
+		</cookie-config>
+		<tracking-mode>COOKIE</tracking-mode>
+	</session-config>
+	<welcome-file-list>
+		<welcome-file>welcome.xhtml</welcome-file>
+		<welcome-file>index.xhtml</welcome-file>
+	</welcome-file-list>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+
+	<listener>
+		<listener-class>no.evote.lifecycle.LifecycleListener</listener-class>
+	</listener>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.html</location>
+	</error-page>
+
+	<listener>
+		<listener-class>no.evote.service.security.SessionListener</listener-class>
+	</listener>
+
+
+</web-app>

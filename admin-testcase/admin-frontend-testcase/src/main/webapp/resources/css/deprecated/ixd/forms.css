@@ -1,0 +1,278 @@
+.noborder td {
+	border-style: none !important;
+}
+
+
+table.formTable {
+	width: 100%;
+}
+table.formTable td {
+	padding-bottom: 5px;
+}
+
+table.formTable td:first-child {
+	padding-left: 0;
+}
+table.formTable td .wide {
+	width: 100%;
+}
+table.formTable td.inputs {
+	padding-left: 5px;
+	border-right: 1px dotted #ccc;
+}
+table.formTable td.inputs:last-child {
+	padding-left: 5px;
+	border-right: 0 none;
+	padding-right: 0;
+}
+
+
+table.formTable.single-column td {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+table.formTable tr:last-child td {
+	padding-bottom: 0;
+}
+
+
+
+
+
+table.formTable em {
+	color: #555;
+	font-style: italic;
+	font-size: 12px;
+}
+.ui-spinner-text,
+.ui-datatable .ui-column-filter,
+table.formTable td.inputs textarea,
+table.formTable td.inputs input[type=text],
+.ui-datatable.formTable table td.inputs textarea,
+.ui-datatable.formTable table td.inputs input[type=text] {
+	-moz-box-shadow: inset 2px 2px 5px #eee;
+	-webkit-box-shadow: inset 2px 2px 5px #eee;
+	box-shadow: inset 2px 2px 5px #eee;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	-moz-border-radius: 2px;
+	-khtml-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	padding: 3px;
+	line-height: 15px;
+	height: 15px;
+	float: left;
+}
+table.formTable td.inputs input[type=file] {
+	float: left;
+}
+.ui-spinner-input {
+	float: none !important;
+}
+table.formTable td.inputs textarea.datepicker,
+table.formTable td.inputs input[type=text].datepicker,
+.ui-datatable.formTable table td.inputs textarea.datepicker,
+.ui-datatable.formTable table td.inputs input[type=text].datepicker {
+	-moz-border-radius: 2px 0 0 2px;
+	-khtml-border-radius: 2px 0 0 2px;
+	-webkit-border-radius: 2px 0 0 2px;
+	border-radius: 2px 0 0 2px;
+}
+
+table.formTable td.inputs select {
+	-moz-box-shadow: inset 2px 2px 5px #eee;
+	-webkit-box-shadow: inset 2px 2px 5px #eee;
+	box-shadow: inset 2px 2px 5px #eee;
+	border: 1px solid #ccc;
+	-moz-border-radius: 2px;
+	-khtml-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	padding: 0;
+	line-height: 14px;
+	height: 22px;
+	float: left;
+}
+.formTable table td.inputs [disabled],
+table.formTable td.inputs [disabled] {
+	background-color: #eee !important;
+}
+
+table.formTable span.required.select,
+table.formTable span.required.text {
+	margin-left: -5px;
+	padding-left: 5px;
+	display: block;
+	overflow: hidden;
+	background: transparent url("#{resource['images:ixd/content-form-required.png']}") 0 50% no-repeat;
+}
+table.formTable span.semi-required.select,
+table.formTable span.semi-required.text {
+	margin-left: -5px;
+	padding-left: 5px;
+	display: block;
+	overflow: hidden;
+	background: transparent url("#{resource['images:ixd/content-form-semi-required.png']}") 0 50% no-repeat;
+}
+
+.ui-datatable .ui-column-filter {
+	width: 50%;
+	display: block;
+	background: transparent url("#{resource['images:ixd/ui-icon-column-filter.png']}") 4px 50% no-repeat;
+	padding-left: 20px;
+	font-weight: normal;
+}
+table.formTable td.inputs textarea {
+	height: auto;
+}
+table.formTable td.inputs span.multiple input {
+	margin-right: 5px;
+}
+
+.formTable td.inputs .inline-error {
+	float: left;
+	color: #a90000;
+	font-weight: bold;
+	padding: 2px 4px 2px 14px;
+	line-height: 18px;
+	clear: both;
+	background: transparent url("#{resource['images:ixd/content-form-error-icon.png']}") 0 50% no-repeat;
+}
+table.formTable td.inputs .semi-required .inline-error,
+table.formTable td.inputs .required .inline-error {
+	margin-left: -5px;
+}
+table.formTable .ui-datepicker-trigger {
+	float: left;
+	margin: 0;
+	cursor: pointer;
+}
+table.formTable .error span.select,
+table.formTable .error span.text {
+	margin-left: -5px;
+	padding-left: 5px;
+	display: block;
+	overflow: hidden;
+	background: transparent url("#{resource['images:ixd/content-form-error-left.png']}") 0 0 no-repeat;
+}
+
+table.formTable td.inputs.error input {
+	border: 1px solid #a90000;
+	background-color: #fee;
+}
+
+
+table.formTable td.inputs .ui-inputfield[disabled=true] {
+	background-color: #eee;
+}
+table.formTable td label {
+	display: block;
+	line-height: 22px;
+}
+table.formTable td .radio table.radio {
+	width: auto;
+}
+table.formTable td .radio table.radio input,
+table.formTable td .radio table.radio label {
+	float: left;
+}
+table.formTable td .radio table.radio input {
+	margin: 2px 4px 0 0;
+	line-height: 20px;
+}
+
+table.formTable td .checkbox span {
+	float: left;
+	margin-right: 5px;
+}
+
+.ie7 table.formTable span.semi-required.select,
+.ie7 table.formTable span.semi-required.text,
+.ie7 table.formTable span.required.select,
+.ie7 table.formTable span.required.text {
+	margin-left: 0;
+}
+table.formTable span.required.checkbox span {
+	margin-left: -3px;
+	display: block;
+	overflow: hidden;
+	float: left;
+	padding: 3px;
+	background: transparent url("#{resource['images:ixd/content-form-required-checkbox.png']}") 50% 50% no-repeat;
+}
+table.formTable span.semi-required.checkbox span {
+	margin-left: -3px;
+	display: block;
+	overflow: hidden;
+	float: left;
+	padding: 3px;
+	background: transparent url("#{resource['images:ixd/content-form-semi-required-checkbox.png']}") 50% 50% no-repeat;
+}
+table.formTable table.radio span,
+.formTable table .inputs .radio tr td span {
+	margin-left: -3px;
+	display: block;
+	overflow: hidden;
+	float: left;
+	padding: 3px;
+	margin-right: 2px;
+	padding-left: 6px;
+	padding-top: 3px;
+}
+table.formTable .required.radio span {
+	margin-right: 3px;
+	background: transparent url("#{resource['images:ixd/content-form-required-radio.png']}") 50% 50% no-repeat;
+}
+table.formTable .semi-required.radio span,
+.formTable table .inputs .semi-required.radio tr td span {
+	margin-right: 3px;
+	padding-left: 3px;
+	background: transparent url("#{resource['images:ixd/content-form-semi-required-radio.png']}") 50% 50% no-repeat !important;
+}
+table.formTable span.multi-line .row input {
+	background-color: #fff;
+	border-bottom: 1px dotted #ccc !important;
+	border-top: 0 none !important;
+	-moz-border-radius: 0;
+	-khtml-border-radius: 0;
+	-webkit-border-radius: 0;
+	border-radius: 0;
+}
+table.formTable span.multi-line .row:first-child input {
+	border-top: 1px solid #ccc !important;
+	-moz-border-radius: 2px 2px 0 0;
+	-khtml-border-radius: 2px 2px 0 0;
+	-webkit-border-radius: 2px 2px 0 0;
+	border-radius: 2px 2px 0 0;
+}
+table.formTable span.multi-line .row:last-child input {
+	border-bottom: 1px solid #ccc !important;
+	-moz-border-radius: 0 0 2px 2px;
+	-khtml-border-radius: 0 0 2px 2px;
+	-webkit-border-radius: 0 0 2px 2px;
+	border-radius: 0 0 2px 2px;
+}
+
+table.formTable table.radio {
+	width: auto;
+}
+table.formTable table.radio td {
+	white-space: nowrap;
+	padding-right: 25px;
+}
+
+table.radioList {
+	background: transparent none !important;
+	border: 0 none !important;
+}
+table.radioList tbody tr td {
+	background: transparent none !important;
+	border: 0 none !important;
+	padding-left: 0;
+}
+
+.localeList select {
+	height: auto !important
+}

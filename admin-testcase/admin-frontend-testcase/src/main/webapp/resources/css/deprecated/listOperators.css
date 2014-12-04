@@ -1,0 +1,134 @@
+.roleSubTable table th,
+.ui-datatable-empty-message {
+    display: none;
+}
+
+.tableWithHeaderWidgets .ui-selectonemenu {
+    width: 40% !important;
+    margin-right: 2px;
+}
+
+.tableWithHeaderWidgets thead tr {
+    height: 49px;
+}
+
+.tableWithHeaderWidgets thead tr th:hover {
+    background: none !important;
+}
+
+.roleSubTable table {
+    width: 100% px;
+}
+
+.roleSubTable {
+    width: 100%
+}
+
+.roleSubTable thead tr {
+    display: none;
+}
+
+.subTable .ui-widget-content {
+    background: inherit;
+    border-width: 0px !important;
+}
+
+.selectRoleDropDown {
+    left: 10px;
+}
+
+.selectPollingPlaceDropDown {
+    left: 46px;
+}
+
+span#clearNameSearchField:hover {
+    cursor: pointer;
+}
+
+span#clearNameSearchField {
+    left: -23px;
+    position: relative;
+}
+
+#searchField {
+    padding-right: 32px;
+    width: 350px;
+    height: 49px;
+    border: thin solid black;
+}
+
+.userAdminSubPanelHeader {
+    background: none repeat scroll 0 0 #000000;
+    height: 31px;
+    margin-top: 8px;
+    width: 100%;
+}
+
+.userAdminSubPanel {
+    border: medium solid #007FA9;
+    min-height: 331px;
+    padding-top: 5px;
+}
+
+.roleFrame {
+    background: url("#{resource['primefaces-eva:images/ramme_rolle_1_u758.png']}") 0 0 no-repeat;
+    height: 47px;
+}
+
+.roleAssociations {
+    min-width: 580px;
+    font-size: 0.7em;
+    font-weight: bold;
+    padding: 6px 0 0 6px;
+    position: relative;
+    top: 6px;
+}
+
+.roleAssociations .delete-link {
+    font-size: 1.7em;
+    position: absolute;
+    top: 3px;
+    left: 4px;
+}
+
+.roleAssociations .roleName {
+    left: 31px;
+    position: absolute;
+}
+
+.roleAssociations .areaName {
+    left: 214px;
+    position: absolute;
+}
+
+.formTable th {
+    display: none;
+}
+
+.formTable td:nth-child(1) {
+    width: 20px;
+}
+
+.formTable td:nth-child(2) {
+    width: 260px;
+}
+
+.formTable td:nth-child(3) {
+    width: 260px;
+}
+
+.formTable .ui-selectonemenu {
+    width: 100% !important;
+}
+
+.editOperatorForm .operatorDetails {
+    width: 300px;
+}
+
+.editOperatorForm .roleSelectTable {
+    width: 600px;
+}
+
+.cancelLink {
+    margin-bottom: 17px;
+}

@@ -1,0 +1,45 @@
+/* SESSION TIMEOUT WARNING */
+
+.session-timeout {
+
+  .border-radius(0);
+  
+  text-align: center;
+  position: fixed;
+  width: 300px;
+  padding: 30px;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  z-index: 10000;
+  background-color: @white;
+  font-weight: bold;
+  
+  &:before {
+    .setIcomoonFont();
+    content: "\e619";
+    color:@blue;
+    opacity: 0.3;
+    position: absolute;
+    font-size: 13rem;
+    z-index: -1;
+  }
+  
+  a {
+	.size(auto, auto);
+	margin: 10px auto;
+  }
+
+  img {
+	margin-bottom: 5px;
+  }
+}
+
+.session-timeout-overlay {
+  .opacity(0.3);
+  .square(100%);
+  background-color: @black;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+}

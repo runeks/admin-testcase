@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<composite:interface>
+	<composite:attribute name="countController"
+						 type="no.valg.eva.admin.counting.presentation.CountController"
+						 required="true"/>
+</composite:interface>
+
+<composite:implementation>
+	<p:panel styleClass="form-actions form-group onBallotCountChange" layout="block">
+
+		<ui:fragment rendered="#{cc.attrs.countController.button('BACK').rendered}">
+
+			<p:commandLink
+					actionListener="#{cc.attrs.countController.back}"
+					value="#{msgs['@common.back']}"
+					disabled="#{cc.attrs.countController.button('BACK').disabled}"
+					styleClass="btn btn-link"
+					update="@form"
+					oncomplete="window.scrollTo(0,0);"/>
+
+		</ui:fragment>
+
+		<ui:fragment rendered="#{cc.attrs.countController.button('REGISTER_CORRECTIONS').rendered}">
+
+			<p:commandButton
+					action="#{cc.attrs.countController.saveCountAndRegisterCountCorrections}"
+					value="#{msgs['@count.ballot.register.changes']}"
+					update="@form"
+					styleClass="btn btn-primary"
+					icon="eva-icon-caret"
+					disabled="#{cc.attrs.countController.button('REGISTER_CORRECTIONS').disabled}"/>
+
+		</ui:fragment>
+
+		<ui:fragment rendered="#{cc.attrs.countController.button('SAVE').rendered}">
+
+			<p:commandButton
+					actionListener="#{cc.attrs.countController.saveCount}"
+					value="#{msgs['@common.save']}"
+					disabled="#{cc.attrs.countController.button('SAVE').disabled}"
+					styleClass="btn btn-primary"
+					icon="eva-icon-download"
+					update="@form"
+					oncomplete="window.scrollTo(0,0);">
+			</p:commandButton>
+
+		</ui:fragment>
+
+		<ui:fragment rendered="#{cc.attrs.countController.button('APPROVE').rendered}">
+
+			<p:commandButton id="approve"
+							 actionListener="#{cc.attrs.countController.openConfirmApproveCountDialog}"
+							 value="#{msgs['@common.approve']}"
+							 disabled="#{cc.attrs.countController.button('APPROVE').disabled}"
+							 styleClass="btn btn-success"
+							 icon="eva-icon-checkmark">
+				<p:ajax event="dialogReturn" listener="#{cc.attrs.countController.onConfirmApproveCountDialogReturn}" update="@form"/>
+			</p:commandButton>
+
+		</ui:fragment>
+
+		<ui:fragment rendered="#{cc.attrs.countController.button('MODIFIED_BALLOT_PROCESSED').rendered}">
+
+			<p:commandButton id="done"
+							 actionListener="#{cc.attrs.countController.modifiedBallotProcessed}"
+							 value="#{msgs['@common.done']}"
+							 disabled="#{cc.attrs.countController.button('MODIFIED_BALLOT_PROCESSED').disabled}"
+							 styleClass="btn btn-primary"
+							 icon="eva-icon-caret"
+							 update="@form"
+							 oncomplete="window.scrollTo(0,0);"/>
+
+		</ui:fragment>
+
+		<ui:fragment rendered="#{cc.attrs.countController.button('REVOKE').rendered}">
+
+			<p:commandButton
+					actionListener="#{cc.attrs.countController.revokeApprovedCount}"
+					value="#{msgs['@count.unapproveCount']}"
+					disabled="#{cc.attrs.countController.button('REVOKE').disabled}"
+					styleClass="btn btn-danger"
+					icon="eva-icon-notification"
+					update="@form"
+					oncomplete="window.scrollTo(0,0);"/>
+
+		</ui:fragment>
+
+	</p:panel>
+</composite:implementation>
+</html>

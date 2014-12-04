@@ -1,0 +1,44 @@
+
+#page-welcome {
+
+  & > .container-fluid {
+
+    & > .container {
+      & > .content {
+        padding-top: 10%;
+      }
+    }
+
+    .container {
+      width: 1241px !important;
+    }
+  }
+
+  p[class*='bg-'] {
+    text-align: center;
+    width: 65%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .col-md-8:first-child {
+    margin-top: 25px;
+
+    .center-block.btn-group {
+      width: 200px;
+    }
+  }
+}
+
+#page-tmplogin {
+  background-image: url("#{resource['images:tbservers.png']}");
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin-top: 50px;
+  margin-left: 50px;
+  min-height: 800px;
+  input[type="text"] {
+    margin: 6px;
+  }
+}

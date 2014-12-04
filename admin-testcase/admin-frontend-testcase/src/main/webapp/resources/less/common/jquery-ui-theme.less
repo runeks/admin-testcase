@@ -1,0 +1,375 @@
+/* Component containers
+----------------------------------*/
+.ui-accordion {
+  .ui-accordion-header {
+
+    .ui-icon {
+      left: .9em;
+      margin-top: -3px;
+      text-indent: 0;
+    }
+  }
+}
+
+.ui-panel-title {
+  font-size: @fontLarge;
+}
+
+.ui-panelgrid {
+
+  .ui-panelgrid-cell {
+    border: none;
+  }
+}
+
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+.ui-widget button {
+  font-size: 1rem;
+  font: @fontProps;
+}
+
+.ui-widget-content {
+  border: none;
+  background: transparent;
+  color: @black;
+
+  &.ui-menu {
+    background: @white;
+
+    .ui-menuitem-text {
+      color: @black;
+    }
+  }
+}
+
+.ui-widget-content a {
+  color: @anchorTextColor;
+}
+
+.ui-widget-header {
+  border: 1px solid @white;
+  color: @black;
+  font-weight: normal;
+}
+
+.ui-widget-header a {
+  color: @black;
+}
+
+/* Interaction states
+----------------------------------*/
+.ui-state-active a,
+.ui-state-active a:link,
+.ui-state-active a:visited,
+.ui-state-default a,
+.ui-state-default a:link,
+.ui-state-default a:visited {
+  color: @anchorTextColor;
+  text-decoration: none;
+}
+
+/*.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active {
+  border: 1px solid #333333;
+  background: #333333;
+  font-weight: normal;
+  color: @white;
+}*/
+
+/* Interaction Cues
+----------------------------------*/
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight,
+.ui-widget-header .ui-state-highlight {
+  border: 1px solid #F26700;
+  background: @white;
+  color: @black;
+}
+
+.ui-state-highlight a,
+.ui-widget-content .ui-state-highlight a,
+.ui-widget-header .ui-state-highlight a {
+  color: @black;
+}
+
+.ui-state-error,
+.ui-widget-content .ui-state-error,
+.ui-widget-header .ui-state-error {
+  border: 1px solid #C21A26;
+  background: @white;
+  color: @black;
+}
+
+.ui-state-error a,
+.ui-widget-content .ui-state-error a,
+.ui-widget-header .ui-state-error a {
+  color: @black;
+}
+
+.ui-state-error-text,
+.ui-widget-content .ui-state-error-text,
+.ui-widget-header .ui-state-error-text {
+  color: @black;
+}
+
+.ui-priority-primary,
+.ui-widget-content .ui-priority-primary,
+.ui-widget-header .ui-priority-primary {
+  font-weight: bold;
+}
+
+.ui-priority-secondary,
+.ui-widget-content .ui-priority-secondary,
+.ui-widget-header .ui-priority-secondary {
+  opacity: .7;
+  filter: Alpha(Opacity=70);
+  font-weight: normal;
+}
+
+.ui-state-disabled,
+.ui-widget-content .ui-state-disabled,
+.ui-widget-header .ui-state-disabled {
+  opacity: .35;
+  filter: Alpha(Opacity=35);
+  background-image: none;
+}
+
+.ui-state-disabled .ui-icon {
+  filter: Alpha(Opacity=35); /* For IE8 - See #6059 */
+}
+
+/* red button */
+.dangerous-stuff .ui-menu,
+.dangerous-stuff .ui-state-default:not(.ui-selectonemenu),
+.dangerous-stuff .ui-widget-content .ui-state-default:not(.ui-selectonemenu),
+.dangerous-stuff .ui-widget-header .ui-state-default:not(.ui-selectonemenu) {
+  border: 1px solid #C21A26;
+  background: #C21A26;
+  font-weight: normal;
+  color: @white;
+}
+
+.dangerous-stuff .ui-state-default a,
+.dangerous-stuff .ui-state-default a:link,
+.dangerous-stuff .ui-state-default a:visited {
+  color: @white;
+  text-decoration: none;
+}
+
+.dangerous-stuff .ui-state-focus,
+.dangerous-stuff .ui-widget-content .ui-state-focus,
+.dangerous-stuff .ui-widget-header .ui-state-focus {
+  border: 1px solid #C21A26;
+  background: #C21A26 !important;
+  font-weight: normal;
+  color: @white;
+}
+
+.dangerous-stuff .ui-state-focus a,
+.dangerous-stuff .ui-state-focus a:hover,
+.dangerous-stuff .ui-state-focus a:link,
+.dangerous-stuff .ui-state-focus a:visited {
+  color: @white;
+  text-decoration: none;
+}
+
+.dangerous-stuff .ui-state-active,
+.dangerous-stuff .ui-widget-content .ui-state-active,
+.dangerous-stuff .ui-widget-header .ui-state-active {
+  border: 1px solid #C21A26;
+  background: #C21A26;
+  font-weight: normal;
+  color: @white;
+}
+
+.dangerous-stuff .ui-state-active a,
+.dangerous-stuff .ui-state-active a:link,
+.dangerous-stuff .ui-state-active a:visited {
+  color: @white;
+  text-decoration: none;
+}
+
+.edit-link,
+.edit-link:hover {
+  color: #007FA9;
+  text-decoration: none !important;
+}
+
+.delete-link,
+.delete-link:hover {
+  color: #C21A26;
+  text-decoration: none !important;
+}
+
+/* Paginator */
+.ui-paginator .ui-icon {
+  font-family: eva-icomoon;
+}
+
+.ui-paginator .ui-paginator-last .ui-icon-seek-end {
+  content: "\e61c";
+}
+
+/*  boostrap adjustments */
+.linkWrapper {
+
+}
+
+.ui-icon:before {
+  font-family: eva-icomoon;
+}
+
+/* dialog styles */
+
+.info-dialog {
+  border-color: #4C6E1E !important;
+}
+
+.warning-dialog {
+  border-color: #F26700 !important;
+}
+
+.error-dialog {
+  border-color: #C21A26 !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+  padding: 0 !important;
+  margin: 1px 1px 0 1px;
+}
+
+.ui-dialog .ui-dialog-titlebar .ui-dialog-title {
+  padding: 5px 10px !important;
+  display: block;
+  font-size: 36px;
+  font-weight: normal;
+}
+
+.ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close span {
+  background: none !important;
+}
+
+.ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close.ui-state-hover {
+  padding: 1px;
+}
+
+.ui-dialog .btn-toolbar {
+  float: right;
+}
+
+.ui-paginator .ui-paginator-first:before {
+  font-family: icomoon;
+  content: "\e615";
+}
+
+.ui-paginator .ui-paginator-prev:before {
+  font-family: icomoon;
+  content: "\e646";
+}
+
+.ui-paginator .ui-paginator-next:before {
+  font-family: icomoon;
+  content: "\e61c";
+}
+
+.ui-paginator .ui-paginator-last:before {
+  font-family: icomoon;
+  content: "\e624";
+}
+
+.ui-paginator .ui-paginator-first span,
+.ui-paginator .ui-paginator-prev span,
+.ui-paginator .ui-paginator-next span,
+.ui-paginator .ui-paginator-last span {
+  font-size: 0px;
+  margin-top: -4px;
+  margin-bottom: 3.5px;
+}
+
+.ui-spinner {
+  @caretSize: 6px;
+  .ui-spinner-down,
+  .ui-spinner-up {
+    color: @blue !important;
+    width: 0px;
+    right: 4px;
+  }
+
+  .ui-spinner-up {
+    border-bottom: @caretSize solid;
+    border-left: @caretSize solid transparent;
+    border-right: @caretSize solid transparent;
+    border-top: @caretSize solid transparent;
+    margin-right: 1px;
+    top: -2px;
+
+  }
+
+  .ui-spinner-down {
+    border-top: @caretSize solid;
+    border-left: @caretSize solid transparent;
+    border-right: @caretSize solid transparent;
+    border-bottom: @caretSize solid transparent;
+    margin-right: 1px;
+    bottom: -2px;
+  }
+
+  //required for bootstrap compatability
+  &.form-control {
+    .box-shadow(none);
+    float: left;
+    border: 0;
+    padding: 0;
+  }
+
+}
+
+.ui-tabs {
+
+  .ui-tabs-panel {
+    padding: 0;
+  }
+
+}
+
+.ui-icon-triangle-1-s,
+.ui-icon-triangle-1-e {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+}
+.ui-icon-triangle-1-s {
+  border-bottom: 0;
+  border-top: 4px solid;
+}
+
+.ui-icon-triangle-1-e {
+  border-bottom: 4px solid transparent;
+  border-top: 4px solid transparent;
+  border-left: 4px solid;
+  margin-top: -4px;
+}
+
+.ui-treetable {
+  .ui-treetable-toggler {
+    text-indent: 0;
+    margin-top:6px;
+    margin-right:5px;
+  }
+}
+
+
+.ui-datatable {
+  .ui-column-filter {
+    margin: 0;
+    color: @black;
+  }
+}

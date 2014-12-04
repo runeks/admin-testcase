@@ -1,0 +1,70 @@
+
+######################
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+target/
+test-output/
+build/
+
+
+######################
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+
+
+######################
+# Embedded glassfish-logger
+######################
+
+logs/
+
+######################
+# Temp-files
+######################
+*~
+
+######################
+#Idea-files:
+######################
+*.iml
+.idea/
+
+
+######################
+#Ecplise-files
+######################
+.project
+.classpath
+.checkstyle
+.pmd
+.settings/
+
+
+##########################
+## Diverse
+#########################
+postgresql-driver-license.txt
+postgresql-9.2-1002.jdbc4.jar
+admin/admin-database/data/dump/*.dump
+admin/admin-database/data/dump/*.sql
+
+
+#########################
+# Node moduler for Grunt
+#########################
+node_modules/

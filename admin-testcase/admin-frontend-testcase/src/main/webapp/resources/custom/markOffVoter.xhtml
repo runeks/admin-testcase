@@ -1,0 +1,470 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:custom="http://java.sun.com/jsf/composite/custom/">
+<h:head>
+	<title></title>
+</h:head>
+<h:body>
+
+<composite:interface>
+	
+</composite:interface>
+
+<composite:implementation>
+	
+	<h1><h:outputText  value="#{markOffVoterController.getPanelHeader()}"/></h1>
+
+
+<h:form id="form" action="javascript://">
+<p:messages id="msgs"/>
+
+<h:panelGrid columns="2" columnClasses="wAuto,wAuto"
+			 styleClass="formTable">
+	<p:graphicImage
+			rendered="#{markOffVoterController.isShowRequestRemoveSentText()}"
+			value="../resources/images/item.notok.png"/>
+	<h:outputLabel
+			rendered="#{markOffVoterController.isShowRequestRemoveSentText()}"
+			value="#{msgs['@voting.requestRemoveMarkOffSent']}"/>
+</h:panelGrid>
+
+<h:panelGrid columns="2" columnClasses="wAuto,wAuto"
+			 styleClass="formTable">
+	<p:graphicImage rendered="#{markOffVoterController.isFictitiousSSN()}"
+					value="../resources/images/item.notok.png"/>
+	<h:outputLabel rendered="#{markOffVoterController.isFictitiousSSN()}"
+				   value="#{msgs['@voting.markOff.isFictitiousSSN']}"/>
+</h:panelGrid>
+
+<p:panel header="#{msgs['@common.personalInformation']}" rendered="#{!markOffVoterController.voter.fictitious}">
+	<h:panelGrid columns="4" columnClasses="w20,inputs,w20,inputs"
+				 styleClass="formTable">
+
+		<h:outputText value="#{msgs['@person.id']}:"/>
+		<h:outputText value="#{markOffVoterController.voter.id}"
+					  size="11" id="id"/>
+
+		<h:outputText value="#{msgs['@electoralRoll.number']}:"/>
+		<h:outputText value="#{markOffVoterController.voter.number}"
+					  label="number" id="voterNumber" size="8"/>
+
+		<h:outputText value="#{msgs['@person.name.first']}:"/>
+		<h:outputText
+				value="#{markOffVoterController.voter.firstName}"
+				id="firstName"/>
+
+		<h:outputText value="#{msgs['@person.municipality']}:"/>
+		<h:outputText
+				value="#{markOffVoterController.voter.mvArea.municipalityId} - #{markOffVoterController.voter.mvArea.municipalityName}"
+				id="municipalityId" maxlength="50" disabled="true"/>
+
+		<h:outputText value="#{msgs['@person.name.middle']}:"/>
+		<h:outputText
+				value="#{markOffVoterController.voter.middleName}"
+				id="middleName"/>
+
+		<h:outputText value="#{msgs['@electoralRoll.pollingDistrict']}:"/>
+		<h:outputText
+				value="#{markOffVoterController.voter.mvArea.pollingDistrictId} - #{markOffVoterController.voter.mvArea.pollingDistrictName}"
+				id="pollingDistrictId" maxlength="50" disabled="true"/>
+
+		<h:outputText value="#{msgs['@person.name.last']}:"/>
+		<h:outputText
+				value="#{markOffVoterController.voter.lastName}"
+				id="lastName"/>
+
+		<c:if test="#{markOffVoterController.voterWithVotingRightInBoroughVotingOslo}">
+			<h:outputText value="#{msgs['@area.borough.panelheader.main_info']}:"/>
+			<h:outputText
+					value="#{markOffVoterController.voter.mvArea.boroughId} - #{markOffVoterController.voter.mvArea.boroughName}"
+					id="boroughId" maxlength="50" disabled="true" font="bold"/>
+
+			<h:outputText/>
+			<h:outputText/>
+		</c:if>
+
+		<h:outputText value="#{msgs['@electoralRoll.approved']}:"/>
+		<c:choose>
+			<c:when
+					test="#{markOffVoterController.voter.approved == 'true'}">
+				<h:outputText value="#{msgs['@common.yes']}"/>
+			</c:when>
+			<c:otherwise>
+				<h:outputText value="#{msgs['@common.no']}"/>
+			</c:otherwise>
+		</c:choose>
+
+		<h:outputText value="#{msgs['@person.address']}:"/>
+		<h:outputText
+				value="#{markOffVoterController.voter.addressLine1}"
+				id="addressLine1"/>
+
+		<h:outputText value="#{msgs['@person.coAddress']}:"/>
+		<h:outputText
+				value="#{markOffVoterController.voter.addressLine2}"
+				id="addressLine2"/>
+
+		<h:outputText value="#{msgs['@person.postal.code']}:"/>
+		<h:outputText value="#{markOffVoterController.searchForm.postalCodeString}"/>
+
+		<h:outputText value="#{msgs['@person.email']}:"/>
+		<h:outputText value="#{markOffVoterController.voter.email}"
+					  id="email" maxlength="129"/>
+
+		<h:outputText value="#{msgs['@person.tlf']}:"/>
+		<h:outputText
+				value="#{markOffVoterController.voter.telephoneNumber}"
+				id="telephoneNumber" size="14" maxlength="14"/>
+
+		<c:if test="#{markOffVoterController.isAdvanceViewMode()}">
+			<h:commandLink id="printElectionCard" immediate="true"
+						   value="#{msgs['@voting.printElectionCard']}"
+						   rendered="#{markOffVoterController.isElectoralRollNumberIsSet()}"
+						   action="#{markOffVoterController.makeElectionCard()}"
+						   styleClass="icon-link icon-print"/>
+		</c:if>
+	</h:panelGrid>
+</p:panel>
+
+<p:panel header="#{msgs['@common.personalInformation']}" rendered="#{markOffVoterController.voter.fictitious}">
+	<h:panelGrid columns="1" styleClass="formTable">
+
+		<h:outputText value="#{msgs['@person.isFictitiousMessage']}" id="fictitiousPersonMessage"/>
+	</h:panelGrid>
+</p:panel>
+
+<custom:additionalVoterInformationPanel
+		voter="#{markOffVoterController.voter}"/>
+
+<p:panel header="#{msgs['@electoralRoll.history']}"
+		 id="voterAuditPanel" styleClass="hidden">
+	<h:panelGroup id="voterAuditGroup">
+		<p:dataTable value="#{markOffVoterController.voterAuditList}"
+					 rendered="#{markOffVoterController.voterAuditList.size() > 0 and UserDataController.hasAccess('w.voter.history')}"
+					 var="vaList" border="1" id="voterAuditTable">
+			<p:column sortBy="#{vaList.nameLine}">
+				<f:facet name="header">
+					<h:outputText value="#{msgs['@common.name']}"/>
+				</f:facet>
+				<h:outputText value="#{vaList.nameLine}"/>
+			</p:column>
+			<p:column sortBy="#{vaList.id}">
+				<f:facet name="header">
+					<h:outputText value="#{msgs['@person.id']}"/>
+				</f:facet>
+				<h:outputText value="#{vaList.voterId}"/>
+			</p:column>
+			<p:column sortBy="#{vaList.endringstype}">
+				<f:facet name="header">
+					<h:outputText value="#{msgs['@voterAudit.changeType']}"/>
+				</f:facet>
+				<h:outputText value="#{vaList.endringstype}"/>
+			</p:column>
+			<p:column sortBy="#{vaList.importBatchNumber}">
+				<f:facet name="header">
+					<h:outputText value="#{msgs['@voterAudit.batchNumber']}"/>
+				</f:facet>
+				<h:outputText value="#{vaList.importBatchNumber}"/>
+			</p:column>
+			<p:column sortBy="#{vaList.aarsakskode}">
+				<f:facet name="header">
+					<h:outputText value="#{msgs['@voterAudit.aarsakskode']}"/>
+				</f:facet>
+				<h:outputText
+						value="#{vaList.aarsakskode} - #{msgs[aarsakskodeController.aarsakskodeMap.get(vaList.aarsakskode)]}"/>
+			</p:column>
+			<p:column sortBy="#{vaList.id.auditTimestamp}">
+				<f:facet name="header">
+					<h:outputText value="#{msgs['@common.time']}"/>
+				</f:facet>
+				<h:outputText value="#{vaList.id.auditTimestamp}">
+					<f:convertDateTime
+							pattern="#{msgs['@common.date.date_pattern']} #{msgs['@common.date.time_pattern']}"/>
+				</h:outputText>
+			</p:column>
+			<p:column sortBy="#{vaList.auditOperator}">
+				<f:facet name="header">
+					<h:outputText value="#{msgs['@voterAudit.operator']}"/>
+				</f:facet>
+				<h:outputText value="#{vaList.auditOperator}"/>
+			</p:column>
+		</p:dataTable>
+	</h:panelGroup>
+</p:panel>
+
+<c:if test="#{markOffVoterController.isAdvanceViewMode()}">
+	<p:panel>
+		<h:panelGrid columns="2" columnClasses="w5,inputs"
+					 styleClass="formTable"
+					 rendered="#{markOffVoterController.isVoterInLoggedInMunicipality()}">
+
+			<c:if test="#{!markOffVoterController.advanceVoteInBallotBox}">
+				<h:outputLabel value="#{msgs['@voting.markOff.urn']}:"
+							   for="ballotBoxId"/>
+				<h:panelGroup styleClass="text left">
+					<h:inputText value="#{markOffVoterController.searchForm.ballotBoxId}"
+								 maxlength="4" size="4" id="ballotBoxId"/>
+				</h:panelGroup>
+			</c:if>
+
+			<h:outputLabel
+					value="#{msgs['@voting.markOff.votingLateAdvance']}:"
+					for="paramVotingLateAdvance"/>
+			<h:selectBooleanCheckbox
+					value="#{markOffVoterController.votingLateAdvance}"
+					id="paramVotingLateAdvance" styleClass="left" disabled="#{markOffVoterController.disableVotingLateAdvance()}"/>
+
+			<h:outputLabel value="#{msgs['@voting.votingCategory']}:"
+						   for="selectedVotingCategoryId"/>
+			<h:panelGroup styleClass="required select left">
+				<h:selectOneMenu
+						value="#{markOffVoterController.searchForm.selectedVotingCategoryId}"
+						id="selectedVotingCategoryId" required="true"
+						requiredMessage="#{msgs['@voting.validation.votingCategory']}"
+						disabled="#{!markOffVoterController.isAllowedToCastVote() || markOffVoterController.advanceVoteInBallotBox}"
+						style="width:auto">
+					<f:selectItems value="#{markOffVoterController.getVotingCategoryList()}"
+								   var="vcList" itemLabel="#{vcList.id} - #{msgs[vcList.name]}"
+								   itemValue="#{vcList.id}"/>
+				</h:selectOneMenu>
+			</h:panelGroup>
+
+		</h:panelGrid>
+	</p:panel>
+
+	<!-- Command buttons -->
+	<div class="bottom-buttons">
+		<ul>
+			<li><p:commandButton id="showHistory" ajax="true"
+								 actionListener="#{markOffVoterController.showHistoryForVoter(markOffVoterController.voter.pk)}"
+								 value="#{msgs['@electoralRoll.history']}"
+								 update="voterAuditGroup"
+								 rendered="#{UserDataController.hasAccess('w.voter.history')}"
+								 styleClass="icon-button icon-step-next"
+								 onclick="javascript:jQuery('.ui-panel').removeClass('hidden');"/>
+			</li>
+
+			<li><h:commandLink id="newSearch" immediate="true"
+							   action="#{markOffVoterController.backToSearchCastVote}"
+							   value="#{msgs['@common.newSearch']}"/></li>
+
+			<li><h:commandLink id="backToList"
+							   rendered="#{markOffVoterController.isVoterFromSearchList()}"
+							   immediate="true" action="searchResultListCastVote.xhtml"
+							   value="#{msgs['@common.back']}"/></li>
+		</ul>
+
+		<ui:fragment
+				rendered="#{!markOffVoterController.advanceVoteInBallotBox}">
+			<ul class="right">
+				<li class="call-to-action"><p:commandButton
+						action="#{markOffVoterController.markOffVoterAdvance}"
+						id="markOffAdvance" ajax="false"
+						value="#{msgs['@voting.markOff.register']}"
+						disabled="#{!markOffVoterController.isAllowedToCastVote()}"
+						styleClass="icon-button icon-ok focus-on-load"/></li>
+			</ul>
+		</ui:fragment>
+		<ui:fragment
+				rendered="#{markOffVoterController.advanceVoteInBallotBox and markOffVoterController.isVoterInLoggedInMunicipality()}">
+			<ul class="right">
+				<li class="call-to-action"><p:commandButton
+						action="#{markOffVoterController.markOffVoterAdvanceVoteInBallotBox}"
+						id="markOffAdvanceInBallotBox" ajax="false"
+						value="#{msgs['@voting.markOff.register']}"
+						disabled="#{!markOffVoterController.isAllowedToCastVote()}"
+						styleClass="icon-button icon-ok focus-on-load"/></li>
+			</ul>
+		</ui:fragment>
+
+		<ui:fragment
+				rendered="#{markOffVoterController.advanceVoteInBallotBox and !markOffVoterController.isVoterInLoggedInMunicipality()}">
+			<ul class="right">
+				<li class="call-to-action"><p:commandButton
+						action="#{markOffVoterController.markOffVoterAdvanceVoteInBallotBox}"
+						id="registerAdvanceInBallotBoxToOtherMunicipality"
+						ajax="false"
+						value="#{msgs['@voting.markOff.register']}"
+						disabled="#{!markOffVoterController.isAllowedToCastVote()}"
+						styleClass="icon-button icon-ok"/></li>
+			</ul>
+			<p:confirmDialog message="#{msgs['@voting.markOff.advanceInBallotBox.voteToOtherMunicipality.warningDialog.message']}"
+							 header="#{msgs['@voting.markOff.advanceInBallotBox.voteToOtherMunicipality.warningDialog.header']}"
+							 severity="alert" widgetVar="AdvanceVoteInBallotBoxVoteToOtherMunicipality" fixedCenter="true"
+							 modal="true" resizable="false" closable="false" closeOnEscape="false">
+				<div class="bottom-buttons">
+					<ul class="center">
+						<li class="call-to-action">
+							<p:commandButton
+									value="#{msgs['@common.ok']}"
+									onclick="AdvanceVoteInBallotBoxVoteToOtherMunicipality.hide(); focusIfFocusable(jQuery('button[id$=registerAdvanceInBallotBoxToOtherMunicipality]')[0])"
+									styleClass="icon-button icon-ok focus-on-load"
+									ajax="true"/>
+						</li>
+					</ul>
+				</div>
+			</p:confirmDialog>
+			<script>
+				AdvanceVoteInBallotBoxVoteToOtherMunicipality.show();
+			</script>
+		</ui:fragment>
+
+	</div>
+</c:if>
+
+<c:if
+		test="#{markOffVoterController.isViewMode('ELECTION_DAY')}">
+	<!-- Command buttons -->
+	<div class="bottom-buttons">
+		<ul>
+			<li><p:commandButton id="showHistory" ajax="true"
+								 actionListener="#{markOffVoterController.showHistoryForVoter(markOffVoterController.voter.pk)}"
+								 value="#{msgs['@electoralRoll.history']}"
+								 update="voterAuditGroup"
+								 rendered="#{UserDataController.hasAccess('w.voter.history')}"
+								 styleClass="icon-button icon-step-next"
+								 onclick="javascript:jQuery('.ui-panel').removeClass('hidden');"/>
+			</li>
+
+			<li><h:commandLink id="newSearch" immediate="true"
+							   action="#{markOffVoterController.backToSearchCastVote}"
+							   value="#{msgs['@common.newSearch']}"/></li>
+
+			<li><h:commandLink id="backToList"
+							   rendered="#{markOffVoterController.isVoterFromSearchList()}"
+							   immediate="true" action="searchResultListCastVote.xhtml"
+							   value="#{msgs['@common.back']}"/></li>
+		</ul>
+		<ul class="right">
+			<li class="call-to-action"><p:commandButton
+					action="#{markOffVoterController.markOffVoter}"
+					id="markOffElectionDay" ajax="false"
+					value="#{msgs['@voting.markOff.register']}"
+					disabled="#{!markOffVoterController.isAllowedToCastVote()}"
+					styleClass="icon-button icon-ok focus-on-load"/></li>
+		</ul>
+	</div>
+</c:if>
+
+<c:if test="#{markOffVoterController.isViewMode('RETURN_VOTING_CARD')}">
+	<!-- Command buttons -->
+	<div class="bottom-buttons">
+		<ul>
+			<li><p:commandButton id="showHistory" ajax="true"
+								 actionListener="#{markOffVoterController.showHistoryForVoter(markOffVoterController.voter.pk)}"
+								 value="#{msgs['@electoralRoll.history']}"
+								 update="voterAuditGroup"
+								 rendered="#{UserDataController.hasAccess('w.voter.history')}"
+								 styleClass="icon-button icon-step-next"
+								 onclick="javascript:jQuery('.ui-panel').removeClass('hidden');"/>
+			</li>
+
+			<li><h:commandLink id="newSearch" immediate="true"
+							   action="#{markOffVoterController.backToSearchCastVote}"
+							   value="#{msgs['@common.newSearch']}"/></li>
+
+			<li><h:commandLink id="backToList"
+							   rendered="#{markOffVoterController.isVoterFromSearchList()}"
+							   immediate="true" action="searchResultListCastVote.xhtml"
+							   value="#{msgs['@common.back']}"/></li>
+		</ul>
+		<ul class="right">
+			<li class="call-to-action"><p:commandButton
+					action="#{markOffVoterController.returnVotingCard}"
+					id="returnVotingCard" ajax="false"
+					rendered="#{UserDataController.hasAccess('w.voter.returnVotingCard')}"
+					disabled="#{!markOffVoterController.isVoterInLoggedInMunicipality()}"
+					value="#{msgs['@menu.electoralRoll.returnVotingCard']}"
+					styleClass="icon-button icon-ok"/></li>
+		</ul>
+	</div>
+</c:if>
+
+<c:if test="#{markOffVoterController.isViewMode('CENTRAL_REGISTRATION')}">
+	<h:panelGrid columns="2" columnClasses="w5,inputs"
+				 styleClass="formTable">
+
+		<h:outputLabel value="#{msgs['@voting.votingCategory']}:"
+					   for="selectedVotingCategoryId"/>
+		<h:panelGroup styleClass="required select left">
+			<h:selectOneMenu
+					value="#{markOffVoterController.searchForm.selectedVotingCategoryId}"
+					id="selectedVotingCategoryId" required="true"
+					requiredMessage="#{msgs['@voting.validation.votingCategory']}"
+					style="width:auto">
+				<f:selectItems value="#{markOffVoterController.getVotingCategoryList()}"
+							   var="vcList" itemLabel="#{vcList.id} - #{msgs[vcList.name]}"
+							   itemValue="#{vcList.id}"/>
+			</h:selectOneMenu>
+		</h:panelGroup>
+
+	</h:panelGrid>
+
+	<!-- Command buttons -->
+	<div class="bottom-buttons">
+		<ul>
+			<li><p:commandButton id="showHistory" ajax="true"
+								 actionListener="#{markOffVoterController.showHistoryForVoter(markOffVoterController.voter.pk)}"
+								 value="#{msgs['@electoralRoll.history']}"
+								 update="voterAuditGroup"
+								 rendered="#{UserDataController.hasAccess('w.voter.history')}"
+								 styleClass="icon-button icon-step-next"
+								 onclick="javascript:jQuery('.ui-panel').removeClass('hidden');"/>
+			</li>
+
+			<li><h:commandLink id="newSearch" immediate="true"
+							   action="#{markOffVoterController.backToSearchCastVote}"
+							   value="#{msgs['@common.newSearch']}"/></li>
+
+			<li><h:commandLink id="backToList"
+							   rendered="#{markOffVoterController.isVoterFromSearchList()}"
+							   immediate="true" action="searchResultListCastVote.xhtml"
+							   value="#{msgs['@common.back']}"/></li>
+		</ul>
+
+		<ui:fragment>
+			<ul class="right">
+				<li class="call-to-action"><p:commandButton
+						action="#{markOffVoterController.registerVoteCentrally}"
+						id="markOffElectionDay" ajax="false"
+						value="#{msgs['@voting.markOff.register']}"
+						styleClass="icon-button icon-ok focus-on-load"/></li>
+			</ul>
+		</ui:fragment>
+
+	</div>
+</c:if>
+
+</h:form>
+
+<script type="text/javascript">
+	// Innlesing av manntallsnummer med strekkodeleser skall ikke submit form Bug #4173
+	jQuery(document).ready(function ($) {
+		var text = '';
+		$(document).keydown(function (event) {
+			var isnum = /^\d+$/.test(text);
+
+			if (event.keyCode == 13 &amp;&amp; text.length == 12 &amp;&amp; isnum) {
+				event.preventDefault();
+				text = '';
+				return false;
+			}
+
+			if (event.keyCode == 9) { //tab
+				text = '';
+			} else {
+				text += String.fromCharCode(event.keyCode);
+			}
+		});
+	});
+</script>
+</composite:implementation>
+</h:body>
+</html>

@@ -1,0 +1,64 @@
+#page-counting-overview {
+
+  & > h1 + h4 {
+    margin-top: -15px;
+  }
+
+  .legend {
+
+    padding-bottom: 35px;
+
+    li {
+      padding: 10px 20px 0px 0px;
+    }
+
+  }
+
+  [class*='eva-icon-']:before {
+    padding-right: 5px;
+  }
+
+  .btn-sm {
+    font-size: .9rem;
+  }
+
+  .ui-panel {
+    .ui-panel-titlebar-icon {
+      float: left;
+      width: 32px;
+
+      span {
+        text-indent: 0;
+        margin-top: 15px;
+        
+        @caretSize: 8px;
+        &.ui-icon-plusthick,
+        &.ui-icon-minusthick {
+          display: inline-block;
+          width: 0;
+          border-color: @black;
+          height: 0;
+          margin-left: 2px;
+          vertical-align: middle;
+          border-top: @caretSize solid;
+          border-right: @caretSize solid transparent;
+          border-left: @caretSize solid transparent;
+        }
+
+        &.ui-icon-plusthick {
+          border-bottom: @caretSize solid transparent;
+          border-top: @caretSize solid transparent;
+          border-left: @caretSize solid;
+          
+        }
+
+        &.ui-icon-minusthick {
+          margin-top: 20px;
+          border-bottom: 0;
+          border-top: @caretSize solid;
+        }
+      }
+    }
+  }
+
+}

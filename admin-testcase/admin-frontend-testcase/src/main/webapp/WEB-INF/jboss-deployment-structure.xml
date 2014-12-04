@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure>
+	<deployment>
+		<dependencies>
+			<module name="com.jamonapi"/>
+			<module name="org.bouncycastle" slot="jdk14-1.38"/>
+			<module name="org.jboss.xnio" />
+			<module name="org.hibernate"/>
+			<module name="org.javassist"/>
+			<module name="org.dom4j"/>
+		</dependencies>
+		<exclusions>
+			<module name="org.apache.log4j"/>
+		</exclusions>
+	</deployment>
+</jboss-deployment-structure>

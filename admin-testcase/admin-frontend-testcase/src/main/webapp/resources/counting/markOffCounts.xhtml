@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+	<composite:attribute name="model"
+						 type="no.valg.eva.admin.counting.presentation.view.MarkOffCountsModel" />
+	<composite:attribute name="disabled"
+						 type="boolean"
+						 default="false"
+						 required="false"/>
+</composite:interface>
+
+<composite:implementation>
+
+	<ui:fragment rendered="#{cc.attrs.model != null}">
+		<div class="row">
+			<div class="col-md-12">
+				<p:dataTable value="#{cc.attrs.model}" var="row" id="markOffCountsModel" tableStyleClass="table table-striped">
+					<p:column headerText="#{msgs['@count.markOffs.count']}">
+						<h:outputText id="totalMarkOffCount" styleClass="bold onMarkOffChange" value="#{row.totalMarkOffCount}"/>
+					</p:column>
+					<p:column headerText="#{msgs['@count.votes.fromPolls']}" rendered="#{cc.attrs.model.isShowProtocolCount()}">
+						<h:outputText id="totalProtocolCount" styleClass="bold" value="#{row.totalProtocolCount}"/>
+					</p:column>
+					<p:column headerText="#{msgs['@count.ballots']}">
+						<h:outputText id="totalBallotCount" styleClass="bold onBallotCountChange" value="#{row.totalBallotCount}"/>
+					</p:column>
+					<p:column headerText="#{msgs['@count.diff']}">
+						<h:outputText id="totalBallotCountDifferenceFromPreviousCount" styleClass="bold onMarkOffChange onBallotCountChange #{row.diffStyleClass}" value="#{row.totalBallotCountDifferenceFromPreviousCount}" />
+					</p:column>
+				</p:dataTable>
+			</div>
+		</div>
+	</ui:fragment>
+
+</composite:implementation>
+</html>

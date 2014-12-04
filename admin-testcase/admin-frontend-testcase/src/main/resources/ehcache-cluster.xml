@@ -1,0 +1,37 @@
+<ehcache>
+	<cacheManagerPeerProviderFactory
+		class="net.sf.ehcache.distribution.jgroups.JGroupsCacheManagerPeerProviderFactory" />
+
+	<defaultCache maxElementsInMemory="1000" eternal="false"
+		overflowToDisk="false" diskPersistent="false"
+		diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU"
+		copyOnRead="true" copyOnWrite="true" timeToLiveSeconds="60" />
+
+	<cache name="entityCache" maxElementsInMemory="1000" eternal="false"
+		overflowToDisk="false" diskPersistent="false"
+		diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU"
+		copyOnRead="true" copyOnWrite="true" timeToLiveSeconds="60">
+		<cacheEventListenerFactory
+			class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"
+			properties="replicateAsynchronously=true, replicatePuts=true,
+    replicateUpdates=true, replicateUpdatesViaCopy=false,
+    replicateRemovals=true" />
+	</cache>
+
+	<cache name="textCache" maxElementsInMemory="1000" eternal="false"
+		overflowToDisk="false" diskPersistent="false"
+		diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU"
+		copyOnRead="true" copyOnWrite="true" timeToLiveSeconds="60">
+		<cacheEventListenerFactory
+			class="net.sf.ehcache.distribution.jgroups.JGroupsCacheReplicatorFactory"
+			properties="replicateAsynchronously=true, replicatePuts=true,
+    replicateUpdates=true, replicateUpdatesViaCopy=false,
+    replicateRemovals=true" />
+	</cache>
+
+	<cache name="serviceInvocationCache" maxElementsInMemory="1000"
+		eternal="false" overflowToDisk="false" diskPersistent="false"
+		diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU"
+		copyOnRead="true" copyOnWrite="true" timeToLiveSeconds="600" />
+
+</ehcache>

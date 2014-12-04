@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:composite="http://java.sun.com/jsf/composite"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+	<composite:attribute name="model"
+						 type="no.valg.eva.admin.counting.presentation.view.ballotcount.BallotCountsModel"
+						 required="true"/>
+	<composite:attribute name="disabled"
+						 type="boolean"
+						 default="false"
+						 required="false"/>
+</composite:interface>
+
+<composite:implementation>
+	<div class="row">
+		<div class="col-md-12">
+
+			<h4>#{msgs[cc.attrs.model.getTabTitle()]}</h4>
+
+			<p:dataTable value="#{cc.attrs.model}" var="row" id="ballotCountsTable" tableStyleClass="table table-striped">
+
+				<p:column headerText="#{msgs['@common.party']}">
+					<h:outputText value="#{msgs[row.title]}" styleClass="#{row.styleClass}"/>
+					<f:facet name="footer">
+						<h:outputText value="Totalt antall stemmesedler"/>
+					</f:facet>
+				</p:column>
+
+				<p:column headerText="#{msgs['@party.id']}">
+					<h:outputText value="#{row.id}" styleClass="#{row.styleClass}"/>
+					<f:facet name="footer"><h:outputText/></f:facet>
+				</p:column>
+
+				<!-- Column only for isShowProtocolCount -->
+				<p:column headerText="#{msgs['@count.votes.fromPolls']}" rendered="#{cc.attrs.model.isShowProtocolCount()}">
+					<h:outputText value="#{row.protocolCount}" styleClass="#{row.styleClass}" />
+					<f:facet name="footer">
+						<h:outputText id="totalProtocolCounts" value="#{cc.attrs.model.getTotalBallotCountForProtocolCounts()}"/>
+					</f:facet>
+				</p:column>
+
+				<p:column headerText="#{msgs['@count.modified']}">
+					<p:inputText value="#{row.modifiedCount}"
+								 size="4"
+								 styleClass="form-control #{row.styleClass}"
+								 rendered="#{row.isModifiedCountInput()}"
+								 disabled="#{cc.attrs.disabled}"
+								 id="modifiedBallotCount">
+						<p:ajax event="keyup" delay="500" update="@(.onBallotCountChange)" process="@form"/>
+					</p:inputText>
+					<h:outputText id="modifiedBallotCountText"
+								  value="#{row.modifiedCount}"
+								  styleClass="#{row.styleClass} onBallotCountChange"
+								  rendered="#{!row.isModifiedCountInput()}"/>
+					<f:facet name="footer"><h:outputText/></f:facet>
+				</p:column>
+
+				<p:column headerText="#{msgs['@count.unmodified']}">
+					<p:inputText value="#{row.unmodifiedCount}"
+								 size="4"
+								 styleClass="form-control #{row.styleClass}"
+								 rendered="#{row.isUnmodifiedCountInput()}"
+								 disabled="#{cc.attrs.disabled}"
+								 id="unmodifiedBallotCount">
+						<p:ajax event="keyup" delay="500" update="@(.onBallotCountChange)" process="@form"/>
+					</p:inputText>
+					<h:outputText id="unmodifiedBallotCountText"
+								  value="#{row.unmodifiedCount}"
+								  styleClass="#{row.styleClass} onBallotCountChange"
+								  rendered="#{!row.isUnmodifiedCountInput()}"/>
+					<f:facet name="footer"></f:facet>
+				</p:column>
+
+				<p:column headerText="#{msgs['@common.total']}">
+					<p:inputText value="#{row.count}"
+								 size="4"
+								 styleClass="form-control #{row.styleClass}"
+								 rendered="#{row.isCountInput()}"
+								 disabled="#{cc.attrs.disabled}"
+								 id="ballotCount">
+						<p:ajax event="keyup" delay="500" update="@(.onBallotCountChange)" process="@form"/>
+					</p:inputText>
+					<h:outputText id="ballotCountText"
+								  value="#{row.count}"
+								  styleClass="#{row.styleClass} onBallotCountChange"
+								  rendered="#{!row.isCountInput()}"/>
+					<f:facet name="footer">
+						<h:outputText id="totalBallotCount" styleClass="onBallotCountChange" value="#{cc.attrs.model.getTotalBallotCount()}"/>
+					</f:facet>
+				</p:column>
+
+				<!-- Column only for isShowProtocolCount -->
+				<p:column headerText="#{msgs['@common.change']}" rendered="#{cc.attrs.model.isShowProtocolCount()}">
+					<h:outputText id="ballotCountSum" styleClass="#{row.styleClass} onBallotCountChange" value="#{row.diff}" />
+					<f:facet name="footer">
+						<h:outputText id="totalProtocolCountDiff" styleClass="onBallotCountChange" value="#{cc.attrs.model.getTotalBallotCountDifferenceFromPreviousCount()}"/>
+					</f:facet>
+				</p:column>
+
+			</p:dataTable>
+		</div>
+	</div>
+</composite:implementation>
+</html>

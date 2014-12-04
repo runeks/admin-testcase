@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:custom="http://java.sun.com/jsf/composite/custom/">
+
+<composite:interface>
+	<composite:attribute name="id" />
+	<composite:attribute name="isOK" />
+	<composite:attribute name="valueMsg" />
+	<composite:attribute name="mustMsg" type="java.lang.Boolean"/>
+</composite:interface>
+
+<composite:implementation>
+	<li>
+		<ui:fragment rendered="#{cc.attrs.isOK}">
+			<span class="config_ok">
+				<img src="#{resource['images:gui/ok.png']}" />
+			</span>
+		</ui:fragment> 
+		<ui:fragment rendered="#{!cc.attrs.isOK and cc.attrs.mustMsg}">
+			<span class="config_not_ok">
+				<img src="#{resource['images:gui/error.gif']}" />
+			</span>
+		</ui:fragment>
+		<ui:fragment rendered="#{!cc.attrs.isOK and !cc.attrs.mustMsg}">		
+			<span class="config_not_ok">
+				<img src="#{resource['images:gui/not_ok.png']}" />
+			</span>
+		</ui:fragment>
+		<span class="lbl">#{cc.attrs.valueMsg}</span> 
+	</li>
+</composite:implementation>
+</html>
