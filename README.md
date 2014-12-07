@@ -1,6 +1,6 @@
 Test project for reproducing WELD-1802
 
-Build and deploy
+Build and deploy, admin-frontend-testcase-4.0-SNAPSHOT.war, https://localhost:9643/ (depending on https port settings)
 
 Use two browsers, for example chrome incognito and firefox private in order to get different sessions
 

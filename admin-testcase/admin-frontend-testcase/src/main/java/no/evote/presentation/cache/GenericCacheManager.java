@@ -8,7 +8,6 @@ import javax.enterprise.context.ApplicationScoped;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
-import no.evote.util.EvoteProperties;
 
 import org.apache.log4j.Logger;
 
@@ -26,15 +25,8 @@ public class GenericCacheManager implements Serializable {
 	@PostConstruct
 	public void init() {
 		LOG.debug("init()");
-		if (LOCAL_CACHE.equals(EvoteProperties.getProperty(CACHE_TYPE_PROPERTY, true))) {
-			LOG.debug("Using local cache");
 			CacheManager.create(getClass().getClassLoader().getResourceAsStream("ehcache-local.xml"));
 			manager = CacheManager.getInstance();
-		} else {
-			LOG.debug("Using clustered cache");
-			CacheManager.create(getClass().getClassLoader().getResourceAsStream("ehcache-cluster.xml"));
-			manager = CacheManager.getInstance();
-		}
 	}
 
 	@PreDestroy

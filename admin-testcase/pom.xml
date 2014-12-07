@@ -29,67 +29,6 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>javancss-maven-plugin</artifactId>
-				<configuration>
-					<forceEncoding>utf-8</forceEncoding>
-					<excludes>
-						<exclude>**/no/evote/constants/EvoteConstants.java</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>generate-dependency-file</id>
-						<phase>package</phase>
-						<goals>
-							<goal>tree</goal>
-						</goals>
-						<configuration>
-							<outputFile>target/${project.artifactId}-${project.version}_dependencies.txt</outputFile>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.wildfly.plugins</groupId>
-				<artifactId>wildfly-maven-plugin</artifactId>
-				<configuration>
-					<force>true</force>
-					<hostname>ci-admin01</hostname>
-					<id>wildfly-remote-backend</id>
-					<port>9990</port>
-					<username>admin</username>
-					<password>admin</password>
-				</configuration>
-				<executions>
-					<execution>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
 	</build>
 
 </project>

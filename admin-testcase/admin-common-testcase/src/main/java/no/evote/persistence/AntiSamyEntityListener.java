@@ -9,7 +9,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import no.evote.model.BaseEntity;
-import no.evote.util.AntiSamyFilter;
 import no.evote.validation.AntiSamy;
 
 /**
@@ -37,7 +36,7 @@ public class AntiSamyEntityListener implements Serializable {
 			// Only filter fields annotated with @AntiSamy
 			if (field.getAnnotation(AntiSamy.class) != null) {
 				field.setAccessible(true);
-				field.set(entity, AntiSamyFilter.filter((String) field.get(entity)));
+//				field.set(entity, AntiSamyFilter.filter((String) field.get(entity)));
 			}
 		}
 	}

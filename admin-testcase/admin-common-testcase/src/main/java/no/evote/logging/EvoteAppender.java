@@ -1,7 +1,5 @@
 package no.evote.logging;
 
-import no.evote.util.EvoteProperties;
-
 import org.apache.log4j.DailyRollingFileAppender;
 
 /**
@@ -14,11 +12,6 @@ public class EvoteAppender extends DailyRollingFileAppender {
 	public EvoteAppender() {
 		super();
 
-		String logFilename = EvoteProperties.getProperty("no.evote.logging.EvoteAppender.file", true);
-		if (logFilename != null) {
-			this.setFile(logFilename);
-		} else {
-			this.setFile(DEFAULT_LOG_FILENAME);
-		}
+		this.setFile(DEFAULT_LOG_FILENAME);
 	}
 }

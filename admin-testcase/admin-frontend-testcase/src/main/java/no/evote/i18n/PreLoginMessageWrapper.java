@@ -6,14 +6,11 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
-import no.evote.constants.EvoteConstants;
 import no.evote.model.Locale;
 import no.evote.presentation.cache.GlobalTextCache;
 import no.evote.service.TranslationService;
-import no.evote.util.EvoteProperties;
 
 @Named("pmsgs")
 @ApplicationScoped

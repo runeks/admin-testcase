@@ -11,7 +11,7 @@ public class ValidationMessageInterpolator implements MessageInterpolator {
 	private final ResourceBundleMessageInterpolator defaultInterpolator;
 
 	public ValidationMessageInterpolator() {
-		defaultInterpolator = new ResourceBundleMessageInterpolator(new ValidationResourceBundleLocator(), false);
+		defaultInterpolator = new ResourceBundleMessageInterpolator(null, false);
 	}
 
 	@Override
