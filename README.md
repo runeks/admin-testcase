@@ -10,4 +10,4 @@ With the second, log in a different user, go to "Trigger out of memory error".  
 
 Log in with a different user than user A.  Check the application log (notsecure.log).
 The signature of the error is that uid changes from SamlAssertionFilter to SelectRoleFilter for the thread that got the WELD-000712. 
-Keep refresing page until you have verified the bad thread.
+Keep refreshing page until you have verified the bad thread.
