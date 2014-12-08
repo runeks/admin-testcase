@@ -2,8 +2,6 @@
 <jboss-deployment-structure>
 	<deployment>
 		<dependencies>
-			<module name="com.jamonapi"/>
-			<module name="org.bouncycastle" slot="jdk14-1.38"/>
 			<module name="org.jboss.xnio" />
 			<module name="org.hibernate"/>
 			<module name="org.javassist"/>
