@@ -53,16 +53,9 @@ public class SamlAssertionFilter implements Filter {
 	@Inject
 	private UserData userDataAttr;
 
-	private HttpGetter httpGetter;
+	private Object httpGetter;
 	private TmpLoginDetector tmpLoginDetector = new TmpLoginDetector();
 
-	SamlAssertionFilter(NewUserDataService userDataService, Instance<UserDataProducer> userDataProducerInstance, HttpGetter httpGetter,
-			TmpLoginDetector tmpLoginDetector) {
-		this.userDataService = userDataService;
-		this.userDataProducerInstance = userDataProducerInstance;
-		this.httpGetter = httpGetter;
-		this.tmpLoginDetector = tmpLoginDetector;
-	}
 
 	@SuppressWarnings("unused")
 	public SamlAssertionFilter() {
@@ -70,7 +63,7 @@ public class SamlAssertionFilter implements Filter {
 
 	@Override
 	public void init(final FilterConfig filterConfig) throws ServletException {
-		httpGetter = new HttpGetter();
+		httpGetter = new Object();
 		LOGGER.debug("Created HttpConnectionManager and HttpClient for SAML communication");
 	}
 
@@ -156,7 +149,7 @@ public class SamlAssertionFilter implements Filter {
 
 	private String getSamlAssertionFromRequest(HttpServletRequest httpServletRequest) throws IOException {
 		String assertionUrl = getAssertionUrl(httpServletRequest);
-		byte[] samlAssertionBytes = httpGetter.getResponse(assertionUrl);
+		byte[] samlAssertionBytes = null;
 
 		String samlAssertion = new String(samlAssertionBytes, "UTF-8");
 		if (LOGGER.isDebugEnabled()) {
@@ -214,7 +207,6 @@ public class SamlAssertionFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		httpGetter.close();
 		LOGGER.debug("Shut down HttpConnectionManager");
 	}
 

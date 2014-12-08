@@ -25,7 +25,6 @@ import no.valg.eva.admin.common.counting.model.Counts;
 import no.valg.eva.admin.common.counting.service.ContestInfoService;
 import no.valg.eva.admin.common.counting.service.CountingConfigurationService;
 import no.valg.eva.admin.common.counting.service.configuration.CountingConfiguration;
-import no.valg.eva.admin.frontend.common.picker.ContextPickerController2;
 
 @Named
 @ConversationScoped
@@ -35,7 +34,7 @@ public class StartCountingController extends BaseCountController implements Acti
 
 	private CountingConfigurationService countingConfigurationService;
 	private ContestInfoService contestInfoService;
-	private ContextPickerController2 contextPickerController2;
+	private Object contextPickerController2;
 	private ContextPickerService contextPickerService;
 	@Inject
 	private ProtocolCountController protocolCountController;
