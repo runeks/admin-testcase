@@ -109,7 +109,6 @@ public class SamlAssertionFilter implements Filter {
 			throws IOException, ServletException {
 		HttpSession session = httpServletRequest.getSession();
 
-		if (userHasJustLoggedInWithTmpLogin(session)) {
 			UserData userData = popUserDataFromTmpLogin(session, getClientAddressFromRequest(httpServletRequest));
 
 			userDataProducer.setUserData(userData);
@@ -117,14 +116,6 @@ public class SamlAssertionFilter implements Filter {
 			LOGGER.debug("Bruker logget inn med tmpLogin, lagd og oppdatert user data med bruker id " + userData.getUid());
 
 			filterChain.doFilter(httpServletRequest, httpServletResponse);
-		} else {
-			if (ScanningLoginUtil.isScanningLogin(httpServletRequest)) {
-				LOGGER.debug("Skanning innlogging identifisert");
-				rememberThatThisIsAScanningLoginViaTmpLogin(session);
-			}
-			LOGGER.debug("redirect til tmpLogin");
-			httpServletResponse.sendRedirect("/tmpLogin");
-		}
 	}
 
 	private void handleRequestFromSamlServiceProvider(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain,
