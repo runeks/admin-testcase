@@ -138,7 +138,7 @@
 			<!-- Makes session cookies unavailable in JavaScript -->
 			<http-only>true</http-only>
 			<!-- Restrict to HTTPS -->
-			<secure>true</secure>
+			<!--<secure>true</secure>-->
 			<path>/</path>
 		</cookie-config>
 		<tracking-mode>COOKIE</tracking-mode>
