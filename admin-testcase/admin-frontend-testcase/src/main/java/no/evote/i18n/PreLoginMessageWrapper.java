@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import no.evote.model.Locale;
+import no.evote.presentation.UserDataController;
 import no.evote.presentation.cache.GlobalTextCache;
 import no.evote.service.TranslationService;
 
@@ -19,6 +21,9 @@ public class PreLoginMessageWrapper implements Map<String, String>, Serializable
 
 	private TranslationService translationService;
 	private Locale defaultLocale = null;
+	
+	@Inject
+	private UserDataController userDataController;
 
 	private Locale getDefaultLocale() {
 		defaultLocale = new Locale();
@@ -36,7 +41,8 @@ public class PreLoginMessageWrapper implements Map<String, String>, Serializable
 			return "Trigger out of memory error";
 		}
 		
-		return "any text";
+		return userDataController.getUserData().getUid() + "s private meny";
+//		return "any text";
 	}
 
 	@Override

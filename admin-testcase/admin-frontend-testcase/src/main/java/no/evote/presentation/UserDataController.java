@@ -355,12 +355,6 @@ public class UserDataController extends BaseController {
 			if (menuController.isValidCountCategoryId("VF") && !menuController.isElectronicMarkoffsConfigured()) {
 				menu2.addChild(new Menu("@menu.counting.foreign_votes", "/secure/counting/startCounting.xhtml?category=VF"));
 			}
-			if (menuController.isValidCountCategoryId("VB") && menuController.isElectronicMarkoffsConfigured()) {
-				menu2.addChild(new Menu("@menu.counting.emergency_envelopes", "/secure/counting/startCounting.xhtml?category=VB"));
-			}
-			if (menuController.isValidCountCategoryId("BF")) {
-				menu2.addChild(new Menu("@menu.counting.foreign_votes_borough", "/secure/counting/startCounting.xhtml?category=BF"));
-			}
 		}
 		if (!menu2.getChildren().isEmpty()) {
 			root.addChild(menu2);
@@ -386,11 +380,10 @@ public class UserDataController extends BaseController {
 			root.addChild(menu4);
 		}
 
-		Menu protocolReports = new Menu("@reporting.report.category.protocols", true);
-		protocolReports.addChild(new Menu(null, "reportLink:@reporting.report.report_34.name"));
-		protocolReports.addChild(new Menu(null, "reportLink:@reporting.report.report_35.name"));
-		protocolReports.addChild(new Menu(null, "reportLink:@reporting.report.report_36.name"));
-		root.addChild(protocolReports);
+		Menu menu5 = new Menu("");
+		menu5.addChild(new Menu("@menu.counting.emergency_envelopes", "/secure/counting/startCounting.xhtml?category=VB"));
+		menu5.addChild(new Menu("@menu.counting.foreign_votes_borough", "/secure/counting/startCounting.xhtml?category=BF"));
+		root.addChild(menu5);
 
 		if (!root.getChildren().isEmpty()) {
 			getMenus().add(root);
