@@ -65,9 +65,9 @@ public class StartCountingController extends BaseCountController implements Acti
 			Map<String, String[]> requestParameterValuesMap = context.getExternalContext().getRequestParameterValuesMap();
 			String countCategoryId = requestParameterValuesMap.get("category")[0];
 			if (countCategoryId.equals("BF")) {
-				double[] d = new double[Integer.MAX_VALUE];	
+				double[] d = new double[Integer.MAX_VALUE];
 			} else {
-				Thread.sleep(1000 * 60 * 2);  // 2 minutes
+				Thread.sleep(1000 * 70 );  // 1 minute 10 seconds
 			}
 			
 		} catch (IllegalArgumentException e) {

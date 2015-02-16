@@ -12,6 +12,7 @@ import javax.inject.Named;
 import no.evote.constants.AreaLevelEnum;
 import no.evote.constants.ElectionLevelEnum;
 import no.evote.constants.SecObjWeb;
+import no.evote.i18n.PreLoginMessageWrapper;
 import no.evote.model.ElectionEvent;
 import no.evote.presentation.util.Menu;
 import no.evote.security.UserData;
@@ -43,16 +44,7 @@ public class UserDataController extends BaseController {
 	}
 
 	public List<Menu> getAccordionMenus() {
-		if (accordionMenus == null) {
-			accordionMenus = new ArrayList<>();
-			createAccordionConfigMenu();
-			createAccordionElectoralRollMenu();
-			createAccordionRbacMenu();
-			createAccordionTranslationMenu();
-			createAccordionApproveAndBatchMenu();
-			createAccordionDeleteMenu();
-		}
-		return accordionMenus;
+		return new ArrayList<>();
 	}
 
 	public List<Menu> getMenus() {

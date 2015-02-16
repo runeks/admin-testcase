@@ -31,7 +31,8 @@ public class PreLoginMessageWrapper implements Map<String, String>, Serializable
 		defaultLocale.setName("Bokmål");
 		return defaultLocale;
 	}
-
+	
+	
 	@Override
 	public String get(final Object key) {
 		if (((String)key).endsWith("emergency_envelopes")) {
@@ -41,8 +42,12 @@ public class PreLoginMessageWrapper implements Map<String, String>, Serializable
 			return "Trigger out of memory error";
 		}
 		
-		return userDataController.getUserData().getUid() + "s private meny";
+		return getUid() + "s private meny";
 //		return "any text";
+	}
+
+	public String getUid() {
+		return userDataController.getUserData().getUid();
 	}
 
 	@Override
